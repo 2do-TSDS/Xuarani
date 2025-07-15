@@ -1,0 +1,52 @@
+<%= form_with(model: persona) do |form| %>
+  <% if persona.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(persona.errors.count, "error") %> prohibited this persona from being saved:</h2>
+
+      <ul>
+        <% persona.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :nombres, style: "display: block" %>
+    <%= form.text_field :nombres %>
+  </div>
+
+  <div>
+    <%= form.label :apellidos, style: "display: block" %>
+    <%= form.text_field :apellidos %>
+  </div>
+
+  <div>
+    <%= form.label :dni, style: "display: block" %>
+    <%= form.text_field :dni %>
+  </div>
+
+  <div>
+    <%= form.label :fecha_nacimiento, style: "display: block" %>
+    <%= form.date_field :fecha_nacimiento %>
+  </div>
+
+  <div>
+    <%= form.label :direccion, style: "display: block" %>
+    <%= form.text_field :direccion %>
+  </div>
+
+  <div>
+    <%= form.label :telefono, style: "display: block" %>
+    <%= form.text_field :telefono %>
+  </div>
+
+  <div>
+    <%= form.label :email, style: "display: block" %>
+    <%= form.text_field :email %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>
