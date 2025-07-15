@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @turno %>
+
+<div>
+  <%= link_to "Edit this turno", edit_turno_path(@turno) %> |
+  <%= link_to "Back to turnos", turnos_path %>
+
+  <%= button_to "Destroy this turno", @turno, method: :delete %>
+</div>
