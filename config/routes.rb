@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get "dashboard/index"
   resources :personas
   resources :alumnos
   resources :docentes
@@ -20,4 +21,6 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+  root "dashboard#index"
+
 end
