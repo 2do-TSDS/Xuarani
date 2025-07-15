@@ -10,6 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema[8.0].define(version: 2025_07_15_004606) do
   create_table "ciclo_lectivos", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "anio"
@@ -29,17 +30,24 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_15_004606) do
   end
 
   create_table "materia", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+=======
+ActiveRecord::Schema[8.0].define(version: 2025_07_14_225700) do
+  create_table "orientacions", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+>>>>>>> main
     t.string "nombre"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
+<<<<<<< HEAD
   create_table "orientacions", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "nombre"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
+=======
+>>>>>>> main
   create_table "sessions", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "ip_address"

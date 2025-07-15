@@ -1,6 +1,6 @@
 require "test_helper"
 
-class MateriaTest < ActiveSupport::TestCase
+class OrientacionTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end
