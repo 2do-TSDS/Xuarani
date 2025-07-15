@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @orientacion %>
+
+<div>
+  <%= link_to "Edit this orientacion", edit_orientacion_path(@orientacion) %> |
+  <%= link_to "Back to orientacions", orientacions_path %>
+
+  <%= button_to "Destroy this orientacion", @orientacion, method: :delete %>
+</div>
