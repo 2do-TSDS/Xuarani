@@ -6,9 +6,11 @@ Rails.application.routes.draw do
   resources :perfils
   resources :orientacions
   resources :cursos
-
   resources :ciclo_lectivos
   resources :turnos
+  resources :materia_alumnos
+  resources :materia
+  
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
