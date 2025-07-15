@@ -1,0 +1,2 @@
+class CicloLectivo < ApplicationRecord
+end

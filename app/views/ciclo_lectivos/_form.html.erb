@@ -1,0 +1,32 @@
+<%= form_with(model: ciclo_lectivo) do |form| %>
+  <% if ciclo_lectivo.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(ciclo_lectivo.errors.count, "error") %> prohibited this ciclo_lectivo from being saved:</h2>
+
+      <ul>
+        <% ciclo_lectivo.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :anio, style: "display: block" %>
+    <%= form.number_field :anio %>
+  </div>
+
+  <div>
+    <%= form.label :inicio, style: "display: block" %>
+    <%= form.date_field :inicio %>
+  </div>
+
+  <div>
+    <%= form.label :final, style: "display: block" %>
+    <%= form.date_field :final %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>
