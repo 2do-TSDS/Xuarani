@@ -1,0 +1,16 @@
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "Ciclo lectivos" %>
+
+<h1>Ciclo lectivos</h1>
+
+<div id="ciclo_lectivos">
+  <% @ciclo_lectivos.each do |ciclo_lectivo| %>
+    <%= render ciclo_lectivo %>
+    <p>
+      <%= link_to "Show this ciclo lectivo", ciclo_lectivo %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New ciclo lectivo", new_ciclo_lectivo_path %>
