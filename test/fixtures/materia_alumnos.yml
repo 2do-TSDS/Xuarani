@@ -1,9 +1,0 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
-one:
-  materia: one
-  alumno: one
-
-two:
-  materia: two
-  alumno: two

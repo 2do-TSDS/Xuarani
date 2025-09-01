@@ -1,15 +1,12 @@
 Rails.application.routes.draw do
   get "dashboard/index"
   resources :personas
-  resources :alumnos
   resources :docentes
   resources :perfils
   resources :orientacions
   resources :cursos
   resources :ciclo_lectivos
   resources :turnos
-  resources :materia_alumnos
-  resources :materia
   
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
