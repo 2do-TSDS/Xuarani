@@ -1,4 +1,13 @@
 Rails.application.routes.draw do
+  resources :asistencia_generals
+  resources :asistencia_materia
+  resources :parametros
+  resources :materia_alumnos
+  resources :modulos
+  resources :materia_docentes
+  resources :divisions
+  resources :materia
+  resources :alumnos
   get "dashboard/index"
   resources :personas
   resources :docentes

@@ -1,0 +1,16 @@
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "Modulos" %>
+
+<h1>Modulos</h1>
+
+<div id="modulos">
+  <% @modulos.each do |modulo| %>
+    <%= render modulo %>
+    <p>
+      <%= link_to "Show this modulo", modulo %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New modulo", new_modulo_path %>
