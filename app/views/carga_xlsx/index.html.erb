@@ -9,43 +9,47 @@
 
 <hr>
 
+<%= turbo_frame_tag "resultados_carga" do %>
+
 <h2>Subir archivo</h2>
-<%= form_with url: "/carga_xlsx/procesar", method: :post, multipart: true do |form| %>
-  <div>
-    <%= form.label :archivo_excel, "Selecciona un archivo .xlsx:" %>
-    <%= form.file_field :archivo_excel, accept: ".xlsx" %>
-  </div>
-  <div style="margin-top: 10px;">
-    <%= form.submit "Procesar Archivo" %>
-  </div>
-<% end %>
+  <%= form_with url: "/carga-xlsx/procesar", method: :post, multipart: true do |form| %>
+    <div>
+      <%= form.label :archivo_excel, "Selecciona un archivo .xlsx:" %>
+      <%= form.file_field :archivo_excel, accept: ".xlsx" %>
+    </div>
+    <div style="margin-top: 10px;">
+      <%= form.submit "Procesar Archivo" %>
+    </div>
+  <% end %>
 
-<hr>
+  <hr>
 
-<h2>Datos Procesados</h2>
+  <h2>Datos Procesados</h2>
 
-<% if @dataframe.present? && !@dataframe.empty? %>
-  <p>Se encontraron <%= @dataframe.nrows %> filas.</p>
-  
-  <table border="1" style="width:100%; border-collapse: collapse;">
-    <thead>
-      <tr>
-        <% @dataframe.vectors.to_a.each do |nombre_columna| %>
-          <th style="padding: 8px; background-color: #f2f2f2;"><%= nombre_columna %></th>
-        <% end %>
-      </tr>
-    </thead>
-    <tbody>
-      <% @dataframe.each_row do |fila| %>
-        <tr>
-          <% fila.each do |valor_celda| %>
-            <td style="padding: 8px;"><%= valor_celda %></td>
-          <% end %>
-        </tr>
+  <% if @curso && @division %>
+    <p><strong>Curso:</strong> <%= @curso %></p>
+    <p><strong>División:</strong> <%= @division %></p>
+  <% end %>
+
+  <% if @materias && @materias.any? %>
+    <h3>Materias:</h3>
+    <ul>
+      <% @materias.each do |materia| %>
+        <li><%= materia %></li>
       <% end %>
-    </tbody>
-  </table>
+    </ul>
+  <% end %>
 
-<% else %>
-  <p>No hay datos para mostrar. Sube un archivo para comenzar.</p>
+  <% if @alumnos && @alumnos.any? %>
+    <h3>Alumnos:</h3>
+    <ul>
+      <% @alumnos.each do |alumno| %>
+        <li><%= alumno %></li>
+      <% end %>
+    </ul>
+  <% end %>
+  <% if @alumnos.nil? && @materias.nil? && @curso.nil? && @division.nil? %>
+    <p>No hay datos para mostrar. Sube un archivo para comenzar.</p>
+  <% end %>
+
 <% end %>
