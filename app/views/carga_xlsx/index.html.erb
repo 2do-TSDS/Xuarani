@@ -1,0 +1,51 @@
+<h1>Carga y Visualización XLSX 📊</h1>
+
+<% if flash[:notice] %>
+  <div style="color: green;"><%= flash[:notice] %></div>
+<% end %>
+<% if flash[:alert] %>
+  <div style="color: red;"><%= flash[:alert] %></div>
+<% end %>
+
+<hr>
+
+<h2>Subir archivo</h2>
+<%= form_with url: "/carga_xlsx/procesar", method: :post, multipart: true do |form| %>
+  <div>
+    <%= form.label :archivo_excel, "Selecciona un archivo .xlsx:" %>
+    <%= form.file_field :archivo_excel, accept: ".xlsx" %>
+  </div>
+  <div style="margin-top: 10px;">
+    <%= form.submit "Procesar Archivo" %>
+  </div>
+<% end %>
+
+<hr>
+
+<h2>Datos Procesados</h2>
+
+<% if @dataframe.present? && !@dataframe.empty? %>
+  <p>Se encontraron <%= @dataframe.nrows %> filas.</p>
+  
+  <table border="1" style="width:100%; border-collapse: collapse;">
+    <thead>
+      <tr>
+        <% @dataframe.vectors.to_a.each do |nombre_columna| %>
+          <th style="padding: 8px; background-color: #f2f2f2;"><%= nombre_columna %></th>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody>
+      <% @dataframe.each_row do |fila| %>
+        <tr>
+          <% fila.each do |valor_celda| %>
+            <td style="padding: 8px;"><%= valor_celda %></td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+<% else %>
+  <p>No hay datos para mostrar. Sube un archivo para comenzar.</p>
+<% end %>
