@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get "carga-xlsx", to: "carga_xlsx#index"
+  post "carga-xlsx/procesar", to: "carga_xlsx#procesar"
   resources :asistencia_generals
   resources :asistencia_materia
   resources :parametros
