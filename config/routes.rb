@@ -11,14 +11,17 @@ Rails.application.routes.draw do
   resources :materia
   resources :alumnos
   get "dashboard/index"
-  resources :personas
   resources :docentes
   resources :perfils
   resources :orientacions
   resources :cursos
   resources :ciclo_lectivos
   resources :turnos
-  
+  resources :personas do
+    resource :perfil, only: [:new, :create]
+  end
+  resources :perfiles, only: [:show]
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

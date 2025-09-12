@@ -1,11 +1,90 @@
-<% content_for :title, "New perfil" %>
+<!-- app/views/perfiles/new.html.erb -->
+<h1>Crear Nuevo Perfil de Usuario</h1>
 
-<h1>New perfil</h1>
+<%= form_with(model: [@persona, @perfil], local: true) do |form| %>
+  <% if @persona.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@persona.errors.count, "error") %> impidieron guardar esta persona:</h2>
+      <ul>
+        <% @persona.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
 
-<%= render "form", perfil: @perfil %>
+  <% if @perfil.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@perfil.errors.count, "error") %> impidieron guardar este perfil:</h2>
+      <ul>
+        <% @perfil.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
 
-<br>
+  <fieldset>
+    <legend>Datos Personales</legend>
+    
+    <div>
+      <%= form.label :nombres %>
+      <%= form.text_field :nombres, required: true %>
+    </div>
 
-<div>
-  <%= link_to "Back to perfils", perfils_path %>
-</div>
+    <div>
+      <%= form.label :apellidos %>
+      <%= form.text_field :apellidos, required: true %>
+    </div>
+
+    <div>
+      <%= form.label :dni %>
+      <%= form.text_field :dni, required: true %>
+    </div>
+
+    <div>
+      <%= form.label :email %>
+      <%= form.email_field :email, required: true %>
+    </div>
+
+    <div>
+      <%= form.label :fecha_nacimiento %>
+      <%= form.date_field :fecha_nacimiento %>
+    </div>
+
+    <div>
+      <%= form.label :telefono %>
+      <%= form.telephone_field :telefono %>
+    </div>
+
+    <div>
+      <%= form.label :direccion %>
+      <%= form.text_area :direccion %>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Datos del Perfil</legend>
+    
+    <div>
+      <%= form.label :tipo_perfil, "Tipo de Perfil" %>
+      <%= form.select :tipo_perfil, ['alumno', 'docente', 'administrativo'], { prompt: 'Seleccione tipo de perfil' }, required: true %>
+    </div>
+
+    <div>
+      <%= form.label :estado, "Estado del Perfil" %>
+      <%= form.select :estado, ['activo', 'inactivo', 'pendiente'], { prompt: 'Seleccione estado' } %>
+    </div>
+
+    <div>
+      <%= form.label :observaciones %>
+      <%= form.text_area :observaciones %>
+    </div>
+  </fieldset>
+
+  <div>
+    <%= form.submit "Crear Perfil" %>
+  </div>
+<% end %>
+
+<%= link_to 'Volver', personas_path %>
