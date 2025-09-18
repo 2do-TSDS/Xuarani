@@ -1,2 +1,0 @@
-class Curso < ApplicationRecord
-end

@@ -1,2 +1,0 @@
-class Parametro < ApplicationRecord
-end

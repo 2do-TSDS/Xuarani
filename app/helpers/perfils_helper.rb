@@ -1,2 +1,0 @@
-module PerfilsHelper
-end

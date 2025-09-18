@@ -1,2 +1,0 @@
-class Division < ApplicationRecord
-end

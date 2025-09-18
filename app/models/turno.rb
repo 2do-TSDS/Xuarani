@@ -1,2 +1,0 @@
-class Turno < ApplicationRecord
-end

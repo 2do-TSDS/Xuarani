@@ -1,2 +1,0 @@
-class Orientacion < ApplicationRecord
-end
