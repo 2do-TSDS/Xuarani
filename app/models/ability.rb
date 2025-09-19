@@ -33,3 +33,4 @@ class Ability
     def guest_rules
         can :read, :publico
     end
+end

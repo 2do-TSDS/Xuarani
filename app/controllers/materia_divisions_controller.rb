@@ -1,4 +1,5 @@
 class MateriaDivisionsController < ApplicationController
+  load_and_authorize_resource
   before_action :set_materia_division, only: %i[ show edit update destroy ]
 
   # GET /materia_divisions or /materia_divisions.json

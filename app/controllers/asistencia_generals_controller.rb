@@ -1,6 +1,6 @@
 class AsistenciaGeneralsController < ApplicationController
+  load_and_authorize_resource
   before_action :set_asistencia_general, only: %i[ show edit update destroy ]
-
   # GET /asistencia_generals or /asistencia_generals.json
   def index
     @asistencia_generals = AsistenciaGeneral.all

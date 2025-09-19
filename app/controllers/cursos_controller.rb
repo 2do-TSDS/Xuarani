@@ -1,4 +1,5 @@
 class CursosController < ApplicationController
+  load_and_authorize_resource
   before_action :set_curso, only: %i[ show edit update destroy ]
 
   # GET /cursos or /cursos.json

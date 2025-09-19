@@ -1,4 +1,5 @@
 class AsistenciaMateriasController < ApplicationController
+  load_and_authorize_resource
   before_action :set_asistencia_materia, only: %i[ show edit update destroy ]
 
   # GET /asistencia_materias or /asistencia_materias.json

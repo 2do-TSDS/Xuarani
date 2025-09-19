@@ -1,4 +1,5 @@
 class MateriaAlumnosController < ApplicationController
+  load_and_authorize_resource
   before_action :set_materia_alumno, only: %i[ show edit update destroy ]
 
   # GET /materia_alumnos or /materia_alumnos.json

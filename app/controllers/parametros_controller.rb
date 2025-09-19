@@ -1,4 +1,5 @@
 class ParametrosController < ApplicationController
+  load_and_authorize_resource
   before_action :set_parametro, only: %i[ show edit update destroy ]
 
   # GET /parametros or /parametros.json

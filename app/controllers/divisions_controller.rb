@@ -1,4 +1,5 @@
 class DivisionsController < ApplicationController
+  load_and_authorize_resource
   before_action :set_division, only: %i[ show edit update destroy ]
 
   # GET /divisions or /divisions.json

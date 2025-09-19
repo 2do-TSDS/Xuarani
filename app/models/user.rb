@@ -19,7 +19,6 @@ class User < ApplicationRecord
           :fecha_nacimiento,
           :direccion,
           :telefono,
-          :email,
           to: :perfil,
           allow_nil: true
           

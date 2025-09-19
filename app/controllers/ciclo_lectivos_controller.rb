@@ -1,4 +1,5 @@
 class CicloLectivosController < ApplicationController
+  load_and_authorize_resource
   before_action :set_ciclo_lectivo, only: %i[ show edit update destroy ]
 
   # GET /ciclo_lectivos or /ciclo_lectivos.json

@@ -1,4 +1,5 @@
 class ModulosController < ApplicationController
+  load_and_authorize_resource
   before_action :set_modulo, only: %i[ show edit update destroy ]
 
   # GET /modulos or /modulos.json

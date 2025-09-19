@@ -18,7 +18,7 @@ class MateriaDocente < ApplicationRecord
     conditions: -> { where(titular: true) },
     message: "Ya existe un docente titular asignado a esta Materia en esta Division"
   }
-  validates :docente_con_rol_docente
+  validate :docente_debe_tener_rol_docente
 
   private
   def docente_debe_tener_rol_docente

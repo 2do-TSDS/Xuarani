@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_19_064817) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_19_155711) do
   create_table "asistencia_generals", force: :cascade do |t|
     t.integer "alumno_id", null: false
     t.integer "parametro_id", null: false
@@ -138,7 +138,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_19_064817) do
     t.date "fecha_nacimiento"
     t.string "direccion"
     t.string "telefono"
-    t.string "email"
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
