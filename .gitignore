@@ -32,3 +32,8 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+
+# Bases de datos SQLite
+/db/*.sqlite3
+/db/*.sqlite3-journal
+/db/*.sqlite3-*
