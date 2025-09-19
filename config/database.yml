@@ -1,0 +1,38 @@
+default: &default
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  timeout: 5000
+
+
+development:
+  <<: *default
+  adapter: sqlite3
+  database: db/development.sqlite3
+
+test:
+  <<: *default
+  adapter: sqlite3
+  database: db/test.sqlite3
+
+production:
+  primary: &primary_production
+    <<: *default
+    adapter: mysql2
+    encoding: utf8mb4
+    collation: utf8mb4_0900_ai_ci
+    database: <%= ENV.fetch("DB_NAME", "xuarani_production") %>
+    username: <%= ENV.fetch("DB_USER", "root") %>
+    password: <%= ENV.fetch("DB_PASSWORD", "admin8532") %>
+    socket: <%= ENV.fetch("DB_SOCKET", "/var/run/mysqld/mysqld.sock") %>
+
+  # cache:
+  #   <<: *primary_production
+  #   database: xuarani_production_cache
+  #   migrations_paths: db/cache_migrate
+  # queue:
+  #   <<: *primary_production
+  #   database: xuarani_production_queue
+  #   migrations_paths: db/queue_migrate
+  # cable:
+  #   <<: *primary_production
+  #   database: xuarani_production_cable
+  #   migrations_paths: db/cable_migrate

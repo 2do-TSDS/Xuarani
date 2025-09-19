@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @modulo %>
+
+<div>
+  <%= link_to "Edit this modulo", edit_modulo_path(@modulo) %> |
+  <%= link_to "Back to modulos", modulos_path %>
+
+  <%= button_to "Destroy this modulo", @modulo, method: :delete %>
+</div>

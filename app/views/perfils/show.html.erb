@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @perfil %>
+
+<div>
+  <%= link_to "Edit this perfil", edit_perfil_path(@perfil) %> |
+  <%= link_to "Back to perfils", perfils_path %>
+
+  <%= button_to "Destroy this perfil", @perfil, method: :delete %>
+</div>

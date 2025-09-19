@@ -1,0 +1,27 @@
+<%= form_with(model: materia_division) do |form| %>
+  <% if materia_division.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(materia_division.errors.count, "error") %> prohibited this materia_division from being saved:</h2>
+
+      <ul>
+        <% materia_division.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :materia_id, style: "display: block" %>
+    <%= form.text_field :materia_id %>
+  </div>
+
+  <div>
+    <%= form.label :division_id, style: "display: block" %>
+    <%= form.text_field :division_id %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

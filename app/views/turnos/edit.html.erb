@@ -1,0 +1,12 @@
+<% content_for :title, "Editing turno" %>
+
+<h1>Editing turno</h1>
+
+<%= render "form", turno: @turno %>
+
+<br>
+
+<div>
+  <%= link_to "Show this turno", @turno %> |
+  <%= link_to "Back to turnos", turnos_path %>
+</div>

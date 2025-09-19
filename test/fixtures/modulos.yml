@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  materia_division: one
+  dia: 1
+  cantidad: 1
+
+two:
+  materia_division: two
+  dia: 1
+  cantidad: 1

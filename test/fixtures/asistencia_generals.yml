@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  alumno: one
+  parametro: one
+  observaciones: MyText
+  fecha: 2025-09-19
+
+two:
+  alumno: two
+  parametro: two
+  observaciones: MyText
+  fecha: 2025-09-19

@@ -1,0 +1,16 @@
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "Materia divisions" %>
+
+<h1>Materia divisions</h1>
+
+<div id="materia_divisions">
+  <% @materia_divisions.each do |materia_division| %>
+    <%= render materia_division %>
+    <p>
+      <%= link_to "Show this materia division", materia_division %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New materia division", new_materia_division_path %>
