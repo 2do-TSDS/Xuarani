@@ -1,11 +1,37 @@
 class MateriaDocentesController < ApplicationController
+  load_and_authorize_resource
   before_action :set_materia_docente, only: %i[ show edit update destroy ]
+  before_action :load_selects, only: %i[new edit create update]
 
   # GET /materia_docentes or /materia_docentes.json
   def index
-    @materia_docentes = MateriaDocente.all
+    @materia_docentes = MateriaDocente
+      .includes(
+        { docente: :perfil },
+        { materia_division: [
+            :division,
+            { materia: [:curso, :ciclo_lectivo] }
+          ]
+        }
+      )
+      .left_joins(
+        { docente: :perfil },
+        { materia_division: [
+            :division,
+            { materia: [:curso, :ciclo_lectivo] }
+          ]
+        }
+      )
+      .order(Arel.sql(%q{
+        `ciclo_lectivos`.`año` ASC,
+        `cursos`.`nombre` ASC,
+        `materias`.`nombre` ASC,
+        `divisions`.`nombre` ASC,
+        COALESCE(`perfils`.`apellidos`, '') ASC,
+        COALESCE(`perfils`.`nombres`,  '') ASC,
+        `users`.`email` ASC
+      }))
   end
-
   # GET /materia_docentes/1 or /materia_docentes/1.json
   def show
   end
@@ -38,7 +64,7 @@ class MateriaDocentesController < ApplicationController
   def update
     respond_to do |format|
       if @materia_docente.update(materia_docente_params)
-        format.html { redirect_to @materia_docente, notice: "Materia docente was successfully updated." }
+        format.html { redirect_to @materia_docente, notice: "Materia docente was successfully updated.", status: :see_other }
         format.json { render :show, status: :ok, location: @materia_docente }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -52,7 +78,7 @@ class MateriaDocentesController < ApplicationController
     @materia_docente.destroy!
 
     respond_to do |format|
-      format.html { redirect_to materia_docentes_path, status: :see_other, notice: "Materia docente was successfully destroyed." }
+      format.html { redirect_to materia_docentes_path, notice: "Materia docente was successfully destroyed.", status: :see_other }
       format.json { head :no_content }
     end
   end
@@ -65,6 +91,17 @@ class MateriaDocentesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def materia_docente_params
-      params.expect(materia_docente: [ :materia_id, :docente_id, :division_id ])
+      params.expect(materia_docente: [ :materia_division_id, :docente_id, :titular ])
+    end
+    
+    def load_selects
+      @docentes = User.docentes
+                      .includes(:perfil)
+                      .left_joins(:perfil)
+                      .order(Arel.sql("COALESCE(perfils.apellidos, ''), COALESCE(perfils.nombres, ''), users.email"))
+
+      @materia_divisiones = MateriaDivision
+                              .includes(:materia, :division)
+                              .order('materias.nombre ASC, divisions.nombre ASC')
     end
 end

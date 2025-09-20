@@ -1,37 +1,46 @@
-<%= form_with(model: asistencia_general) do |form| %>
+<%= form_with(model: asistencia_general, local: true) do |form| %>
   <% if asistencia_general.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(asistencia_general.errors.count, "error") %> prohibited this asistencia_general from being saved:</h2>
-
+    <div class="errors" style="color: red">
+      <h2><%= pluralize(asistencia_general.errors.count, "error") %> impiden guardar:</h2>
       <ul>
-        <% asistencia_general.errors.each do |error| %>
-          <li><%= error.full_message %></li>
+        <% asistencia_general.errors.full_messages.each do |m| %>
+          <li><%= m %></li>
         <% end %>
       </ul>
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :alumno_id, style: "display: block" %>
-    <%= form.text_field :alumno_id %>
+  <!-- Alumno -->
+  <div class="field">
+    <%= form.label :alumno_id, 'Alumno' %>
+    <%= form.collection_select :alumno_id,
+          @alumnos, :id, :display_name,
+          { prompt: 'Seleccione alumno…' },
+          { required: true } %>
   </div>
 
-  <div>
-    <%= form.label :parametro_id, style: "display: block" %>
-    <%= form.text_field :parametro_id %>
+  <!-- Parámetro -->
+  <div class="field">
+    <%= form.label :parametro_id, 'Parámetro' %>
+    <%= form.collection_select :parametro_id,
+          @parametros, :id, :nombre,
+          { prompt: 'Seleccione parámetro…' },
+          { required: true } %>
   </div>
 
-  <div>
-    <%= form.label :observaciones, style: "display: block" %>
-    <%= form.text_field :observaciones %>
+  <!-- Fecha -->
+  <div class="field">
+    <%= form.label :fecha, 'Fecha' %>
+    <%= form.date_field :fecha, value: (form.object.fecha || Date.current), required: true %>
   </div>
 
-  <div>
-    <%= form.label :fecha, style: "display: block" %>
-    <%= form.date_field :fecha %>
+  <!-- Observaciones -->
+  <div class="field">
+    <%= form.label :observaciones, 'Observaciones' %>
+    <%= form.text_area :observaciones, rows: 3 %>
   </div>
 
-  <div>
+  <div class="actions">
     <%= form.submit %>
   </div>
 <% end %>

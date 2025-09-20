@@ -1,0 +1,50 @@
+<h1 class="h3 mb-3">Materias</h1>
+
+<% @groups.each do |ciclo, by_orient| %>
+  <!-- Ciclo -->
+  <div class="d-flex justify-content-between align-items-center mt-4 mb-2">
+    <h2 class="h4 m-0">Ciclo lectivo: <%= ciclo.read_attribute('año') %></h2>
+    <%= link_to 'Nueva en Ciclo Lectivo',
+          new_materia_path(ciclo_lectivo_id: ciclo.id),
+          class: 'btn btn-primary btn-sm' %>
+  </div>
+
+  <% by_orient.each do |orient, by_curso| %>
+    <!-- Orientación -->
+    <h3 class="h5 mt-3 mb-2">Orientación: <%= orient.nombre %></h3>
+
+    <% by_curso.each do |curso, rows| %>
+      <!-- Curso + botón -->
+      <div class="d-flex justify-content-between align-items-center mt-3 mb-2">
+        <h4 class="h6 m-0">Curso: <%= curso.nombre %></h4>
+        <%= link_to 'Nueva en Curso',
+              new_materia_path(
+                ciclo_lectivo_id: ciclo.id,
+                orientacion_id:   orient.id,
+                curso_id:         curso.id
+              ),
+              class: 'btn btn-outline-primary btn-sm' %>
+      </div>
+
+      <%= render 'shared/index_table',
+        headers:    ['Turno', 'Materia'],
+        collection: rows,
+        columns: [
+          ->(m) { m.turno.nombre },
+          ->(m) { m.nombre }
+        ],
+        actions: ->(m) do
+          safe_join([
+            link_to('Ver',    m,                         class: 'btn btn-link btn-sm px-1'),
+            link_to('Editar', edit_materia_path(m),      class: 'btn btn-link btn-sm px-1'),
+            link_to('Borrar', m, method: :delete,
+                     data: { turbo_confirm: '¿Seguro?' },
+                     class: 'btn btn-link btn-sm text-danger px-1')
+          ], ' ')
+        end,
+        new_path: nil,
+        new_label: nil
+      %>
+    <% end %>
+  <% end %>
+<% end %>

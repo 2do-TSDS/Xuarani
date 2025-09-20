@@ -14,7 +14,7 @@ class CicloLectivosTest < ApplicationSystemTestCase
     visit ciclo_lectivos_url
     click_on "New ciclo lectivo"
 
-    fill_in "Anio", with: @ciclo_lectivo.anio
+    fill_in "Año", with: @ciclo_lectivo.año
     fill_in "Final", with: @ciclo_lectivo.final
     fill_in "Inicio", with: @ciclo_lectivo.inicio
     click_on "Create Ciclo lectivo"
@@ -27,7 +27,7 @@ class CicloLectivosTest < ApplicationSystemTestCase
     visit ciclo_lectivo_url(@ciclo_lectivo)
     click_on "Edit this ciclo lectivo", match: :first
 
-    fill_in "Anio", with: @ciclo_lectivo.anio
+    fill_in "Año", with: @ciclo_lectivo.año
     fill_in "Final", with: @ciclo_lectivo.final
     fill_in "Inicio", with: @ciclo_lectivo.inicio
     click_on "Update Ciclo lectivo"

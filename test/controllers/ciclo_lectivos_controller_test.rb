@@ -17,7 +17,7 @@ class CicloLectivosControllerTest < ActionDispatch::IntegrationTest
 
   test "should create ciclo_lectivo" do
     assert_difference("CicloLectivo.count") do
-      post ciclo_lectivos_url, params: { ciclo_lectivo: { anio: @ciclo_lectivo.anio, final: @ciclo_lectivo.final, inicio: @ciclo_lectivo.inicio } }
+      post ciclo_lectivos_url, params: { ciclo_lectivo: { año: @ciclo_lectivo.año, final: @ciclo_lectivo.final, inicio: @ciclo_lectivo.inicio } }
     end
 
     assert_redirected_to ciclo_lectivo_url(CicloLectivo.last)
@@ -34,7 +34,7 @@ class CicloLectivosControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update ciclo_lectivo" do
-    patch ciclo_lectivo_url(@ciclo_lectivo), params: { ciclo_lectivo: { anio: @ciclo_lectivo.anio, final: @ciclo_lectivo.final, inicio: @ciclo_lectivo.inicio } }
+    patch ciclo_lectivo_url(@ciclo_lectivo), params: { ciclo_lectivo: { año: @ciclo_lectivo.año, final: @ciclo_lectivo.final, inicio: @ciclo_lectivo.inicio } }
     assert_redirected_to ciclo_lectivo_url(@ciclo_lectivo)
   end
 

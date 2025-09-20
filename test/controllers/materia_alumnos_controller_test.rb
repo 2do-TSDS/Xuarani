@@ -17,7 +17,7 @@ class MateriaAlumnosControllerTest < ActionDispatch::IntegrationTest
 
   test "should create materia_alumno" do
     assert_difference("MateriaAlumno.count") do
-      post materia_alumnos_url, params: { materia_alumno: { alumno_id: @materia_alumno.alumno_id, materia_docente_id: @materia_alumno.materia_docente_id } }
+      post materia_alumnos_url, params: { materia_alumno: { alumno_id: @materia_alumno.alumno_id, materia_division_id: @materia_alumno.materia_division_id } }
     end
 
     assert_redirected_to materia_alumno_url(MateriaAlumno.last)
@@ -34,7 +34,7 @@ class MateriaAlumnosControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update materia_alumno" do
-    patch materia_alumno_url(@materia_alumno), params: { materia_alumno: { alumno_id: @materia_alumno.alumno_id, materia_docente_id: @materia_alumno.materia_docente_id } }
+    patch materia_alumno_url(@materia_alumno), params: { materia_alumno: { alumno_id: @materia_alumno.alumno_id, materia_division_id: @materia_alumno.materia_division_id } }
     assert_redirected_to materia_alumno_url(@materia_alumno)
   end
 

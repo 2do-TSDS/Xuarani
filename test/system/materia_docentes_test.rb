@@ -14,9 +14,9 @@ class MateriaDocentesTest < ApplicationSystemTestCase
     visit materia_docentes_url
     click_on "New materia docente"
 
-    fill_in "Division", with: @materia_docente.division_id
     fill_in "Docente", with: @materia_docente.docente_id
-    fill_in "Materia", with: @materia_docente.materia_id
+    fill_in "Materia division", with: @materia_docente.materia_division_id
+    check "Titular" if @materia_docente.titular
     click_on "Create Materia docente"
 
     assert_text "Materia docente was successfully created"
@@ -27,9 +27,9 @@ class MateriaDocentesTest < ApplicationSystemTestCase
     visit materia_docente_url(@materia_docente)
     click_on "Edit this materia docente", match: :first
 
-    fill_in "Division", with: @materia_docente.division_id
     fill_in "Docente", with: @materia_docente.docente_id
-    fill_in "Materia", with: @materia_docente.materia_id
+    fill_in "Materia division", with: @materia_docente.materia_division_id
+    check "Titular" if @materia_docente.titular
     click_on "Update Materia docente"
 
     assert_text "Materia docente was successfully updated"

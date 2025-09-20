@@ -15,7 +15,7 @@ class MateriaAlumnosTest < ApplicationSystemTestCase
     click_on "New materia alumno"
 
     fill_in "Alumno", with: @materia_alumno.alumno_id
-    fill_in "Materia docente", with: @materia_alumno.materia_docente_id
+    fill_in "Materia division", with: @materia_alumno.materia_division_id
     click_on "Create Materia alumno"
 
     assert_text "Materia alumno was successfully created"
@@ -27,7 +27,7 @@ class MateriaAlumnosTest < ApplicationSystemTestCase
     click_on "Edit this materia alumno", match: :first
 
     fill_in "Alumno", with: @materia_alumno.alumno_id
-    fill_in "Materia docente", with: @materia_alumno.materia_docente_id
+    fill_in "Materia division", with: @materia_alumno.materia_division_id
     click_on "Update Materia alumno"
 
     assert_text "Materia alumno was successfully updated"

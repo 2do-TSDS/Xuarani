@@ -1,4 +1,5 @@
 class ModulosController < ApplicationController
+  load_and_authorize_resource
   before_action :set_modulo, only: %i[ show edit update destroy ]
 
   # GET /modulos or /modulos.json
@@ -38,7 +39,7 @@ class ModulosController < ApplicationController
   def update
     respond_to do |format|
       if @modulo.update(modulo_params)
-        format.html { redirect_to @modulo, notice: "Modulo was successfully updated." }
+        format.html { redirect_to @modulo, notice: "Modulo was successfully updated.", status: :see_other }
         format.json { render :show, status: :ok, location: @modulo }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -52,7 +53,7 @@ class ModulosController < ApplicationController
     @modulo.destroy!
 
     respond_to do |format|
-      format.html { redirect_to modulos_path, status: :see_other, notice: "Modulo was successfully destroyed." }
+      format.html { redirect_to modulos_path, notice: "Modulo was successfully destroyed.", status: :see_other }
       format.json { head :no_content }
     end
   end
@@ -65,6 +66,6 @@ class ModulosController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def modulo_params
-      params.expect(modulo: [ :materia_docente_id, :dia, :cantidad ])
+      params.expect(modulo: [ :materia_division_id, :dia, :cantidad ])
     end
 end

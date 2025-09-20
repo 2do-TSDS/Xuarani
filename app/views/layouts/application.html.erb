@@ -4,6 +4,7 @@
     <title>Mi Sistema Escolar</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    <meta name="turbo-prefetch" content="false">
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
@@ -18,16 +19,28 @@
       <%= link_to "Inicio", root_path, class: "navbar-brand" %>
       <div class="collapse navbar-collapse">
         <ul class="navbar-nav">
-          <li class="nav-item"><%= link_to "Personas", personas_path, class: "nav-link" %></li>
+          <li class="nav-item"><%= link_to "Usuarios", users_path, class: "nav-link" %></li>
           <li class="nav-item"><%= link_to "Perfiles", perfils_path, class: "nav-link" %></li>
-          <li class="nav-item"><%= link_to "Alumnos", alumnos_path, class: "nav-link" %></li>
-          <li class="nav-item"><%= link_to "Docentes", docentes_path, class: "nav-link" %></li>
-          <li class="nav-item"><%= link_to "Ciclos", ciclo_lectivos_path, class: "nav-link" %></li>
-          <li class="nav-item"><%= link_to "Orientaciones", orientacions_path, class: "nav-link" %></li>
+          <li class="nav-item"><%= link_to "Roles", roles_path, class: "nav-link" %></li>
+          <li class="nav-item"><%= link_to "Asignar Roles", user_roles_path, class: "nav-link" %></li>
+
           <li class="nav-item"><%= link_to "Turnos", turnos_path, class: "nav-link" %></li>
           <li class="nav-item"><%= link_to "Cursos", cursos_path, class: "nav-link" %></li>
-          <li class="nav-item"><%= link_to "Materias", materia_path, class: "nav-link" %></li>
+          <li class="nav-item"><%= link_to "Orientaciones", orientacions_path, class: "nav-link" %></li>
+          <li class="nav-item"><%= link_to "Ciclos", ciclo_lectivos_path, class: "nav-link" %></li>
+          <li class="nav-item"><%= link_to "Divisiones", divisions_path, class: "nav-link" %></li>
+
+          <li class="nav-item"><%= link_to "Materias", materias_path, class: "nav-link" %></li>
+          <li class="nav-item"><%= link_to "Materia - Division", materia_divisions_path, class: "nav-link" %></li>
+
+          <li class="nav-item"><%= link_to "Vincular Docente", materia_docentes_path, class: "nav-link" %></li>
           <li class="nav-item"><%= link_to "Vincular Alumnos", materia_alumnos_path, class: "nav-link" %></li>
+          <li class="nav-item"><%= link_to "Mi cuenta", edit_user_registration_path, class: "nav-link" %></li>
+          <li class="nav-item">
+            <%= button_to "Cerrar sesión", destroy_user_session_path,
+                          method: :delete, class: "nav-link btn btn-link p-0" %>
+          </li>
+
         </ul>
       </div>
     </nav>

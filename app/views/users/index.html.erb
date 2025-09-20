@@ -1,0 +1,22 @@
+<h1>Usuarios</h1>
+
+<p><%= link_to "Nuevo usuario", new_user_path, class: "btn btn-success" %></p>
+
+<table class="table table-striped">
+  <thead><tr><th>ID</th><th>Email</th><th>Acciones</th></tr></thead>
+  <tbody>
+    <% @users.each do |u| %>
+      <tr>
+        <td><%= u.id %></td>
+        <td><%= u.email %></td>
+        <td>
+          <%= link_to "Ver", u, class: "btn btn-sm btn-outline-primary" %>
+          <%= link_to "Editar", edit_user_path(u), class: "btn btn-sm btn-outline-secondary ms-1" %>
+          <%= link_to "Eliminar", u,
+                data: { turbo_method: :delete, turbo_confirm: "¿Seguro?" },
+                class: "btn btn-sm btn-outline-danger ms-1" %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

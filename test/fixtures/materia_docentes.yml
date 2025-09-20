@@ -1,11 +1,11 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  materia: one
+  materia_division: one
   docente: one
-  division: one
+  titular: false
 
 two:
-  materia: two
+  materia_division: two
   docente: two
-  division: two
+  titular: false

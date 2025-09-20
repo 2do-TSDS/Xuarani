@@ -1,16 +1,16 @@
-<p style="color: green"><%= notice %></p>
+<h1>Docentes por Materia/División</h1>
 
-<% content_for :title, "Materia docentes" %>
-
-<h1>Materia docentes</h1>
-
-<div id="materia_docentes">
-  <% @materia_docentes.each do |materia_docente| %>
-    <%= render materia_docente %>
-    <p>
-      <%= link_to "Show this materia docente", materia_docente %>
-    </p>
-  <% end %>
-</div>
-
-<%= link_to "New materia docente", new_materia_docente_path %>
+<%= render 'shared/index_table',
+  headers: ['Ciclo lectivo', 'Curso', 'Materia', 'División', 'Docente', 'Titular'],
+  collection: @materia_docentes,
+  columns: [
+    ->(r) { r.materia_division.materia.ciclo_lectivo.read_attribute('año') },  # por la ñ
+    ->(r) { r.materia_division.materia.curso.nombre },
+    ->(r) { r.materia_division.materia.nombre },
+    ->(r) { r.materia_division.division.nombre },
+    ->(r) { r.docente&.display_name },
+    ->(r) { r.titular ? 'Sí' : 'No' }
+  ],
+  new_path: new_materia_docente_path,
+  new_label: 'MateriaDocente'
+%>

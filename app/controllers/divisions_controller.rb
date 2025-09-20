@@ -1,4 +1,5 @@
 class DivisionsController < ApplicationController
+  load_and_authorize_resource
   before_action :set_division, only: %i[ show edit update destroy ]
 
   # GET /divisions or /divisions.json
@@ -38,7 +39,7 @@ class DivisionsController < ApplicationController
   def update
     respond_to do |format|
       if @division.update(division_params)
-        format.html { redirect_to @division, notice: "Division was successfully updated." }
+        format.html { redirect_to @division, notice: "Division was successfully updated.", status: :see_other }
         format.json { render :show, status: :ok, location: @division }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -52,7 +53,7 @@ class DivisionsController < ApplicationController
     @division.destroy!
 
     respond_to do |format|
-      format.html { redirect_to divisions_path, status: :see_other, notice: "Division was successfully destroyed." }
+      format.html { redirect_to divisions_path, notice: "Division was successfully destroyed.", status: :see_other }
       format.json { head :no_content }
     end
   end

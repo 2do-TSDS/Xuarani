@@ -1,12 +1,13 @@
 class CicloLectivosController < ApplicationController
+  load_and_authorize_resource
   before_action :set_ciclo_lectivo, only: %i[ show edit update destroy ]
 
-  # GET /ciclo_lectivos
+  # GET /ciclo_lectivos or /ciclo_lectivos.json
   def index
     @ciclo_lectivos = CicloLectivo.all
   end
 
-  # GET /ciclo_lectivos/1
+  # GET /ciclo_lectivos/1 or /ciclo_lectivos/1.json
   def show
   end
 
@@ -19,13 +20,13 @@ class CicloLectivosController < ApplicationController
   def edit
   end
 
-  # POST /ciclo_lectivos
+  # POST /ciclo_lectivos or /ciclo_lectivos.json
   def create
     @ciclo_lectivo = CicloLectivo.new(ciclo_lectivo_params)
 
     respond_to do |format|
       if @ciclo_lectivo.save
-        format.html { redirect_to @ciclo_lectivo, notice: "Ciclo lectivo creado exitosamente." }
+        format.html { redirect_to @ciclo_lectivo, notice: "Ciclo lectivo was successfully created." }
         format.json { render :show, status: :created, location: @ciclo_lectivo }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -34,11 +35,11 @@ class CicloLectivosController < ApplicationController
     end
   end
 
-  # PATCH/PUT /ciclo_lectivos/1
+  # PATCH/PUT /ciclo_lectivos/1 or /ciclo_lectivos/1.json
   def update
     respond_to do |format|
       if @ciclo_lectivo.update(ciclo_lectivo_params)
-        format.html { redirect_to @ciclo_lectivo, notice: "Ciclo lectivo actualizado correctamente." }
+        format.html { redirect_to @ciclo_lectivo, notice: "Ciclo lectivo was successfully updated.", status: :see_other }
         format.json { render :show, status: :ok, location: @ciclo_lectivo }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -47,23 +48,24 @@ class CicloLectivosController < ApplicationController
     end
   end
 
-  # DELETE /ciclo_lectivos/1
+  # DELETE /ciclo_lectivos/1 or /ciclo_lectivos/1.json
   def destroy
     @ciclo_lectivo.destroy!
 
     respond_to do |format|
-      format.html { redirect_to ciclo_lectivos_path, status: :see_other, notice: "Ciclo lectivo eliminado correctamente." }
+      format.html { redirect_to ciclo_lectivos_path, notice: "Ciclo lectivo was successfully destroyed.", status: :see_other }
       format.json { head :no_content }
     end
   end
 
   private
-
+    # Use callbacks to share common setup or constraints between actions.
     def set_ciclo_lectivo
-      @ciclo_lectivo = CicloLectivo.find(params[:id])
+      @ciclo_lectivo = CicloLectivo.find(params.expect(:id))
     end
 
+    # Only allow a list of trusted parameters through.
     def ciclo_lectivo_params
-      params.require(:ciclo_lectivo).permit(:anio, :inicio, :final)
+      params.expect(ciclo_lectivo: [ :año, :inicio, :final ])
     end
 end

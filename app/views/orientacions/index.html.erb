@@ -1,16 +1,10 @@
-<p style="color: green"><%= notice %></p>
+<h1> Orientaciones </h1>
 
-<% content_for :title, "Orientacions" %>
-
-<h1>Orientacions</h1>
-
-<div id="orientacions">
-  <% @orientacions.each do |orientacion| %>
-    <%= render orientacion %>
-    <p>
-      <%= link_to "Show this orientacion", orientacion %>
-    </p>
-  <% end %>
-</div>
-
-<%= link_to "New orientacion", new_orientacion_path %>
+<%= render 'shared/index_table',
+  headers: ['Nombre'],
+  collection: @orientacions,
+  columns: [
+    ->(o) { o.nombre }
+  ],
+  new_path: new_orientacion_path, new_label: 'Orientación'
+%>

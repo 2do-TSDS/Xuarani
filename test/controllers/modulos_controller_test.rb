@@ -17,7 +17,7 @@ class ModulosControllerTest < ActionDispatch::IntegrationTest
 
   test "should create modulo" do
     assert_difference("Modulo.count") do
-      post modulos_url, params: { modulo: { cantidad: @modulo.cantidad, dia: @modulo.dia, materia_docente_id: @modulo.materia_docente_id } }
+      post modulos_url, params: { modulo: { cantidad: @modulo.cantidad, dia: @modulo.dia, materia_division_id: @modulo.materia_division_id } }
     end
 
     assert_redirected_to modulo_url(Modulo.last)
@@ -34,7 +34,7 @@ class ModulosControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update modulo" do
-    patch modulo_url(@modulo), params: { modulo: { cantidad: @modulo.cantidad, dia: @modulo.dia, materia_docente_id: @modulo.materia_docente_id } }
+    patch modulo_url(@modulo), params: { modulo: { cantidad: @modulo.cantidad, dia: @modulo.dia, materia_division_id: @modulo.materia_division_id } }
     assert_redirected_to modulo_url(@modulo)
   end
 

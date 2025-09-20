@@ -1,16 +1,10 @@
-<p style="color: green"><%= notice %></p>
+<h1> Divisiones </h1>
 
-<% content_for :title, "Divisions" %>
-
-<h1>Divisions</h1>
-
-<div id="divisions">
-  <% @divisions.each do |division| %>
-    <%= render division %>
-    <p>
-      <%= link_to "Show this division", division %>
-    </p>
-  <% end %>
-</div>
-
-<%= link_to "New division", new_division_path %>
+<%= render 'shared/index_table',
+  headers: ['Nombre'],
+  collection: @divisions,
+  columns: [
+    ->(d) { d.nombre }
+  ],
+  new_path: new_division_path, new_label: 'División'
+%>

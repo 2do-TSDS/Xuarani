@@ -1,0 +1,13 @@
+<!-- app/views/user_roles/index.html.erb -->
+<h1>Roles asignados por usuario</h1>
+
+<%= render 'shared/index_table',
+  headers: ['Usuario', 'Roles asignados'],
+  collection: @users,
+  columns: [
+    ->(u) { u.display_name },
+    ->(u) { u.roles.order(:nombre).pluck(:nombre).join(', ') }
+  ],
+
+  new_path: new_user_role_path, new_label: 'rol de usuario'
+%>

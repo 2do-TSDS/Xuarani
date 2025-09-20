@@ -1,3 +1,3 @@
 class Modulo < ApplicationRecord
-  belongs_to :materia_docente
+  belongs_to :materia_division
 end

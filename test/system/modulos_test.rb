@@ -16,7 +16,7 @@ class ModulosTest < ApplicationSystemTestCase
 
     fill_in "Cantidad", with: @modulo.cantidad
     fill_in "Dia", with: @modulo.dia
-    fill_in "Materia docente", with: @modulo.materia_docente_id
+    fill_in "Materia division", with: @modulo.materia_division_id
     click_on "Create Modulo"
 
     assert_text "Modulo was successfully created"
@@ -29,7 +29,7 @@ class ModulosTest < ApplicationSystemTestCase
 
     fill_in "Cantidad", with: @modulo.cantidad
     fill_in "Dia", with: @modulo.dia
-    fill_in "Materia docente", with: @modulo.materia_docente_id
+    fill_in "Materia division", with: @modulo.materia_division_id
     click_on "Update Modulo"
 
     assert_text "Modulo was successfully updated"

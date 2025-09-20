@@ -1,22 +1,31 @@
-<%= form_with(model: curso) do |form| %>
+<%= form_with(model: curso, local: true) do |form| %>
   <% if curso.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(curso.errors.count, "error") %> prohibited this curso from being saved:</h2>
-
-      <ul>
-        <% curso.errors.each do |error| %>
-          <li><%= error.full_message %></li>
+    <div class="alert alert-danger">
+      <strong><%= pluralize(curso.errors.count, "error") %></strong> impiden guardar:
+      <ul class="mb-0">
+        <% curso.errors.full_messages.each do |m| %>
+          <li><%= m %></li>
         <% end %>
       </ul>
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :nombre, style: "display: block" %>
-    <%= form.text_field :nombre %>
-  </div>
+  <div class="card">
+    <div class="card-body">
+      <div class="mb-3">
+        <%= form.label :nombre, 'Nombre', class: 'form-label' %>
+        <%= form.text_field :nombre,
+              class: ['form-control', (curso.errors[:nombre].any? ? 'is-invalid' : nil)].compact.join(' '),
+              required: true, autofocus: true %>
+        <% if curso.errors[:nombre].any? %>
+          <div class="invalid-feedback d-block"><%= curso.errors[:nombre].first %></div>
+        <% end %>
+      </div>
 
-  <div>
-    <%= form.submit %>
+      <div>
+        <%= form.submit 'Guardar', class: 'btn btn-primary' %>
+        <%= link_to 'Cancelar', cursos_path, class: 'btn btn-outline-secondary ms-2' %>
+      </div>
+    </div>
   </div>
 <% end %>

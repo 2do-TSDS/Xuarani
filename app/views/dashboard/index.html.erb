@@ -1,14 +1,20 @@
 <h1 class="mb-4">Panel Principal del Sistema</h1>
+    <div class="list-group">
 
-<div class="list-group">
-  <%= link_to "Personas", personas_path, class: "list-group-item list-group-item-action" %>
-  <%= link_to "Perfiles", perfils_path, class: "list-group-item list-group-item-action" %>
-  <%= link_to "Alumnos", alumnos_path, class: "list-group-item list-group-item-action" %>
-  <%= link_to "Docentes", docentes_path, class: "list-group-item list-group-item-action" %>
-  <%= link_to "Ciclos Lectivos", ciclo_lectivos_path, class: "list-group-item list-group-item-action" %>
-  <%= link_to "Orientaciones", orientacions_path, class: "list-group-item list-group-item-action" %>
-  <%= link_to "Turnos", turnos_path, class: "list-group-item list-group-item-action" %>
-  <%= link_to "Cursos", cursos_path, class: "list-group-item list-group-item-action" %>
-  <%= link_to "Materias", materia_path, class: "list-group-item list-group-item-action" %>
-  <%= link_to "Vincular Alumnos", materia_alumnos_path, class: "list-group-item list-group-item-action" %>
+    <%= link_to "Usuarios", users_path, class: "list-group-item list-group-item-action" %>
+    <%= link_to "Perfiles", perfils_path, class: "list-group-item list-group-item-action" %>
+    <%= link_to "Roles", roles_path, class: "list-group-item list-group-item-action" %>
+    <%= link_to "Asignar Roles", user_roles_path, class: "list-group-item list-group-item-action" %>
+    <hr>
+    <%= link_to "Turnos", turnos_path, class: "list-group-item list-group-item-action" %>
+    <%= link_to "Cursos", cursos_path, class: "list-group-item list-group-item-action" %>
+    <%= link_to "Orientaciones", orientacions_path, class: "list-group-item list-group-item-action" %>
+    <%= link_to "Ciclos Lectivos", ciclo_lectivos_path, class: "list-group-item list-group-item-action" %>
+    <%= link_to "Divisiones", divisions_path, class: "list-group-item list-group-item-action" %>
+    <hr>
+
+    <%= link_to "Materias", materias_path, class: "list-group-item list-group-item-action" %>
+    <%= link_to "Materia - Division", materia_divisions_path, class: "list-group-item list-group-item-action" %>
+    <%= link_to "Vincular Docente", materia_docentes_path, class: "list-group-item list-group-item-action" %>
+    <%= link_to "Vincular Alumnos", materia_alumnos_path, class: "list-group-item list-group-item-action" %>
 </div>

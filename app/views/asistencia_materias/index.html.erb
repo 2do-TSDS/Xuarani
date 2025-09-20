@@ -1,0 +1,16 @@
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "Asistencia materias" %>
+
+<h1>Asistencia materias</h1>
+
+<div id="asistencia_materias">
+  <% @asistencia_materias.each do |asistencia_materia| %>
+    <%= render asistencia_materia %>
+    <p>
+      <%= link_to "Show this asistencia materia", asistencia_materia %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New asistencia materia", new_asistencia_materia_path %>

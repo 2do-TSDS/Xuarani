@@ -1,4 +1,5 @@
 class CursosController < ApplicationController
+  load_and_authorize_resource
   before_action :set_curso, only: %i[ show edit update destroy ]
 
   # GET /cursos or /cursos.json
@@ -38,7 +39,7 @@ class CursosController < ApplicationController
   def update
     respond_to do |format|
       if @curso.update(curso_params)
-        format.html { redirect_to @curso, notice: "Curso was successfully updated." }
+        format.html { redirect_to @curso, notice: "Curso was successfully updated.", status: :see_other }
         format.json { render :show, status: :ok, location: @curso }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -52,7 +53,7 @@ class CursosController < ApplicationController
     @curso.destroy!
 
     respond_to do |format|
-      format.html { redirect_to cursos_path, status: :see_other, notice: "Curso was successfully destroyed." }
+      format.html { redirect_to cursos_path, notice: "Curso was successfully destroyed.", status: :see_other }
       format.json { head :no_content }
     end
   end

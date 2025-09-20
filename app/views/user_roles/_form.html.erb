@@ -1,0 +1,47 @@
+<%= form_with(model: user_role, local: true) do |form| %>
+  <% if user_role.errors.any? %>
+    <div class="alert alert-danger">
+      <strong><%= pluralize(user_role.errors.count, "error") %></strong> impiden guardar:
+      <ul class="mb-0">
+        <% user_role.errors.full_messages.each do |m| %>
+          <li><%= m %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="card">
+    <div class="card-body">
+      <div class="row g-3">
+        <!-- Usuario -->
+        <div class="col-md-6">
+          <%= form.label :user_id, 'Usuario', class: 'form-label' %>
+          <%= form.collection_select :user_id, @users, :id, :display_name,
+                { prompt: 'Seleccione…' },
+                class: ['form-select', (user_role.errors[:user_id].any? ? 'is-invalid' : nil)].compact.join(' '),
+                required: true %>
+          <% if user_role.errors[:user_id].any? %>
+            <div class="invalid-feedback d-block"><%= user_role.errors[:user_id].first %></div>
+          <% end %>
+        </div>
+
+        <!-- Rol -->
+        <div class="col-md-6">
+          <%= form.label :role_id, 'Rol', class: 'form-label' %>
+          <%= form.collection_select :role_id, @roles, :id, :nombre,
+                { prompt: 'Seleccione…' },
+                class: ['form-select', (user_role.errors[:role_id].any? ? 'is-invalid' : nil)].compact.join(' '),
+                required: true %>
+          <% if user_role.errors[:role_id].any? %>
+            <div class="invalid-feedback d-block"><%= user_role.errors[:role_id].first %></div>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="mt-3">
+        <%= form.submit 'Guardar', class: 'btn btn-primary' %>
+        <%= link_to 'Cancelar', user_roles_path, class: 'btn btn-outline-secondary ms-2' %>
+      </div>
+    </div>
+  </div>
+<% end %>

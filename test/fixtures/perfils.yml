@@ -1,7 +1,21 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  personas: one
+  nombres: MyString
+  apellidos: MyString
+  dni: MyString
+  fecha_nacimiento: 2025-09-19
+  direccion: MyString
+  telefono: MyString
+  email: MyString
+  user: one
 
 two:
-  personas: two
+  nombres: MyString
+  apellidos: MyString
+  dni: MyString
+  fecha_nacimiento: 2025-09-19
+  direccion: MyString
+  telefono: MyString
+  email: MyString
+  user: two

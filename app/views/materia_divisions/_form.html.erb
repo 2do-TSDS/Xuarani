@@ -1,0 +1,147 @@
+<%= form_with(model: materia_division, local: true) do |form| %>
+  <% if materia_division.errors.any? %>
+    <div class="alert alert-danger">
+      <strong><%= pluralize(materia_division.errors.count, "error") %></strong> impiden guardar:
+      <ul class="mb-0">
+        <% materia_division.errors.full_messages.each { |m| %><li><%= m %></li><% } %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= hidden_field_tag :curso_id,    params[:curso_id]    || @selected_curso&.id %>
+  <%= hidden_field_tag :division_id, params[:division_id] || @selected_division&.id %>
+
+  <div class="card">
+    <div class="card-body">
+      <% if @selected_curso || @selected_division %>
+        <div class="alert alert-secondary py-2">
+          <% if @selected_curso %>Curso: <strong><%= @selected_curso.nombre %></strong><% end %>
+          <% if @selected_division %><span class="ms-3">División: <strong><%= @selected_division.nombre %></strong></span><% end %>
+        </div>
+      <% end %>
+
+      <div class="row g-3">
+        <!-- División -->
+        <div class="col-md-4">
+          <%= form.label :division_id, 'División', class: 'form-label' %>
+
+          <%= form.collection_select :division_id, @divisiones, :id, :nombre,
+                { prompt: 'Seleccione…' },
+                id: 'division_select',
+                class: ['form-select', (materia_division.errors[:division_id].any? ? 'is-invalid' : nil)].compact.join(' '),
+                data: {
+                  endpoint: materias_disponibles_materia_divisions_path(format: :json),
+                  curso_id: (params[:curso_id] || @selected_curso&.id),
+                  current_materia_id: form.object.materia_id
+                },
+                required: true,
+                disabled: @selected_division.present?  %>
+
+          <% if @selected_division.present? %>
+            <%= form.hidden_field :division_id, value: @selected_division.id %>
+          <% end %>
+
+          <% if materia_division.errors[:division_id].any? %>
+            <div class="invalid-feedback d-block"><%= materia_division.errors[:division_id].first %></div>
+          <% end %>
+        </div>
+
+        <!-- Materia (dependiente de División) -->
+        <div class="col-md-8">
+          <%= form.label :materia_id, 'Materia', class: 'form-label' %>
+          <%= form.select :materia_id,
+                options_from_collection_for_select(@materias, :id, ->(m){ "#{m.curso.nombre} — #{m.nombre}" }, form.object.materia_id),
+                { prompt: 'Seleccione…' },
+                id: 'materia_select',
+                class: ['form-select', (materia_division.errors[:materia_id].any? ? 'is-invalid' : nil)].compact.join(' '),
+                required: true %>
+          <% if materia_division.errors[:materia_id].any? %>
+            <div class="invalid-feedback d-block"><%= materia_division.errors[:materia_id].first %></div>
+          <% end %>
+          <div id="materia_help" class="form-text"></div>
+        </div>
+      </div>
+
+      <div class="mt-3">
+        <%= form.submit 'Guardar', class: 'btn btn-primary' %>
+        <%= link_to 'Cancelar', materia_divisions_path, class: 'btn btn-outline-secondary ms-2' %>
+      </div>
+    </div>
+  </div>
+<% end %>
+<script>
+(function() {
+  function onReady(fn) {
+    document.addEventListener('turbo:load', fn, { once: true });
+    document.addEventListener('DOMContentLoaded', fn, { once: true });
+  }
+
+  onReady(function () {
+    if (document.documentElement.hasAttribute('data-turbo-preview')) return;
+
+    const divisionSelect = document.getElementById('division_select');
+    const materiaSelect  = document.getElementById('materia_select');
+    const help           = document.getElementById('materia_help');
+    if (!divisionSelect || !materiaSelect) return;
+
+    async function reloadMaterias() {
+      const endpoint = divisionSelect.dataset.endpoint;
+      const divisionId = divisionSelect.value;
+      const cursoHidden = document.querySelector('input[name="curso_id"]');
+      const cursoId = divisionSelect.dataset.cursoId || (cursoHidden && cursoHidden.value) || '';
+      const currentMateriaId = divisionSelect.dataset.currentMateriaId || '';
+
+      if (!divisionId) {
+        materiaSelect.innerHTML = '<option value="">Seleccione…</option>';
+        help.textContent = '';
+        return;
+      }
+
+      materiaSelect.disabled = true;
+      materiaSelect.innerHTML = '<option value="">Cargando…</option>';
+      help.textContent = '';
+
+      const url = new URL(endpoint, window.location.origin);
+      url.searchParams.set('division_id', divisionId);
+      if (cursoId)          url.searchParams.set('curso_id', cursoId);
+      if (currentMateriaId) url.searchParams.set('current_materia_id', currentMateriaId);
+
+      try {
+        const res = await fetch(url.toString(), { headers: { 'Accept': 'application/json' } });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const data = await res.json();
+
+        const prev = materiaSelect.value;
+        materiaSelect.innerHTML = '<option value="">Seleccione…</option>';
+
+        data.forEach(opt => {
+          const o = document.createElement('option');
+          o.value = opt.id;
+          o.textContent = opt.label;
+          materiaSelect.appendChild(o);
+        });
+
+        if (prev && [...materiaSelect.options].some(o => o.value === prev)) {
+          materiaSelect.value = prev;
+        } else if (currentMateriaId && [...materiaSelect.options].some(o => o.value === currentMateriaId)) {
+          materiaSelect.value = currentMateriaId;
+        } else if (materiaSelect.options.length === 2) {
+          materiaSelect.selectedIndex = 1; // única opción
+        }
+
+        if (data.length === 0) {
+          help.textContent = 'No hay materias disponibles para esta división (ya están asignadas).';
+        }
+      } catch (e) {
+        help.textContent = 'Error cargando materias. Intente nuevamente.';
+      } finally {
+        materiaSelect.disabled = false;
+      }
+    }
+    if (!divisionSelect.disabled) {
+      divisionSelect.addEventListener('change', reloadMaterias);
+    }
+    if (divisionSelect.value) reloadMaterias();
+  });
+})();
+</script>

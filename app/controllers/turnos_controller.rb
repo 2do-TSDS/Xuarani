@@ -1,4 +1,5 @@
 class TurnosController < ApplicationController
+  load_and_authorize_resource
   before_action :set_turno, only: %i[ show edit update destroy ]
 
   # GET /turnos or /turnos.json
@@ -38,7 +39,7 @@ class TurnosController < ApplicationController
   def update
     respond_to do |format|
       if @turno.update(turno_params)
-        format.html { redirect_to @turno, notice: "Turno was successfully updated." }
+        format.html { redirect_to @turno, notice: "Turno was successfully updated.", status: :see_other }
         format.json { render :show, status: :ok, location: @turno }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -52,7 +53,7 @@ class TurnosController < ApplicationController
     @turno.destroy!
 
     respond_to do |format|
-      format.html { redirect_to turnos_path, status: :see_other, notice: "Turno was successfully destroyed." }
+      format.html { redirect_to turnos_path, notice: "Turno was successfully destroyed.", status: :see_other }
       format.json { head :no_content }
     end
   end

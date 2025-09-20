@@ -1,6 +1,4 @@
 class Perfil < ApplicationRecord
-  belongs_to :persona
+  belongs_to :user
 
-  has_one :alumno, dependent: :destroy
-  has_one :docente, dependent: :destroy
 end

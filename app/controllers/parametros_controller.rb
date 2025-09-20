@@ -1,4 +1,5 @@
 class ParametrosController < ApplicationController
+  load_and_authorize_resource
   before_action :set_parametro, only: %i[ show edit update destroy ]
 
   # GET /parametros or /parametros.json
@@ -38,7 +39,7 @@ class ParametrosController < ApplicationController
   def update
     respond_to do |format|
       if @parametro.update(parametro_params)
-        format.html { redirect_to @parametro, notice: "Parametro was successfully updated." }
+        format.html { redirect_to @parametro, notice: "Parametro was successfully updated.", status: :see_other }
         format.json { render :show, status: :ok, location: @parametro }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -52,7 +53,7 @@ class ParametrosController < ApplicationController
     @parametro.destroy!
 
     respond_to do |format|
-      format.html { redirect_to parametros_path, status: :see_other, notice: "Parametro was successfully destroyed." }
+      format.html { redirect_to parametros_path, notice: "Parametro was successfully destroyed.", status: :see_other }
       format.json { head :no_content }
     end
   end

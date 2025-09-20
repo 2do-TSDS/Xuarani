@@ -1,22 +1,89 @@
-<%= form_with(model: perfil) do |form| %>
+<%= form_with(model: perfil, local: true, html: { class: 'needs-validation', novalidate: true }) do |form| %>
   <% if perfil.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(perfil.errors.count, "error") %> prohibited this perfil from being saved:</h2>
-
-      <ul>
-        <% perfil.errors.each do |error| %>
-          <li><%= error.full_message %></li>
+    <div class="alert alert-danger">
+      <strong><%= pluralize(perfil.errors.count, "error") %></strong> impiden guardar:
+      <ul class="mb-0">
+        <% perfil.errors.full_messages.each do |m| %>
+          <li><%= m %></li>
         <% end %>
       </ul>
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :personas_id, style: "display: block" %>
-    <%= form.text_field :personas_id %>
-  </div>
+  <div class="card">
+    <div class="card-body">
+      <div class="row g-3">
+        <!-- Usuario -->
+        <div class="col-12">
+          <%= form.label :user_id, 'Usuario', class: 'form-label' %>
+          <%= form.collection_select :user_id, @users, :id, :display_name,
+                { prompt: 'Seleccione…' },
+                class: ['form-select', (perfil.errors[:user_id].any? ? 'is-invalid' : nil)].compact.join(' '),
+                required: true %>
+          <% if perfil.errors[:user_id].any? %>
+            <div class="invalid-feedback d-block"><%= perfil.errors[:user_id].first %></div>
+          <% end %>
+        </div>
 
-  <div>
-    <%= form.submit %>
+        <!-- Nombres / Apellidos -->
+        <div class="col-md-6">
+          <%= form.label :nombres, class: 'form-label' %>
+          <%= form.text_field :nombres,
+                class: ['form-control', (perfil.errors[:nombres].any? ? 'is-invalid' : nil)].compact.join(' ') %>
+          <% if perfil.errors[:nombres].any? %>
+            <div class="invalid-feedback d-block"><%= perfil.errors[:nombres].first %></div>
+          <% end %>
+        </div>
+        <div class="col-md-6">
+          <%= form.label :apellidos, class: 'form-label' %>
+          <%= form.text_field :apellidos,
+                class: ['form-control', (perfil.errors[:apellidos].any? ? 'is-invalid' : nil)].compact.join(' ') %>
+          <% if perfil.errors[:apellidos].any? %>
+            <div class="invalid-feedback d-block"><%= perfil.errors[:apellidos].first %></div>
+          <% end %>
+        </div>
+
+        <!-- DNI / Fecha de nacimiento / Teléfono -->
+        <div class="col-md-4">
+          <%= form.label :dni, class: 'form-label' %>
+          <%= form.text_field :dni,
+                class: ['form-control', (perfil.errors[:dni].any? ? 'is-invalid' : nil)].compact.join(' ') %>
+          <% if perfil.errors[:dni].any? %>
+            <div class="invalid-feedback d-block"><%= perfil.errors[:dni].first %></div>
+          <% end %>
+        </div>
+        <div class="col-md-4">
+          <%= form.label :fecha_nacimiento, 'Fecha de nacimiento', class: 'form-label' %>
+          <%= form.date_field :fecha_nacimiento,
+                class: ['form-control', (perfil.errors[:fecha_nacimiento].any? ? 'is-invalid' : nil)].compact.join(' ') %>
+          <% if perfil.errors[:fecha_nacimiento].any? %>
+            <div class="invalid-feedback d-block"><%= perfil.errors[:fecha_nacimiento].first %></div>
+          <% end %>
+        </div>
+        <div class="col-md-4">
+          <%= form.label :telefono, 'Teléfono', class: 'form-label' %>
+          <%= form.text_field :telefono,
+                class: ['form-control', (perfil.errors[:telefono].any? ? 'is-invalid' : nil)].compact.join(' ') %>
+          <% if perfil.errors[:telefono].any? %>
+            <div class="invalid-feedback d-block"><%= perfil.errors[:telefono].first %></div>
+          <% end %>
+        </div>
+
+        <!-- Dirección -->
+        <div class="col-12">
+          <%= form.label :direccion, 'Dirección', class: 'form-label' %>
+          <%= form.text_field :direccion,
+                class: ['form-control', (perfil.errors[:direccion].any? ? 'is-invalid' : nil)].compact.join(' ') %>
+          <% if perfil.errors[:direccion].any? %>
+            <div class="invalid-feedback d-block"><%= perfil.errors[:direccion].first %></div>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="mt-3">
+        <%= form.submit 'Guardar', class: 'btn btn-primary' %>
+        <%= link_to 'Cancelar', perfils_path, class: 'btn btn-outline-secondary ms-2' %>
+      </div>
+    </div>
   </div>
 <% end %>

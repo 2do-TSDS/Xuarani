@@ -11,17 +11,19 @@
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :materia_docente_id, style: "display: block" %>
-    <%= form.text_field :materia_docente_id %>
+  <div class="field">
+    <%= form.label :materia_division_id, 'Materia / División' %>
+    <%= form.collection_select :materia_division_id,
+          @materia_divisiones, :id, :display_name,
+          { prompt: 'Seleccione…' }, { required: true } %>
   </div>
 
-  <div>
-    <%= form.label :alumno_id, style: "display: block" %>
-    <%= form.text_field :alumno_id %>
+  <div class="field">
+    <%= form.label :alumno_id, 'Alumno' %>
+    <%= form.collection_select :alumno_id,
+          @alumnos, :id, :display_name,
+          { prompt: 'Seleccione…' }, { required: true } %>
   </div>
 
-  <div>
-    <%= form.submit %>
-  </div>
+  <div class="actions"><%= form.submit %></div>
 <% end %>

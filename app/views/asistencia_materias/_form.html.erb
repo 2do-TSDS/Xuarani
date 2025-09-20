@@ -1,0 +1,42 @@
+<%= form_with(model: asistencia_materia) do |form| %>
+  <% if asistencia_materia.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(asistencia_materia.errors.count, "error") %> prohibited this asistencia_materia from being saved:</h2>
+
+      <ul>
+        <% asistencia_materia.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :materia_alumno_id, style: "display: block" %>
+    <%= form.text_field :materia_alumno_id %>
+  </div>
+
+  <div>
+    <%= form.label :parametro_id, style: "display: block" %>
+    <%= form.text_field :parametro_id %>
+  </div>
+
+  <div>
+    <%= form.label :observaciones, style: "display: block" %>
+    <%= form.textarea :observaciones %>
+  </div>
+
+  <div>
+    <%= form.label :fecha, style: "display: block" %>
+    <%= form.date_field :fecha %>
+  </div>
+
+  <div>
+    <%= form.label :modulo, style: "display: block" %>
+    <%= form.number_field :modulo %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

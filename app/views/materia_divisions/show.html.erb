@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @materia_division %>
+
+<div>
+  <%= link_to "Edit this materia division", edit_materia_division_path(@materia_division) %> |
+  <%= link_to "Back to materia divisions", materia_divisions_path %>
+
+  <%= button_to "Destroy this materia division", @materia_division, method: :delete %>
+</div>

@@ -17,7 +17,7 @@ class MateriaDocentesControllerTest < ActionDispatch::IntegrationTest
 
   test "should create materia_docente" do
     assert_difference("MateriaDocente.count") do
-      post materia_docentes_url, params: { materia_docente: { division_id: @materia_docente.division_id, docente_id: @materia_docente.docente_id, materia_id: @materia_docente.materia_id } }
+      post materia_docentes_url, params: { materia_docente: { docente_id: @materia_docente.docente_id, materia_division_id: @materia_docente.materia_division_id, titular: @materia_docente.titular } }
     end
 
     assert_redirected_to materia_docente_url(MateriaDocente.last)
@@ -34,7 +34,7 @@ class MateriaDocentesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update materia_docente" do
-    patch materia_docente_url(@materia_docente), params: { materia_docente: { division_id: @materia_docente.division_id, docente_id: @materia_docente.docente_id, materia_id: @materia_docente.materia_id } }
+    patch materia_docente_url(@materia_docente), params: { materia_docente: { docente_id: @materia_docente.docente_id, materia_division_id: @materia_docente.materia_division_id, titular: @materia_docente.titular } }
     assert_redirected_to materia_docente_url(@materia_docente)
   end
 

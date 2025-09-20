@@ -3,11 +3,11 @@
 one:
   alumno: one
   parametro: one
-  observaciones: MyString
-  fecha: 2025-09-04
+  observaciones: MyText
+  fecha: 2025-09-19
 
 two:
   alumno: two
   parametro: two
-  observaciones: MyString
-  fecha: 2025-09-04
+  observaciones: MyText
+  fecha: 2025-09-19
