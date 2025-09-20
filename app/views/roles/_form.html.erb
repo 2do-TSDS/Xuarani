@@ -1,22 +1,32 @@
-<%= form_with(model: role) do |form| %>
+<%= form_with(model: role, local: true) do |form| %>
   <% if role.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(role.errors.count, "error") %> prohibited this role from being saved:</h2>
-
-      <ul>
-        <% role.errors.each do |error| %>
-          <li><%= error.full_message %></li>
+    <div class="alert alert-danger">
+      <strong><%= pluralize(role.errors.count, "error") %></strong> impiden guardar:
+      <ul class="mb-0">
+        <% role.errors.full_messages.each do |m| %>
+          <li><%= m %></li>
         <% end %>
       </ul>
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :name, style: "display: block" %>
-    <%= form.text_field :name %>
-  </div>
+  <div class="card">
+    <div class="card-body">
+      <div class="mb-3">
+        <%= form.label :nombre, 'Nombre del rol', class: 'form-label' %>
+        <%= form.text_field :nombre,
+              class: ['form-control', (role.errors[:nombre].any? ? 'is-invalid' : nil)].compact.join(' '),
+              required: true, autofocus: true %>
+        <% if role.errors[:nombre].any? %>
+          <div class="invalid-feedback d-block"><%= role.errors[:nombre].first %></div>
+        <% end %>
+        <div class="form-text">Ej.: Alumno, Docente, Admin…</div>
+      </div>
 
-  <div>
-    <%= form.submit %>
+      <div>
+        <%= form.submit 'Guardar', class: 'btn btn-primary' %>
+        <%= link_to 'Cancelar', roles_path, class: 'btn btn-outline-secondary ms-2' %>
+      </div>
+    </div>
   </div>
 <% end %>

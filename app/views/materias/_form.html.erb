@@ -1,42 +1,46 @@
-<%= form_with(model: materia) do |form| %>
+<%= form_with(model: materia, local: true) do |form| %>
   <% if materia.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(materia.errors.count, "error") %> prohibited this materia from being saved:</h2>
-
-      <ul>
-        <% materia.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
+    <div class="alert alert-danger">
+      <strong><%= pluralize(materia.errors.count, "error") %></strong> impiden guardar:
+      <ul class="mb-0">
+        <% materia.errors.full_messages.each { |m| %><li><%= m %></li><% } %>
       </ul>
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :nombre, style: "display: block" %>
-    <%= form.text_field :nombre %>
+  <div class="row g-3">
+    <div class="col-md-6">
+      <%= form.label :nombre, class: 'form-label' %>
+      <%= form.text_field :nombre, class: 'form-control', required: true %>
+    </div>
+
+    <div class="col-md-6">
+      <%= form.label :turno_id, 'Turno', class: 'form-label' %>
+      <%= form.collection_select :turno_id, @turnos, :id, :nombre,
+            { prompt: 'Seleccione turno…' }, class: 'form-select', required: true %>
+    </div>
+
+    <div class="col-md-4">
+      <%= form.label :ciclo_lectivo_id, 'Ciclo lectivo', class: 'form-label' %>
+      <%= form.collection_select :ciclo_lectivo_id, @ciclos, :id, ->(c){ c.read_attribute('año') },
+            { prompt: 'Seleccione ciclo…' }, class: 'form-select', required: true %>
+    </div>
+
+    <div class="col-md-4">
+      <%= form.label :orientacion_id, 'Orientación', class: 'form-label' %>
+      <%= form.collection_select :orientacion_id, @orientaciones, :id, :nombre,
+            { prompt: 'Seleccione orientación…' }, class: 'form-select', required: true %>
+    </div>
+
+    <div class="col-md-4">
+      <%= form.label :curso_id, 'Curso', class: 'form-label' %>
+      <%= form.collection_select :curso_id, @cursos, :id, :nombre,
+            { prompt: 'Seleccione curso…' }, class: 'form-select', required: true %>
+    </div>
   </div>
 
-  <div>
-    <%= form.label :turno_id, style: "display: block" %>
-    <%= form.text_field :turno_id %>
-  </div>
-
-  <div>
-    <%= form.label :curso_id, style: "display: block" %>
-    <%= form.text_field :curso_id %>
-  </div>
-
-  <div>
-    <%= form.label :orientacion_id, style: "display: block" %>
-    <%= form.text_field :orientacion_id %>
-  </div>
-
-  <div>
-    <%= form.label :ciclo_lectivo_id, style: "display: block" %>
-    <%= form.text_field :ciclo_lectivo_id %>
-  </div>
-
-  <div>
-    <%= form.submit %>
+  <div class="mt-3">
+    <%= form.submit class: 'btn btn-primary' %>
+    <%= link_to 'Volver', materias_path, class: 'btn btn-outline-secondary ms-2' %>
   </div>
 <% end %>

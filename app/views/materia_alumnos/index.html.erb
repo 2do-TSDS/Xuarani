@@ -1,16 +1,40 @@
-<p style="color: green"><%= notice %></p>
+<h1>Alumnos por Materia/División</h1>
 
-<% content_for :title, "Materia alumnos" %>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Materia / División</th>
+      <th>Alumno</th>
+      <th class="text-right">Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @groups.each do |md, rows| %>
+      <tr class="group-row">
+        <td colspan="3">
+          <strong><%= md.display_name %></strong>
+          <span class="muted">(<%= rows.size %> alumnos)</span>
+          <span class="pull-right">
+            <%= link_to 'Agregar alumno', new_materia_alumno_path(materia_division_id: md.id) %>
+          </span>
+        </td>
+      </tr>
 
-<h1>Materia alumnos</h1>
+      <% rows.each do |ma| %>
+        <tr>
+          <td><%= md.display_name %></td>
+          <td><%= ma.alumno&.display_name %></td>
+          <td class="text-right">
+            <%= link_to 'Ver', ma %> |
+            <%= link_to 'Editar', edit_materia_alumno_path(ma) %> |
+            <%= link_to 'Borrar', ma, data: { turbo_confirm: '¿Seguro?' }, method: :delete %>
+          </td>
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>
 
-<div id="materia_alumnos">
-  <% @materia_alumnos.each do |materia_alumno| %>
-    <%= render materia_alumno %>
-    <p>
-      <%= link_to "Show this materia alumno", materia_alumno %>
-    </p>
-  <% end %>
-</div>
-
-<%= link_to "New materia alumno", new_materia_alumno_path %>
+<p style="margin-top: 1rem;">
+  <%= link_to 'Nuevo MateriaAlumno (general)', new_materia_alumno_path, class: 'button' %>
+</p>

@@ -1,10 +1,11 @@
 class PerfilsController < ApplicationController
   load_and_authorize_resource
   before_action :set_perfil, only: %i[ show edit update destroy ]
+  before_action :load_selects, only: %i[new edit create update]
 
   # GET /perfils or /perfils.json
   def index
-    @perfils = Perfil.all
+    @perfils = Perfil.all.includes(:user)
   end
 
   # GET /perfils/1 or /perfils/1.json
@@ -68,4 +69,13 @@ class PerfilsController < ApplicationController
     def perfil_params
       params.expect(perfil: [ :nombres, :apellidos, :dni, :fecha_nacimiento, :direccion, :telefono, :email, :user_id ])
     end
+
+  def load_selects
+    @users = User
+              .left_joins(:perfil)
+              .where(perfils: { id: nil })
+              .includes(:perfil)
+              .order(Arel.sql("COALESCE(perfils.apellidos, ''), COALESCE(perfils.nombres, ''), users.email"))
+  end
+
 end

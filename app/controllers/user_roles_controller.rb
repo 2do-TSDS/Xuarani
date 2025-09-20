@@ -1,12 +1,19 @@
 class UserRolesController < ApplicationController
   load_and_authorize_resource
   before_action :set_user_role, only: %i[ show edit update destroy ]
+  before_action :load_selects, only: %i[new edit create update]
 
   # GET /user_roles or /user_roles.json
   def index
-    @user_roles = UserRole.all
+    @users = User
+               .joins(:roles)
+               .includes(:roles, :perfil)
+               .left_joins(:perfil)
+               .distinct
+               .order(Arel.sql("COALESCE(perfils.apellidos, '') ASC,
+                                COALESCE(perfils.nombres,  '') ASC,
+                                users.email ASC"))
   end
-
   # GET /user_roles/1 or /user_roles/1.json
   def show
   end
@@ -68,4 +75,13 @@ class UserRolesController < ApplicationController
     def user_role_params
       params.expect(user_role: [ :user_id, :role_id ])
     end
+    
+  def load_selects
+    @users = User
+              .includes(:perfil)
+              .left_joins(:perfil)
+              .order(Arel.sql("COALESCE(perfils.apellidos, ''), COALESCE(perfils.nombres, ''), users.email"))
+
+    @roles = Role.order(:nombre)
+  end
 end

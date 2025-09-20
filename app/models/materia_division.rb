@@ -13,4 +13,8 @@ class MateriaDivision < ApplicationRecord
     scope: :division_id,
     message: "Esta materia ya está asignada a esta división"
   }
+
+  def display_name
+    "#{materia.nombre} - #{materia.curso.nombre} #{division.nombre} - #{materia.orientacion.nombre} - #{materia.ciclo_lectivo.año}"
+  end
 end

@@ -1,12 +1,37 @@
 class MateriaDocentesController < ApplicationController
   load_and_authorize_resource
   before_action :set_materia_docente, only: %i[ show edit update destroy ]
+  before_action :load_selects, only: %i[new edit create update]
 
   # GET /materia_docentes or /materia_docentes.json
   def index
-    @materia_docentes = MateriaDocente.all
+    @materia_docentes = MateriaDocente
+      .includes(
+        { docente: :perfil },
+        { materia_division: [
+            :division,
+            { materia: [:curso, :ciclo_lectivo] }
+          ]
+        }
+      )
+      .left_joins(
+        { docente: :perfil },
+        { materia_division: [
+            :division,
+            { materia: [:curso, :ciclo_lectivo] }
+          ]
+        }
+      )
+      .order(Arel.sql(%q{
+        `ciclo_lectivos`.`año` ASC,
+        `cursos`.`nombre` ASC,
+        `materias`.`nombre` ASC,
+        `divisions`.`nombre` ASC,
+        COALESCE(`perfils`.`apellidos`, '') ASC,
+        COALESCE(`perfils`.`nombres`,  '') ASC,
+        `users`.`email` ASC
+      }))
   end
-
   # GET /materia_docentes/1 or /materia_docentes/1.json
   def show
   end
@@ -67,5 +92,16 @@ class MateriaDocentesController < ApplicationController
     # Only allow a list of trusted parameters through.
     def materia_docente_params
       params.expect(materia_docente: [ :materia_division_id, :docente_id, :titular ])
+    end
+    
+    def load_selects
+      @docentes = User.docentes
+                      .includes(:perfil)
+                      .left_joins(:perfil)
+                      .order(Arel.sql("COALESCE(perfils.apellidos, ''), COALESCE(perfils.nombres, ''), users.email"))
+
+      @materia_divisiones = MateriaDivision
+                              .includes(:materia, :division)
+                              .order('materias.nombre ASC, divisions.nombre ASC')
     end
 end

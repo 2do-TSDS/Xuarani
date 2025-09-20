@@ -1,32 +1,56 @@
-<%= form_with(model: ciclo_lectivo) do |form| %>
+<%= form_with(model: ciclo_lectivo, local: true) do |form| %>
   <% if ciclo_lectivo.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(ciclo_lectivo.errors.count, "error") %> prohibited this ciclo_lectivo from being saved:</h2>
-
-      <ul>
-        <% ciclo_lectivo.errors.each do |error| %>
-          <li><%= error.full_message %></li>
+    <div class="alert alert-danger">
+      <strong><%= pluralize(ciclo_lectivo.errors.count, "error") %></strong> impiden guardar:
+      <ul class="mb-0">
+        <% ciclo_lectivo.errors.full_messages.each do |m| %>
+          <li><%= m %></li>
         <% end %>
       </ul>
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :año, style: "display: block" %>
-    <%= form.number_field :año %>
-  </div>
+  <div class="card">
+    <div class="card-body">
+      <div class="row g-3">
+        <!-- Año -->
+        <div class="col-md-3">
+          <%= form.label :año, 'Año', class: 'form-label' %>
+          <%= form.number_field :año,
+                class: ['form-control', (ciclo_lectivo.errors[:año].any? ? 'is-invalid' : nil)].compact.join(' '),
+                required: true, min: 1900, step: 1, autofocus: true %>
+          <% if ciclo_lectivo.errors[:año].any? %>
+            <div class="invalid-feedback d-block"><%= ciclo_lectivo.errors[:año].first %></div>
+          <% end %>
+        </div>
 
-  <div>
-    <%= form.label :inicio, style: "display: block" %>
-    <%= form.date_field :inicio %>
-  </div>
+        <!-- Inicio -->
+        <div class="col-md-4">
+          <%= form.label :inicio, 'Inicio', class: 'form-label' %>
+          <%= form.date_field :inicio,
+                class: ['form-control', (ciclo_lectivo.errors[:inicio].any? ? 'is-invalid' : nil)].compact.join(' '),
+                required: true %>
+          <% if ciclo_lectivo.errors[:inicio].any? %>
+            <div class="invalid-feedback d-block"><%= ciclo_lectivo.errors[:inicio].first %></div>
+          <% end %>
+        </div>
 
-  <div>
-    <%= form.label :final, style: "display: block" %>
-    <%= form.date_field :final %>
-  </div>
+        <!-- Final -->
+        <div class="col-md-4">
+          <%= form.label :final, 'Final', class: 'form-label' %>
+          <%= form.date_field :final,
+                class: ['form-control', (ciclo_lectivo.errors[:final].any? ? 'is-invalid' : nil)].compact.join(' '),
+                required: true %>
+          <% if ciclo_lectivo.errors[:final].any? %>
+            <div class="invalid-feedback d-block"><%= ciclo_lectivo.errors[:final].first %></div>
+          <% end %>
+        </div>
+      </div>
 
-  <div>
-    <%= form.submit %>
+      <div class="mt-3">
+        <%= form.submit 'Guardar', class: 'btn btn-primary' %>
+        <%= link_to 'Cancelar', ciclo_lectivos_path, class: 'btn btn-outline-secondary ms-2' %>
+      </div>
+    </div>
   </div>
 <% end %>

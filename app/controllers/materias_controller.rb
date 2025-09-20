@@ -1,10 +1,30 @@
 class MateriasController < ApplicationController
   load_and_authorize_resource
   before_action :set_materia, only: %i[ show edit update destroy ]
+  before_action :load_materia_selects, only: %i[new edit create update]
 
   # GET /materias or /materias.json
   def index
-    @materias = Materia.all
+    @materias = Materia
+      .includes(:turno, :curso, :orientacion, :ciclo_lectivo)
+      .left_joins(:turno, :curso, :orientacion, :ciclo_lectivo)
+      .order(Arel.sql(%q{
+        `ciclo_lectivos`.`año` ASC,
+        `orientacions`.`nombre` ASC,
+        `cursos`.`nombre` ASC,
+        `turnos`.`nombre` ASC,
+        `materias`.`nombre` ASC
+      }))
+
+    # Agrupación jerárquica: Ciclo → Orientación → Curso
+    @groups = @materias
+      .group_by(&:ciclo_lectivo)
+      .transform_values { |rows|
+        rows.group_by(&:orientacion)
+            .transform_values { |rows2|
+              rows2.group_by(&:curso)
+            }
+      }
   end
 
   # GET /materias/1 or /materias/1.json
@@ -13,7 +33,12 @@ class MateriasController < ApplicationController
 
   # GET /materias/new
   def new
-    @materia = Materia.new
+    @materia = Materia.new(
+      ciclo_lectivo_id: params[:ciclo_lectivo_id],
+      orientacion_id:   params[:orientacion_id],
+      curso_id:         params[:curso_id]
+    )
+    load_materia_selects
   end
 
   # GET /materias/1/edit
@@ -68,4 +93,11 @@ class MateriasController < ApplicationController
     def materia_params
       params.expect(materia: [ :nombre, :turno_id, :curso_id, :orientacion_id, :ciclo_lectivo_id ])
     end
+  def load_materia_selects
+    @turnos        = Turno.order(:nombre)
+    @cursos        = Curso.order(:nombre)
+    @orientaciones = Orientacion.order(:nombre)
+    @ciclos        = CicloLectivo.order(Arel.sql('`año` ASC'))
+  end
+
 end

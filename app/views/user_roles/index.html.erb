@@ -1,16 +1,13 @@
-<p style="color: green"><%= notice %></p>
+<!-- app/views/user_roles/index.html.erb -->
+<h1>Roles asignados por usuario</h1>
 
-<% content_for :title, "User roles" %>
+<%= render 'shared/index_table',
+  headers: ['Usuario', 'Roles asignados'],
+  collection: @users,
+  columns: [
+    ->(u) { u.display_name },
+    ->(u) { u.roles.order(:nombre).pluck(:nombre).join(', ') }
+  ],
 
-<h1>User roles</h1>
-
-<div id="user_roles">
-  <% @user_roles.each do |user_role| %>
-    <%= render user_role %>
-    <p>
-      <%= link_to "Show this user role", user_role %>
-    </p>
-  <% end %>
-</div>
-
-<%= link_to "New user role", new_user_role_path %>
+  new_path: new_user_role_path, new_label: 'rol de usuario'
+%>

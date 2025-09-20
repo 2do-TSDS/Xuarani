@@ -20,4 +20,10 @@ class MateriaAlumno < ApplicationRecord
     end
   end
 
+  def display_name
+    "#{alumno.full_name} - #{materia_division.display_name}"
+  end
+
+
+
 end

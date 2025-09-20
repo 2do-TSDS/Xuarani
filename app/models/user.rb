@@ -21,11 +21,21 @@ class User < ApplicationRecord
           :telefono,
           to: :perfil,
           allow_nil: true
-          
+
+  scope :with_role, ->(nombre) {
+    joins(:roles)
+      .where("LOWER(roles.nombre) = ?", nombre.to_s.downcase)
+      .distinct
+  }
+
+  scope :alumnos,  -> { with_role(:alumno) }
+  scope :docentes, -> { with_role(:docente) }
+  scope :preceptores, -> { with_role(:preceptor) }
+  scope :administradores, -> { with_role(:administrador) }
   def role_names
     # Memoización de roles
     # Retorna un array de los roles (lowercase)
-    @roles_array ||= roles.pluck(:name).map { |n| n.to_s.downcase }
+    @roles_array ||= roles.pluck(:nombre).map { |n| n.to_s.downcase }
   end
 
   def has_role?(role)
@@ -33,4 +43,14 @@ class User < ApplicationRecord
   end
 
   def _flush_roles_cache(*) = (@roles_array = nil)
+
+  def full_name
+    [nombres, apellidos].compact.join(' ')
+  end
+
+  def display_name
+    full_name.presence || email
+  end
+
+  alias_method :label_for_select, :display_name
 end

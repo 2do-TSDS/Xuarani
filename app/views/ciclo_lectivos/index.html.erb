@@ -1,16 +1,12 @@
-<p style="color: green"><%= notice %></p>
+<h1> Ciclos Lectivos </h1>
 
-<% content_for :title, "Ciclo lectivos" %>
-
-<h1>Ciclo lectivos</h1>
-
-<div id="ciclo_lectivos">
-  <% @ciclo_lectivos.each do |ciclo_lectivo| %>
-    <%= render ciclo_lectivo %>
-    <p>
-      <%= link_to "Show this ciclo lectivo", ciclo_lectivo %>
-    </p>
-  <% end %>
-</div>
-
-<%= link_to "New ciclo lectivo", new_ciclo_lectivo_path %>
+<%= render 'shared/index_table',
+  headers: ['Año', 'Inicio', 'Finalización'],
+  collection: @ciclo_lectivos,
+  columns: [
+    ->(c) { c.año },
+    ->(c) { c.inicio.strftime("%d/%m/%Y") },
+    ->(c) { c.final.strftime("%d/%m/%Y") }
+  ],
+  new_path: new_ciclo_lectivo_path, new_label: 'Ciclo Lectivo'
+%>

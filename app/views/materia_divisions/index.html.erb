@@ -1,16 +1,44 @@
-<p style="color: green"><%= notice %></p>
+<h1 class="h3 mb-3">Asignación de Materias a Divisiones</h1>
 
-<% content_for :title, "Materia divisions" %>
+<% @cursos.each do |curso| %>
+  <div class="d-flex justify-content-between align-items-center mt-4 mb-2">
+    <h2 class="h5 m-0">Curso: <%= curso.nombre %></h2>
+    <!-- Botón general por curso -->
+    <%= link_to 'Nueva asignación',
+          new_materia_division_path(curso_id: curso.id),
+          class: 'btn btn-outline-primary btn-sm' %>
+  </div>
 
-<h1>Materia divisions</h1>
+  <% @divisiones.each do |division| %>
+    <div class="d-flex justify-content-between align-items-center mt-3 mb-2">
+      <h3 class="h6 m-0">División: <%= division.nombre %></h3>
+      <!-- Botón directo para ESTA división (aunque no tenga filas) -->
+      <%= link_to 'Agregar en esta división',
+            new_materia_division_path(curso_id: curso.id, division_id: division.id),
+            class: 'btn btn-outline-secondary btn-sm'%>
+            
+    </div>
 
-<div id="materia_divisions">
-  <% @materia_divisions.each do |materia_division| %>
-    <%= render materia_division %>
-    <p>
-      <%= link_to "Show this materia division", materia_division %>
-    </p>
+    <% rows = @by_course_div.dig(curso, division) || [] %>
+
+    <% if rows.any? %>
+      <%= render 'shared/index_table',
+        headers:    ['Materia'],
+        collection: rows,
+        columns: [ ->(md) { md.materia.nombre } ],
+        actions: ->(md) do
+          safe_join([
+            link_to('Borrar', md, method: :delete,
+                     data: { turbo_confirm: '¿Seguro?' },
+                     class: 'btn btn-link btn-sm text-danger px-1')
+          ], ' ')
+        end,
+        new_path: nil, new_label: nil
+      %>
+    <% else %>
+      <div class="alert alert-light border mb-2 py-2">
+        No hay asignaciones aún para <strong><%= curso.nombre %></strong> / <strong><%= division.nombre %></strong>.
+      </div>
+    <% end %>
   <% end %>
-</div>
-
-<%= link_to "New materia division", new_materia_division_path %>
+<% end %>

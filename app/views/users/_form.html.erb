@@ -29,10 +29,10 @@
 
   <div class="mb-3">
     <label class="form-label">Roles</label><br>
-    <% Role.order(:name).each do |role| %>
+    <% Role.order(:nombre).each do |role| %>
       <label class="form-check-label me-3">
         <%= check_box_tag 'user[role_ids][]', role.id, @user.role_ids.include?(role.id), class: "form-check-input" %>
-        <%= role.name %>
+        <%= role.nombre %>
       </label>
     <% end %>
   </div>
