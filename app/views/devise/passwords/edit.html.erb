@@ -1,0 +1,23 @@
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+  <div class="card shadow-lg p-4" style="width: 400px; border-radius: 15px;">
+    <h2 class="text-center mb-4">Cambiar Contraseña</h2>
+
+    <%= form_with(model: resource, as: resource_name, url: password_path(resource_name), html: { method: :put }, local: true) do |f| %>
+      <%= f.hidden_field :reset_password_token %>
+
+      <div class="mb-3">
+        <%= f.label :password, "Nueva contraseña", class: "form-label" %>
+        <%= f.password_field :password, autofocus: true, autocomplete: "new-password", class: "form-control" %>
+      </div>
+
+      <div class="mb-3">
+        <%= f.label :password_confirmation, "Confirmar nueva contraseña", class: "form-label" %>
+        <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control" %>
+      </div>
+
+      <div class="d-grid">
+        <%= f.submit "Actualizar contraseña", class: "btn btn-success btn-lg" %>
+      </div>
+    <% end %>
+  </div>
+</div>

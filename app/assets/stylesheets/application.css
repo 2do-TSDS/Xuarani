@@ -8,3 +8,7 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+body {
+  background: linear-gradient(135deg, #e0f7fa, #ffffff);
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
