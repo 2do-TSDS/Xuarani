@@ -1,0 +1,47 @@
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+  <div class="card shadow-lg p-4" style="width: 500px; border-radius: 15px;">
+    <h2 class="text-center mb-4">Editar Perfil</h2>
+
+    <%= form_with(model: resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }, local: true) do |f| %>
+      <div class="mb-3">
+        <%= f.label :email, class: "form-label" %>
+        <%= f.email_field :email, autofocus: true, class: "form-control" %>
+      </div>
+
+      <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+        <div class="alert alert-info">
+          Actualmente esperando confirmación para: <%= resource.unconfirmed_email %>
+        </div>
+      <% end %>
+
+      <hr>
+
+      <h5 class="mb-3">Cambiar Contraseña</h5>
+      <div class="mb-3">
+        <%= f.label :password, "Nueva contraseña", class: "form-label" %>
+        <%= f.password_field :password, autocomplete: "new-password", class: "form-control", placeholder: "Dejar en blanco si no quieres cambiarla" %>
+      </div>
+
+      <div class="mb-3">
+        <%= f.label :password_confirmation, "Confirmar nueva contraseña", class: "form-label" %>
+        <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control" %>
+      </div>
+
+      <div class="mb-3">
+        <%= f.label :current_password, "Contraseña actual", class: "form-label" %>
+        <%= f.password_field :current_password, autocomplete: "current-password", class: "form-control", placeholder: "Necesaria para confirmar cambios" %>
+      </div>
+
+      <div class="d-grid mb-3">
+        <%= f.submit "Actualizar", class: "btn btn-primary btn-lg" %>
+      </div>
+    <% end %>
+
+    <hr class="my-4">
+
+    <div class="d-flex justify-content-between">
+      <%= link_to "Volver", root_path, class: "btn btn-outline-secondary" %>
+      <%= button_to "Eliminar mi cuenta", registration_path(resource_name), data: { confirm: "¿Seguro que quieres eliminar tu cuenta?" }, method: :delete, class: "btn btn-danger" %>
+    </div>
+  </div>
+</div>

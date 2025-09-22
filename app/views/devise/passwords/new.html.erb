@@ -1,0 +1,23 @@
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+  <div class="card shadow-lg p-4" style="width: 400px; border-radius: 15px;">
+    <h2 class="text-center mb-4">Recuperar Contraseña</h2>
+    <p class="text-muted text-center mb-4">Ingresa tu correo electrónico y te enviaremos las instrucciones.</p>
+
+    <%= form_with(model: resource, as: resource_name, url: password_path(resource_name), local: true) do |f| %>
+      <div class="mb-3">
+        <%= f.label :email, class: "form-label" %>
+        <%= f.email_field :email, autofocus: true, class: "form-control", placeholder: "ejemplo@mail.com" %>
+      </div>
+
+      <div class="d-grid">
+        <%= f.submit "Enviar instrucciones", class: "btn btn-warning btn-lg" %>
+      </div>
+    <% end %>
+
+    <hr class="my-4">
+
+    <div class="text-center">
+      <%= link_to "Volver al inicio de sesión", new_session_path(resource_name), class: "text-decoration-none" %>
+    </div>
+  </div>
+</div>

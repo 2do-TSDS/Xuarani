@@ -1,0 +1,32 @@
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+  <div class="card shadow-lg p-4" style="width: 450px; border-radius: 15px;">
+    <h2 class="text-center mb-4">Registrarse</h2>
+
+    <%= form_with(model: resource, as: resource_name, url: registration_path(resource_name), local: true) do |f| %>
+      <div class="mb-3">
+        <%= f.label :email, class: "form-label" %>
+        <%= f.email_field :email, autofocus: true, class: "form-control", placeholder: "ejemplo@mail.com" %>
+      </div>
+
+      <div class="mb-3">
+        <%= f.label :password, "Contraseña", class: "form-label" %>
+        <%= f.password_field :password, autocomplete: "new-password", class: "form-control", placeholder: "Mínimo 6 caracteres" %>
+      </div>
+
+      <div class="mb-3">
+        <%= f.label :password_confirmation, "Confirmar contraseña", class: "form-label" %>
+        <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control", placeholder: "Repite tu contraseña" %>
+      </div>
+
+      <div class="d-grid">
+        <%= f.submit "Crear cuenta", class: "btn btn-success btn-lg" %>
+      </div>
+    <% end %>
+
+    <hr class="my-4">
+
+    <div class="text-center">
+      <%= link_to "¿Ya tienes cuenta? Inicia sesión", new_session_path(resource_name), class: "text-decoration-none" %>
+    </div>
+  </div>
+</div>

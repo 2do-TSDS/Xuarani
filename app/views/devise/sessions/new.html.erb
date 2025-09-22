@@ -1,0 +1,35 @@
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+  <div class="card shadow-lg p-4" style="width: 400px; border-radius: 15px;">
+    <h2 class="text-center mb-4">Iniciar Sesión</h2>
+
+    <%= form_with(model: resource, as: resource_name, url: session_path(resource_name), local: true) do |f| %>
+      <div class="mb-3">
+        <%= f.label :email, class: "form-label" %>
+        <%= f.email_field :email, autofocus: true, class: "form-control", placeholder: "ejemplo@mail.com" %>
+      </div>
+
+      <div class="mb-3">
+        <%= f.label :password, "Contraseña", class: "form-label" %>
+        <%= f.password_field :password, autocomplete: "current-password", class: "form-control", placeholder: "********" %>
+      </div>
+
+      <% if devise_mapping.rememberable? %>
+        <div class="form-check mb-3">
+          <%= f.check_box :remember_me, class: "form-check-input" %>
+          <%= f.label :remember_me, "Recordarme", class: "form-check-label" %>
+        </div>
+      <% end %>
+
+      <div class="d-grid">
+        <%= f.submit "Ingresar", class: "btn btn-primary btn-lg" %>
+      </div>
+    <% end %>
+
+    <hr class="my-4">
+
+    <div class="text-center">
+      <%= link_to "¿Olvidaste tu contraseña?", new_password_path(resource_name), class: "text-decoration-none d-block mb-2" %>
+      <%= link_to "Registrarse", new_registration_path(resource_name), class: "text-decoration-none" %>
+    </div>
+  </div>
+</div>

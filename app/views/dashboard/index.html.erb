@@ -1,20 +1,54 @@
-<h1 class="mb-4">Panel Principal del Sistema</h1>
-    <div class="list-group">
+<div class="container">
+  <h1 class="mb-4 text-center">Panel Principal del Sistema</h1>
 
-    <%= link_to "Usuarios", users_path, class: "list-group-item list-group-item-action" %>
-    <%= link_to "Perfiles", perfils_path, class: "list-group-item list-group-item-action" %>
-    <%= link_to "Roles", roles_path, class: "list-group-item list-group-item-action" %>
-    <%= link_to "Asignar Roles", user_roles_path, class: "list-group-item list-group-item-action" %>
-    <hr>
-    <%= link_to "Turnos", turnos_path, class: "list-group-item list-group-item-action" %>
-    <%= link_to "Cursos", cursos_path, class: "list-group-item list-group-item-action" %>
-    <%= link_to "Orientaciones", orientacions_path, class: "list-group-item list-group-item-action" %>
-    <%= link_to "Ciclos Lectivos", ciclo_lectivos_path, class: "list-group-item list-group-item-action" %>
-    <%= link_to "Divisiones", divisions_path, class: "list-group-item list-group-item-action" %>
-    <hr>
+  <div class="row g-4">
+    <!-- Gestión de usuarios -->
+    <div class="col-md-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title"><i class="bi bi-people-fill me-2"></i>Gestión de Usuarios</h5>
+          <p class="card-text text-muted">Administración de usuarios y roles.</p>
+          <div class="d-grid gap-2">
+            <%= link_to "Usuarios", users_path, class: "btn btn-outline-primary" %>
+            <%= link_to "Perfiles", perfils_path, class: "btn btn-outline-primary" %>
+            <%= link_to "Roles", roles_path, class: "btn btn-outline-primary" %>
+            <%= link_to "Asignar Roles", user_roles_path, class: "btn btn-outline-primary" %>
+          </div>
+        </div>
+      </div>
+    </div>
 
-    <%= link_to "Materias", materias_path, class: "list-group-item list-group-item-action" %>
-    <%= link_to "Materia - Division", materia_divisions_path, class: "list-group-item list-group-item-action" %>
-    <%= link_to "Vincular Docente", materia_docentes_path, class: "list-group-item list-group-item-action" %>
-    <%= link_to "Vincular Alumnos", materia_alumnos_path, class: "list-group-item list-group-item-action" %>
+    <!-- Organización académica -->
+    <div class="col-md-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title"><i class="bi bi-building me-2"></i>Organización Académica</h5>
+          <p class="card-text text-muted">Turnos, cursos, divisiones y ciclos lectivos.</p>
+          <div class="d-grid gap-2">
+            <%= link_to "Turnos", turnos_path, class: "btn btn-outline-success" %>
+            <%= link_to "Cursos", cursos_path, class: "btn btn-outline-success" %>
+            <%= link_to "Orientaciones", orientacions_path, class: "btn btn-outline-success" %>
+            <%= link_to "Ciclos Lectivos", ciclo_lectivos_path, class: "btn btn-outline-success" %>
+            <%= link_to "Divisiones", divisions_path, class: "btn btn-outline-success" %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Materias -->
+    <div class="col-md-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title"><i class="bi bi-journal-text me-2"></i>Materias</h5>
+          <p class="card-text text-muted">Gestión de materias y asignaciones.</p>
+          <div class="d-grid gap-2">
+            <%= link_to "Materias", materias_path, class: "btn btn-outline-warning" %>
+            <%= link_to "Materia - División", materia_divisions_path, class: "btn btn-outline-warning" %>
+            <%= link_to "Vincular Docente", materia_docentes_path, class: "btn btn-outline-warning" %>
+            <%= link_to "Vincular Alumnos", materia_alumnos_path, class: "btn btn-outline-warning" %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
