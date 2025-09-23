@@ -1,6 +1,6 @@
 class User < ApplicationRecord
   # Devise
-  devise :database_authenticatable, :registerable,
+  devise :database_authenticatable,
          :recoverable, :rememberable, :validatable
 
   # Relaciones con roles
