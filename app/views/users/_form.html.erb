@@ -1,44 +1,109 @@
-<!-- app/views/users/_form.html.erb -->
-<%= form_with(model: @user) do |f| %>
-  <% if @user && @user.errors.any? %>
+<%= form_with(model: user, local: true) do |f| %>
+  <% if user.errors.any? %>
     <div class="alert alert-danger">
-      <h4><%= pluralize(@user.errors.count, "error") %> impiden guardar:</h4>
-      <ul>
-        <% @user.errors.full_messages.each do |m| %><li><%= m %></li><% end %>
+      <h5><i class="bi bi-exclamation-triangle me-2"></i>
+        <%= pluralize(user.errors.count, "error") %> impidieron guardar el usuario:</h5>
+      <ul class="mb-0">
+        <% user.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
       </ul>
     </div>
   <% end %>
 
-  <div class="mb-3">
-    <%= f.label :email, class: "form-label" %>
-    <%= f.email_field :email, class: "form-control", required: true %>
+  <!-- Datos básicos del usuario -->
+  <div class="card mb-4 shadow-sm">
+    <div class="card-header bg-primary text-white">
+      <i class="bi bi-person-fill me-2"></i>Datos de Usuario
+    </div>
+    <div class="card-body">
+      <div class="mb-3">
+        <%= f.label :email, class: "form-label" %>
+        <div class="input-group">
+          <span class="input-group-text"><i class="bi bi-envelope-fill"></i></span>
+          <%= f.email_field :email, class: "form-control" %>
+        </div>
+      </div>
+
+      <% if f.object.new_record? %>
+        <div class="mb-3">
+          <%= f.label :password, class: "form-label" %>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+            <%= f.password_field :password, class: "form-control" %>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <%= f.label :password_confirmation, class: "form-label" %>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+            <%= f.password_field :password_confirmation, class: "form-control" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
   </div>
 
-  <div class="mb-3">
-    <%= f.label :password, class: "form-label" %>
-    <%= f.password_field :password, class: "form-control", autocomplete: "new-password" %>
-    <% unless @user.new_record? %>
-      <small class="text-muted">Dejar en blanco para no cambiar.</small>
-    <% end %>
+  <!-- Perfil asociado -->
+  <div class="card mb-4 shadow-sm">
+    <div class="card-header bg-success text-white">
+      <i class="bi bi-card-list me-2"></i>Perfil del Usuario
+    </div>
+    <div class="card-body">
+      <%= f.fields_for :perfil, user.perfil || user.build_perfil do |pf| %>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <%= pf.label :nombres, class: "form-label" %>
+            <%= pf.text_field :nombres, class: "form-control" %>
+          </div>
+          <div class="col-md-6">
+            <%= pf.label :apellidos, class: "form-label" %>
+            <%= pf.text_field :apellidos, class: "form-control" %>
+          </div>
+          <div class="col-md-4">
+            <%= pf.label :dni, class: "form-label" %>
+            <%= pf.text_field :dni, class: "form-control" %>
+          </div>
+          <div class="col-md-4">
+            <%= pf.label :fecha_nacimiento, class: "form-label" %>
+            <%= pf.date_field :fecha_nacimiento, class: "form-control" %>
+          </div>
+          <div class="col-md-6">
+            <%= pf.label :direccion, class: "form-label" %>
+            <%= pf.text_field :direccion, class: "form-control" %>
+          </div>
+          <div class="col-md-6">
+            <%= pf.label :telefono, class: "form-label" %>
+            <%= pf.text_field :telefono, class: "form-control" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
   </div>
 
-  <div class="mb-3">
-    <%= f.label :password_confirmation, class: "form-label" %>
-    <%= f.password_field :password_confirmation, class: "form-control", autocomplete: "new-password" %>
+  <!-- Roles -->
+  <div class="card mb-4 shadow-sm">
+    <div class="card-header bg-dark text-white">
+      <i class="bi bi-shield-lock me-2"></i>Roles
+    </div>
+    <div class="card-body">
+      <div class="d-flex flex-wrap gap-2">
+        <% Role.all.each do |role| %>
+          <div class="form-check form-check-inline">
+            <%= check_box_tag "user[role_ids][]", role.id, user.roles.include?(role),
+                  id: "role_#{role.id}", class: "btn-check" %>
+            <%= label_tag "role_#{role.id}", role.nombre,
+                  class: "btn btn-outline-secondary" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
   </div>
 
-  <div class="mb-3">
-    <label class="form-label">Roles</label><br>
-    <% Role.order(:nombre).each do |role| %>
-      <label class="form-check-label me-3">
-        <%= check_box_tag 'user[role_ids][]', role.id, @user.role_ids.include?(role.id), class: "form-check-input" %>
-        <%= role.nombre %>
-      </label>
-    <% end %>
-  </div>
-
-  <div class="mt-3">
-    <%= f.submit class: "btn btn-primary" %>
-    <%= link_to "Cancelar", (@user.persisted? ? @user : users_path), class: "btn btn-secondary ms-2" %>
+  <!-- Botones -->
+  <div class="d-flex justify-content-end">
+    <%= f.submit(user.new_record? ? "Crear Usuario" : "Actualizar Usuario", class: "btn btn-primary") %>
+    <%= link_to "Cancelar", users_path, class: "btn btn-outline-secondary ms-2" %>
   </div>
 <% end %>

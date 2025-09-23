@@ -42,12 +42,17 @@
               </ul>
             </li>
 
-            <!-- Dropdown Organización -->
+            <!-- Dropdown Organización (con Panel Integral) -->
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Organización
               </a>
               <ul class="dropdown-menu">
+                <!-- Panel integral que hicimos -->
+                <li><%= link_to "Panel Integral", organizacion_path, class: "dropdown-item" %></li>
+                <li><hr class="dropdown-divider"></li>
+
+                <!-- Rutas individuales existentes -->
                 <li><%= link_to "Turnos", turnos_path, class: "dropdown-item" %></li>
                 <li><%= link_to "Cursos", cursos_path, class: "dropdown-item" %></li>
                 <li><%= link_to "Orientaciones", orientacions_path, class: "dropdown-item" %></li>

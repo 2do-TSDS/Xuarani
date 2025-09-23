@@ -1,40 +1,44 @@
 class User < ApplicationRecord
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+  # Devise
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
+  # Relaciones con roles
   has_many :user_roles, dependent: :destroy
   has_many :roles, through: :user_roles,
                   after_add:    :_flush_roles_cache,
                   after_remove: :_flush_roles_cache
 
+  # Relación con perfil (datos personales)
   has_one :perfil, dependent: :destroy
+  accepts_nested_attributes_for :perfil
 
   has_many :materia_docentes, foreign_key: :docente_id
-  
-  delegate :nombres,
-          :apellidos,
-          :dni,
-          :fecha_nacimiento,
-          :direccion,
-          :telefono,
-          to: :perfil,
-          allow_nil: true
 
+  # Delegación de atributos desde perfil
+  delegate :nombres,
+           :apellidos,
+           :dni,
+           :fecha_nacimiento,
+           :direccion,
+           :telefono,
+           to: :perfil,
+           allow_nil: true
+
+  # Scopes por rol
   scope :with_role, ->(nombre) {
     joins(:roles)
       .where("LOWER(roles.nombre) = ?", nombre.to_s.downcase)
       .distinct
   }
 
-  scope :alumnos,  -> { with_role(:alumno) }
-  scope :docentes, -> { with_role(:docente) }
-  scope :preceptores, -> { with_role(:preceptor) }
-  scope :administradores, -> { with_role(:administrador) }
+  scope :alumnos,        -> { with_role(:alumno) }
+  scope :docentes,       -> { with_role(:docente) }
+  scope :preceptores,    -> { with_role(:preceptor) }
+  scope :administradores,-> { with_role(:administrador) }
+
+  # Métodos de roles
   def role_names
-    # Memoización de roles
-    # Retorna un array de los roles (lowercase)
     @roles_array ||= roles.pluck(:nombre).map { |n| n.to_s.downcase }
   end
 
@@ -44,6 +48,7 @@ class User < ApplicationRecord
 
   def _flush_roles_cache(*) = (@roles_array = nil)
 
+  # Métodos de nombre/display
   def full_name
     [nombres, apellidos].compact.join(' ')
   end

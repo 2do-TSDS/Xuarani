@@ -1,0 +1,145 @@
+<div class="container">
+  <h1 class="mb-4 text-center">Organización Académica</h1>
+
+  <!-- Tabs -->
+  <ul class="nav nav-tabs" id="orgTabs" role="tablist">
+    <li class="nav-item" role="presentation">
+      <a class="nav-link active" data-bs-toggle="tab" href="#tab-turnos" role="tab">Turnos</a>
+    </li>
+    <li class="nav-item" role="presentation">
+      <a class="nav-link" data-bs-toggle="tab" href="#tab-cursos" role="tab">Cursos</a>
+    </li>
+    <li class="nav-item" role="presentation">
+      <a class="nav-link" data-bs-toggle="tab" href="#tab-orientaciones" role="tab">Orientaciones</a>
+    </li>
+    <li class="nav-item" role="presentation">
+      <a class="nav-link" data-bs-toggle="tab" href="#tab-ciclos" role="tab">Ciclos Lectivos</a>
+    </li>
+    <li class="nav-item" role="presentation">
+      <a class="nav-link" data-bs-toggle="tab" href="#tab-divisiones" role="tab">Divisiones</a>
+    </li>
+  </ul>
+
+  <div class="tab-content mt-3">
+
+    <!-- TURNOS -->
+    <div class="tab-pane fade show active" id="tab-turnos" role="tabpanel">
+      <div class="row g-3">
+        <div class="col-md-5">
+          <% if can?(:create, Turno) %>
+            <div class="card shadow-sm">
+              <div class="card-body">
+                <h5 class="card-title">Nuevo Turno</h5>
+                <%= render "turnos/form", turno: @turno %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+        <div class="col-md-7">
+          <div class="card shadow-sm">
+            <div class="card-body">
+              <h5 class="card-title">Listado</h5>
+              <%= render "turnos/list", turnos: @turnos %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CURSOS -->
+    <div class="tab-pane fade" id="tab-cursos" role="tabpanel">
+      <div class="row g-3">
+        <div class="col-md-5">
+          <% if can?(:create, Curso) %>
+            <div class="card shadow-sm">
+              <div class="card-body">
+                <h5 class="card-title">Nuevo Curso</h5>
+                <%= render "cursos/form", curso: @curso %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+        <div class="col-md-7">
+          <div class="card shadow-sm">
+            <div class="card-body">
+              <h5 class="card-title">Listado</h5>
+              <%= render "cursos/list", cursos: @cursos %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ORIENTACIONES -->
+    <div class="tab-pane fade" id="tab-orientaciones" role="tabpanel">
+      <div class="row g-3">
+        <div class="col-md-5">
+          <% if can?(:create, Orientacion) %>
+            <div class="card shadow-sm">
+              <div class="card-body">
+                <h5 class="card-title">Nueva Orientación</h5>
+                <%= render "orientacions/form", orientacion: @orientacion %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+        <div class="col-md-7">
+          <div class="card shadow-sm">
+            <div class="card-body">
+              <h5 class="card-title">Listado</h5>
+              <%= render "orientacions/list", orientacions: @orientacions %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CICLOS LECTIVOS -->
+    <div class="tab-pane fade" id="tab-ciclos" role="tabpanel">
+      <div class="row g-3">
+        <div class="col-md-5">
+          <% if can?(:create, CicloLectivo) %>
+            <div class="card shadow-sm">
+              <div class="card-body">
+                <h5 class="card-title">Nuevo Ciclo Lectivo</h5>
+                <%= render "ciclo_lectivos/form", ciclo_lectivo: @ciclo_lectivo %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+        <div class="col-md-7">
+          <div class="card shadow-sm">
+            <div class="card-body">
+              <h5 class="card-title">Listado</h5>
+              <%= render "ciclo_lectivos/list", ciclo_lectivos: @ciclo_lectivos %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- DIVISIONES -->
+<div class="tab-pane fade" id="tab-divisiones" role="tabpanel">
+  <div class="row g-3">
+    <div class="col-md-5">
+      <% if can?(:create, Division) %>
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title">Nueva División</h5>
+            <%= render "divisions/form", division: @division %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    <div class="col-md-7">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">Listado</h5>
+          <%= render "divisions/list", divisions: @divisions %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  </div>
+</div>

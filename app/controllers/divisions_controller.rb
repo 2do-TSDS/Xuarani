@@ -1,71 +1,61 @@
 class DivisionsController < ApplicationController
+  include RedirectToOrganizacion
   load_and_authorize_resource
-  before_action :set_division, only: %i[ show edit update destroy ]
+  before_action :set_division, only: [:show, :edit, :update, :destroy]
 
-  # GET /divisions or /divisions.json
   def index
     @divisions = Division.all
   end
 
-  # GET /divisions/1 or /divisions/1.json
-  def show
-  end
+  def show; end
 
-  # GET /divisions/new
   def new
     @division = Division.new
   end
 
-  # GET /divisions/1/edit
-  def edit
-  end
+  def edit; end
 
-  # POST /divisions or /divisions.json
   def create
     @division = Division.new(division_params)
-
-    respond_to do |format|
-      if @division.save
-        format.html { redirect_to @division, notice: "Division was successfully created." }
-        format.json { render :show, status: :created, location: @division }
+    if @division.save
+      if from_organizacion?
+        redirect_back_to_organizacion("tab-divisiones", "División creada correctamente.")
       else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @division.errors, status: :unprocessable_entity }
+        redirect_to @division, notice: "División creada correctamente."
       end
+    else
+      render :new, status: :unprocessable_entity
     end
   end
 
-  # PATCH/PUT /divisions/1 or /divisions/1.json
   def update
-    respond_to do |format|
-      if @division.update(division_params)
-        format.html { redirect_to @division, notice: "Division was successfully updated.", status: :see_other }
-        format.json { render :show, status: :ok, location: @division }
+    if @division.update(division_params)
+      if from_organizacion?
+        redirect_back_to_organizacion("tab-divisiones", "División actualizada.")
       else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @division.errors, status: :unprocessable_entity }
+        redirect_to @division, notice: "División actualizada."
       end
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 
-  # DELETE /divisions/1 or /divisions/1.json
   def destroy
-    @division.destroy!
-
-    respond_to do |format|
-      format.html { redirect_to divisions_path, notice: "Division was successfully destroyed.", status: :see_other }
-      format.json { head :no_content }
+    @division.destroy
+    if from_organizacion?
+      redirect_back_to_organizacion("tab-divisiones", "División eliminada.")
+    else
+      redirect_to divisions_url, notice: "División eliminada."
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_division
-      @division = Division.find(params.expect(:id))
-    end
 
-    # Only allow a list of trusted parameters through.
-    def division_params
-      params.expect(division: [ :nombre ])
-    end
+  def set_division
+    @division = Division.find(params[:id])
+  end
+
+  def division_params
+    params.require(:division).permit(:nombre)
+  end
 end

@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get "organizacion/index"
   resources :users
   resources :asistencia_materias
   resources :asistencia_generals
@@ -21,6 +22,7 @@ Rails.application.routes.draw do
   resources :user_roles
   resources :roles
   devise_for :users, path: 'auth', path_names: { sign_in: 'login', sign_out: 'logout', password: 'secret' }
+  get "organizacion", to: "organizacion#index"
 
   # get "dashboard/index"
   root "dashboard#index"

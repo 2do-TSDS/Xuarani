@@ -1,0 +1,11 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1 class="h3 fw-bold <%= @user.new_record? ? 'text-primary' : 'text-warning' %>">
+    <% if @user.new_record? %>
+      <i class="bi bi-person-plus-fill me-2"></i>Nuevo Usuario
+    <% else %>
+      <i class="bi bi-pencil-square me-2"></i>Editar Usuario
+    <% end %>
+  </h1>
+
+  <%= link_to "Volver", users_path, class: "btn btn-outline-secondary" %>
+</div>
