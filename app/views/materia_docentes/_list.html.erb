@@ -1,0 +1,24 @@
+<table class="table table-hover align-middle">
+  <thead class="table-dark">
+    <tr>
+      <th>Materia / División</th>
+      <th>Docente</th>
+      <th>Titular</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% materia_docentes.each do |mdoc| %>
+      <tr>
+        <td><%= mdoc.materia_division.display_name %></td>
+        <td><%= mdoc.docente.display_name %></td>
+        <td>
+          <% if mdoc.titular %>
+            <span class="badge bg-success">Titular</span>
+          <% else %>
+            <span class="badge bg-secondary">Suplente</span>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

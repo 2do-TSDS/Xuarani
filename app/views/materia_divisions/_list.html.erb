@@ -1,0 +1,16 @@
+<table class="table table-hover align-middle">
+  <thead class="table-dark">
+    <tr>
+      <th>Materia</th>
+      <th>División</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% materia_divisions.each do |md| %>
+      <tr>
+        <td><%= md.materia.nombre %></td>
+        <td><%= md.division.nombre %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

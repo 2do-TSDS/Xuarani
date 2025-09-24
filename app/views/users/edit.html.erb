@@ -1,10 +1,4 @@
 <div class="container">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="h3 text-warning fw-bold">
-      <i class="bi bi-pencil-square me-2"></i>Editar Usuario
-    </h1>
-    <%= link_to "Volver", users_path, class: "btn btn-outline-secondary" %>
-  </div>
-
+  <%= render "header" %>
   <%= render "form", user: @user %>
 </div>

@@ -8,39 +8,51 @@
     </div>
   <% end %>
 
-  <div class="row g-3">
-    <div class="col-md-6">
-      <%= form.label :nombre, class: 'form-label' %>
-      <%= form.text_field :nombre, class: 'form-control', required: true %>
-    </div>
+  <div class="card">
+    <div class="card-body">
+      <div class="mb-3">
+        <%= form.label :nombre, 'Nombre de la Materia', class: 'form-label' %>
+        <%= form.text_field :nombre,
+              class: ['form-control', (materia.errors[:nombre].any? ? 'is-invalid' : nil)].compact.join(' '),
+              required: true, autofocus: true %>
+        <% if materia.errors[:nombre].any? %>
+          <div class="invalid-feedback d-block"><%= materia.errors[:nombre].first %></div>
+        <% end %>
+      </div>
 
-    <div class="col-md-6">
-      <%= form.label :turno_id, 'Turno', class: 'form-label' %>
-      <%= form.collection_select :turno_id, @turnos, :id, :nombre,
-            { prompt: 'Seleccione turno…' }, class: 'form-select', required: true %>
-    </div>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <%= form.label :turno_id, 'Turno', class: 'form-label' %>
+          <%= form.collection_select :turno_id, @turnos, :id, :nombre,
+                { prompt: 'Seleccione turno…' },
+                class: 'form-select', required: true %>
+        </div>
+        <div class="col-md-6 mb-3">
+          <%= form.label :curso_id, 'Curso', class: 'form-label' %>
+          <%= form.collection_select :curso_id, @cursos, :id, :nombre,
+                { prompt: 'Seleccione curso…' },
+                class: 'form-select', required: true %>
+        </div>
+      </div>
 
-    <div class="col-md-4">
-      <%= form.label :ciclo_lectivo_id, 'Ciclo lectivo', class: 'form-label' %>
-      <%= form.collection_select :ciclo_lectivo_id, @ciclos, :id, ->(c){ c.read_attribute('año') },
-            { prompt: 'Seleccione ciclo…' }, class: 'form-select', required: true %>
-    </div>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <%= form.label :orientacion_id, 'Orientación', class: 'form-label' %>
+          <%= form.collection_select :orientacion_id, @orientaciones, :id, :nombre,
+                { prompt: 'Seleccione orientación…' },
+                class: 'form-select', required: true %>
+        </div>
+        <div class="col-md-6 mb-3">
+          <%= form.label :ciclo_lectivo_id, 'Ciclo Lectivo', class: 'form-label' %>
+          <%= form.collection_select :ciclo_lectivo_id, @ciclos, :id, :año,
+                { prompt: 'Seleccione ciclo…' },
+                class: 'form-select', required: true %>
+        </div>
+      </div>
 
-    <div class="col-md-4">
-      <%= form.label :orientacion_id, 'Orientación', class: 'form-label' %>
-      <%= form.collection_select :orientacion_id, @orientaciones, :id, :nombre,
-            { prompt: 'Seleccione orientación…' }, class: 'form-select', required: true %>
+      <div>
+        <%= form.submit 'Guardar', class: 'btn btn-primary' %>
+      </div>
     </div>
-
-    <div class="col-md-4">
-      <%= form.label :curso_id, 'Curso', class: 'form-label' %>
-      <%= form.collection_select :curso_id, @cursos, :id, :nombre,
-            { prompt: 'Seleccione curso…' }, class: 'form-select', required: true %>
-    </div>
-  </div>
-
-  <div class="mt-3">
-    <%= form.submit class: 'btn btn-primary' %>
-    <%= link_to 'Volver', materias_path, class: 'btn btn-outline-secondary ms-2' %>
   </div>
 <% end %>

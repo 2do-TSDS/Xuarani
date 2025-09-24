@@ -1,0 +1,26 @@
+es:
+  devise:
+    failure:
+      unauthenticated: "⚠️ Debes iniciar sesión antes de continuar."
+      invalid: "Correo o contraseña inválidos."
+      not_found_in_database: "Correo o contraseña inválidos."
+      timeout: "Tu sesión ha expirado. Por favor inicia sesión nuevamente."
+      unconfirmed: "Debes confirmar tu correo electrónico antes de continuar."
+      locked: "Tu cuenta está bloqueada."
+    sessions:
+      signed_in: "✅ Has iniciado sesión correctamente."
+      signed_out: "👋 Has cerrado sesión correctamente."
+      already_signed_out: "👋 Ya habías cerrado sesión."
+    registrations:
+      signed_up: "🎉 ¡Bienvenido! Te has registrado correctamente."
+      updated: "✅ Tu cuenta se actualizó correctamente."
+      destroyed: "👋 Tu cuenta fue eliminada. ¡Esperamos verte pronto!"
+    passwords:
+      send_instructions: "📧 Recibirás un correo con instrucciones para restablecer tu contraseña en unos minutos."
+      updated: "🔑 Tu contraseña se cambió correctamente. Ya puedes iniciar sesión."
+    confirmations:
+      send_instructions: "📧 Recibirás un correo con instrucciones para confirmar tu cuenta."
+      confirmed: "✅ Tu cuenta fue confirmada correctamente. Ya puedes iniciar sesión."
+    unlocks:
+      send_instructions: "📧 Recibirás un correo con instrucciones para desbloquear tu cuenta."
+      unlocked: "✅ Tu cuenta fue desbloqueada. Inicia sesión para continuar."

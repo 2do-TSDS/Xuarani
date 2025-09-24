@@ -1,34 +1,35 @@
-<%= form_with(model: materia_docente) do |form| %>
+<%= form_with(model: materia_docente, local: true) do |form| %>
   <% if materia_docente.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(materia_docente.errors.count, "error") %> prohibited this materia_docente from being saved:</h2>
-
-      <ul>
-        <% materia_docente.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
+    <div class="alert alert-danger">
+      <strong><%= pluralize(materia_docente.errors.count, "error") %></strong> impiden guardar:
+      <ul class="mb-0">
+        <% materia_docente.errors.full_messages.each { |m| %><li><%= m %></li><% } %>
       </ul>
     </div>
   <% end %>
 
-  <div class="field">
-    <%= form.label :materia_division_id, 'Materia / División' %>
-    <%= form.collection_select :materia_division_id,
-          @materia_divisiones, :id, :display_name,
-          { prompt: 'Seleccione…' }, { required: true } %>
-  </div>
+  <div class="card">
+    <div class="card-body">
+      <div class="mb-3">
+        <%= form.label :materia_division_id, 'Materia / División', class: 'form-label' %>
+        <%= form.collection_select :materia_division_id, @materia_divisiones, :id, :display_name,
+              { prompt: 'Seleccione…' }, class: 'form-select', required: true %>
+      </div>
 
-  <div class="field">
-    <%= form.label :docente_id, 'Docente' %>
-    <%= form.collection_select :docente_id,
-          @docentes, :id, :display_name,
-          { prompt: 'Seleccione…' }, { required: true } %>
-  </div>
+      <div class="mb-3">
+        <%= form.label :docente_id, 'Docente', class: 'form-label' %>
+        <%= form.collection_select :docente_id, @docentes, :id, :display_name,
+              { prompt: 'Seleccione…' }, class: 'form-select', required: true %>
+      </div>
 
-  <div class="field">
-    <%= form.label :titular %>
-    <%= form.check_box :titular %>
-  </div>
+      <div class="form-check mb-3">
+        <%= form.check_box :titular, class: 'form-check-input' %>
+        <%= form.label :titular, 'Docente Titular', class: 'form-check-label' %>
+      </div>
 
-  <div class="actions"><%= form.submit %></div>
+      <div>
+        <%= form.submit 'Guardar', class: 'btn btn-info' %>
+      </div>
+    </div>
+  </div>
 <% end %>

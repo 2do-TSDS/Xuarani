@@ -5,105 +5,37 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <meta name="turbo-prefetch" content="false">
-    
+
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
 
-    <!-- Bootstrap CSS (vía CDN) -->
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
   </head>
 
-  <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
-      <div class="container-fluid">
-        <!-- BRAND -->
-        <%= link_to "Xuarani", root_path, class: "navbar-brand fw-bold" %>
+  <body class="d-flex flex-column min-vh-100">
+    <!-- NAVBAR según rol -->
+    <% if user_signed_in? && current_user.has_role?(:administrador) %>
+      <%= render "layouts/admin_navbar" %>
+    <% elsif user_signed_in? %>
+      <%= render "layouts/navbar" %>
+    <% else %>
+      <%= render "layouts/public_navbar" %>
+    <% end %>
 
-        <!-- BOTÓN TOGGLER (mobile) -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <!-- MENÚ -->
-        <div class="collapse navbar-collapse" id="mainNavbar">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            
-            <!-- Dropdown Usuarios -->
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Usuarios
-              </a>
-              <ul class="dropdown-menu">
-                <li><%= link_to "Usuarios", users_path, class: "dropdown-item" %></li>
-                <li><%= link_to "Perfiles", perfils_path, class: "dropdown-item" %></li>
-                <li><%= link_to "Roles", roles_path, class: "dropdown-item" %></li>
-                <li><%= link_to "Asignar Roles", user_roles_path, class: "dropdown-item" %></li>
-              </ul>
-            </li>
-
-            <!-- Dropdown Organización (con Panel Integral) -->
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Organización
-              </a>
-              <ul class="dropdown-menu">
-                <!-- Panel integral que hicimos -->
-                <li><%= link_to "Panel Integral", organizacion_path, class: "dropdown-item" %></li>
-                <li><hr class="dropdown-divider"></li>
-
-                <!-- Rutas individuales existentes -->
-                <li><%= link_to "Turnos", turnos_path, class: "dropdown-item" %></li>
-                <li><%= link_to "Cursos", cursos_path, class: "dropdown-item" %></li>
-                <li><%= link_to "Orientaciones", orientacions_path, class: "dropdown-item" %></li>
-                <li><%= link_to "Ciclos Lectivos", ciclo_lectivos_path, class: "dropdown-item" %></li>
-                <li><%= link_to "Divisiones", divisions_path, class: "dropdown-item" %></li>
-              </ul>
-            </li>
-
-            <!-- Dropdown Materias -->
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Materias
-              </a>
-              <ul class="dropdown-menu">
-                <li><%= link_to "Materias", materias_path, class: "dropdown-item" %></li>
-                <li><%= link_to "Materia - División", materia_divisions_path, class: "dropdown-item" %></li>
-                <li><%= link_to "Vincular Docente", materia_docentes_path, class: "dropdown-item" %></li>
-                <li><%= link_to "Vincular Alumnos", materia_alumnos_path, class: "dropdown-item" %></li>
-              </ul>
-            </li>
-          </ul>
-
-          <!-- MENÚ DE USUARIO -->
-          <ul class="navbar-nav ms-auto">
-            <% if user_signed_in? %>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  <i class="bi bi-person-circle me-1"></i><%= current_user.display_name %>
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end">
-                  <li><%= link_to "Mi cuenta", user_path(current_user), class: "dropdown-item" %></li>
-                  <li>
-                    <%= button_to "Cerrar sesión", destroy_user_session_path,
-                                  method: :delete, class: "dropdown-item text-danger" %>
-                  </li>
-                </ul>
-              </li>
-            <% else %>
-              <li class="nav-item">
-                <%= link_to "Ingresar", new_user_session_path, class: "btn btn-outline-light" %>
-              </li>
-            <% end %>
-          </ul>
-        </div>
-      </div>
-    </nav>
+    <!-- Toast container (flotante arriba a la derecha) -->
+    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1100">
+      <%= render "layouts/flash" %>
+    </div>
 
     <!-- CONTENIDO PRINCIPAL -->
-    <main class="container py-4">
+    <main class="<%= content_for?(:layout_container_class) ? yield(:layout_container_class) : 'container py-4' %> flex-grow-1">
       <%= yield %>
     </main>
+
+    <!-- FOOTER -->
+    <%= render "layouts/footer" %>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
