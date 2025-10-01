@@ -18,8 +18,10 @@
     <!-- NAVBAR según rol -->
     <% if user_signed_in? && current_user.has_role?(:administrador) %>
       <%= render "layouts/admin_navbar" %>
+    <% elsif user_signed_in? && current_user.has_role?(:docente) %>
+      <%= render "layouts/docente_navbar" %>
     <% elsif user_signed_in? %>
-      <%= render "layouts/navbar" %>
+      <%= render "layouts/navbar" %> <!-- genérico para otros roles -->
     <% else %>
       <%= render "layouts/public_navbar" %>
     <% end %>

@@ -13,8 +13,6 @@ class User < ApplicationRecord
   has_one :perfil, dependent: :destroy
   accepts_nested_attributes_for :perfil
 
-  has_many :materia_docentes, foreign_key: :docente_id
-
   # Delegación de atributos desde perfil
   delegate :nombres,
            :apellidos,
@@ -32,10 +30,14 @@ class User < ApplicationRecord
       .distinct
   }
 
-  scope :alumnos,        -> { with_role(:alumno) }
-  scope :docentes,       -> { with_role(:docente) }
-  scope :preceptores,    -> { with_role(:preceptor) }
-  scope :administradores,-> { with_role(:administrador) }
+  has_many :materia_docentes,    foreign_key: :docente_id, dependent: :destroy
+  has_many :materia_divisiones,  through: :materia_docentes, source: :materia_division
+  has_many :materias,            through: :materia_divisiones
+
+  scope :docentes,        -> { with_role(:docente) }
+  scope :alumnos,         -> { with_role(:alumno) }
+  scope :preceptores,     -> { with_role(:preceptor) }
+  scope :administradores, -> { with_role(:administrador) }
 
   # Métodos de roles
   def role_names

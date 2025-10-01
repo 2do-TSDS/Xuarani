@@ -1,5 +1,8 @@
+# app/controllers/dashboard_controller.rb
 class DashboardController < ApplicationController
-    authorize_resource class: false
-    def index
-    end
+  before_action :authenticate_user!
+  skip_authorization_check
+
+  def index
+  end
 end
