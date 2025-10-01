@@ -22,9 +22,23 @@ class Ability
 
   def docente_rules(user)
     can :read, :docente_dashboard
+
+    # Puede ver solo las divisiones/materias que le correspondan
     can :read, MateriaDivision, materia_docentes: { docente_id: user.id }
-    can :read, Materia,         materia_divisiones: { materia_docentes: { docente_id: user.id } }
-    can :read, MateriaAlumno,   materia_division: { materia_docentes: { docente_id: user.id } }
+
+    # ❌ ANTES: usabas una asociación que no existe en Materia
+    # can :read, Materia, materia_divisiones: { materia_docentes: { docente_id: user.id } }
+
+    # ✅ NUEVO: acceso a materias a través de MateriaDivision
+    can :read, Materia, id: MateriaDivision
+                           .joins(:materia_docentes)
+                           .where(materia_docentes: { docente_id: user.id })
+                           .select(:materia_id)
+
+    # Puede ver alumnos solo dentro de sus materias/divisiones
+    can :read, MateriaAlumno, materia_division: { materia_docentes: { docente_id: user.id } }
+
+    # Puede gestionar asistencias solo de sus propios alumnos
     can :manage, AsistenciaMateria,
         materia_alumno: { materia_division: { materia_docentes: { docente_id: user.id } } }
   end

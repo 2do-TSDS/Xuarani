@@ -1,8 +1,17 @@
 class ApplicationController < ActionController::Base
+  # Obliga a navegadores modernos
   allow_browser versions: :modern
+
+  # Requiere que el usuario esté autenticado en todas las acciones
   before_action :authenticate_user!
+
+  # Evita que el navegador guarde en caché páginas sensibles
+  before_action :set_cache_buster
+
+  # Fuerza autorización con CanCanCan
   check_authorization unless: :skip_authorization?
 
+  # Manejo de errores de autorización
   rescue_from CanCan::AccessDenied do |e|
     respond_to do |format|
       format.html { redirect_to root_path, alert: e.message }
@@ -10,34 +19,43 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  private
-
-  # Devise: ¿a dónde va el usuario después de iniciar sesión?
+  # Define a dónde va el usuario después de iniciar sesión
   def after_sign_in_path_for(user)
-    # Si Devise tenía guardado un destino (por ejemplo, al intentar entrar a una página protegida),
-    # respetalo primero para no romper flujos.
     stored = stored_location_for(user)
     return stored if stored.present?
 
-    # Redirecciones por rol
-    return docente_dashboard_path            if user.has_role?(:docente)
-    return users_path                        if user.has_role?(:administrador) # o tu panel admin si lo tenés (admin_dashboard_path)
-    return organizacion_path                 if user.has_role?(:preceptor)     # ajustá a tu ruta real
-    return root_path                         if user.has_role?(:alumno)
-
-    # Fallback genérico
-    root_path
+    # Redirecciones según rol
+    if user.has_role?(:administrador)
+      admin_dashboard_path   # NUEVO: ruta clara para admin
+    elsif user.has_role?(:docente)
+      docente_dashboard_path # YA EXISTÍA
+    elsif user.has_role?(:preceptor)
+      organizacion_path      # YA EXISTÍA
+    elsif user.has_role?(:alumno)
+      public_home_path       # NUEVO: ruta genérica para alumnos/público
+    else
+      root_path              # Fallback
+    end
   end
 
-  # Devise: ¿a dónde va después de cerrar sesión? (opcional)
+  # Define a dónde va después de cerrar sesión
   def after_sign_out_path_for(_scope)
     root_path
   end
 
-  # skip de autorización en Devise / ActiveStorage / health, y a definir.
+  private
+
+  # Excepciones para no exigir autorización
   def skip_authorization?
     devise_controller? ||
       controller_path.start_with?("active_storage/") ||
       controller_path == "rails/health"
+  end
+
+  # Evita que al usar "Atrás" se vean páginas cacheadas
+  def set_cache_buster
+    response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "Fri, 01 Jan 1990 00:00:00 GMT"
   end
 end
