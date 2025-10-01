@@ -1,3 +1,9 @@
+<div class="d-flex justify-content-end mb-3">
+  <button onclick="startMainGuide()" class="btn btn-outline-secondary">
+    Ver Guía Interactiva
+  </button>
+</div>
+
 <div class="container">
   <h1 class="mb-4 text-center">Panel Principal del Sistema</h1>
 
@@ -5,7 +11,7 @@
 
     <!-- Gestión de usuarios -->
     <div class="col-md-4">
-      <div class="card shadow-sm h-100">
+      <div class="card shadow-sm h-100" id="card-usuarios">
         <div class="card-body text-center">
           <h5 class="card-title"><i class="bi bi-people-fill me-2"></i>Gestión de Usuarios</h5>
           <p class="card-text text-muted">Administración integral de usuarios, perfiles y roles.</p>
@@ -18,7 +24,7 @@
 
     <!-- Organización académica -->
     <div class="col-md-4">
-      <div class="card shadow-sm h-100">
+      <div class="card shadow-sm h-100" id="card-organizacion">
         <div class="card-body text-center">
           <h5 class="card-title"><i class="bi bi-building me-2"></i>Organización Académica</h5>
           <p class="card-text text-muted">Panel integral de turnos, cursos, divisiones y ciclos lectivos.</p>
@@ -31,7 +37,7 @@
 
     <!-- Materias -->
     <div class="col-md-4">
-      <div class="card shadow-sm h-100">
+      <div class="card shadow-sm h-100" id="card-materias">
         <div class="card-body text-center">
           <h5 class="card-title"><i class="bi bi-journal-text me-2"></i>Materias</h5>
           <p class="card-text text-muted">Panel integral de materias, divisiones, docentes y alumnos.</p>

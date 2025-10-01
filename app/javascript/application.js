@@ -1,26 +1,74 @@
 // app/javascript/application.js
 
-// Importa Rails Turbo y otras configuraciones
+// Activa Turbo (Hotwire) y Stimulus
 import "@hotwired/turbo-rails"
 import "controllers"
-
-// Importa Bootstrap desde CDN
 import * as bootstrap from "bootstrap"
 
-// Re-inicializar Bootstrap cada vez que Turbo cambia de página
+// Hace que esté disponible como variable global
+window.bootstrap = bootstrap
+
 document.addEventListener("turbo:load", () => {
-  // Dropdowns
-  document.querySelectorAll('[data-bs-toggle="dropdown"]').forEach(el => {
-    new bootstrap.Dropdown(el)
-  })
-
-  // Tooltips (si querés usarlos más adelante)
+  // Tooltips
   document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
-    new bootstrap.Tooltip(el)
+    if (!el._tooltip) el._tooltip = new bootstrap.Tooltip(el)
   })
 
-  // Popovers (si los necesitás)
+  // Popovers
   document.querySelectorAll('[data-bs-toggle="popover"]').forEach(el => {
-    new bootstrap.Popover(el)
+    if (!el._popover) el._popover = new bootstrap.Popover(el)
   })
 })
+
+// Driver.js tour para el Panel Principal
+document.addEventListener("turbo:load", () => {
+  if (document.querySelector('#card-usuarios')) {
+    window.startMainGuide = () => {
+      const driver = window.driver.js.driver;
+
+      const tour = driver({
+        showProgress: true,
+        steps: [
+          {
+            element: '#card-usuarios',
+            popover: {
+              title: 'Gestión de Usuarios',
+              description: 'Aquí podés administrar usuarios, roles y perfiles.',
+              side: "top",
+              align: "center"
+            }
+          },
+          {
+            element: '#card-organizacion',
+            popover: {
+              title: 'Organización Académica',
+              description: 'Gestioná cursos, divisiones y ciclos lectivos desde acá.',
+              side: "top",
+              align: "center"
+            }
+          },
+          {
+            element: '#card-materias',
+            popover: {
+              title: 'Materias',
+              description: 'Accedé al panel integral de materias, docentes y alumnos.',
+              side: "top",
+              align: "center"
+            }
+          },
+          {
+            popover: {
+              title: '¡Listo!',
+              description: 'Ya conocés las funciones principales del sistema.'
+            }
+          }
+        ]
+      });
+
+      tour.drive();
+    }
+
+    // ⚡ OPCIONAL: arrancar automáticamente la primera vez que entrás
+    // window.startMainGuide();
+  }
+});
