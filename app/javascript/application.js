@@ -3,10 +3,6 @@
 // Activa Turbo (Hotwire) y Stimulus
 import "@hotwired/turbo-rails"
 import "controllers"
-import * as bootstrap from "bootstrap"
-
-// Hace que esté disponible como variable global
-window.bootstrap = bootstrap
 
 document.addEventListener("turbo:load", () => {
   // Tooltips
