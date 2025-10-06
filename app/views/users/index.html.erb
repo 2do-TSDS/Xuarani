@@ -1,10 +1,12 @@
 <div class="container">
   <h1 class="mb-4 text-center">Panel de Usuarios</h1>
 
+  <!-- Botón crear nuevo usuario -->
   <div class="mb-3 text-end">
     <%= link_to "Nuevo Usuario", new_user_path, class: "btn btn-success" %>
   </div>
 
+  <!-- Tabla principal -->
   <div class="card shadow-sm">
     <div class="card-body p-0">
       <div id="usersTable">
@@ -31,18 +33,28 @@
                   <% end %>
                 </td>
                 <td class="text-end">
+                  <!-- Botón para desplegar detalles -->
                   <button class="btn btn-sm btn-outline-secondary" type="button"
                           data-bs-toggle="collapse" data-bs-target="#user_<%= user.id %>">
                     Ver
                   </button>
+
+                  <!-- Botón editar -->
                   <%= link_to "Editar", edit_user_path(user), class: "btn btn-sm btn-outline-primary" %>
-                  <%= link_to "Eliminar", user, method: :delete,
-                                data: { confirm: "¿Seguro que deseas eliminar este usuario?" },
-                                class: "btn btn-sm btn-outline-danger" %>
+
+                  <!-- Botón eliminar (abre modal) -->
+                  <button type="button"
+                          class="btn btn-sm btn-outline-danger"
+                          data-bs-toggle="modal"
+                          data-bs-target="#confirmDeleteModal"
+                          data-user-id="<%= user.id %>"
+                          data-user-name="<%= user.full_name.presence || user.email %>">
+                    Eliminar
+                  </button>
                 </td>
               </tr>
 
-              <!-- Fila desplegable -->
+              <!-- Fila de detalles desplegable -->
               <tr class="p-0 border-0">
                 <td colspan="4" class="p-0 border-0">
                   <div class="collapse fade" id="user_<%= user.id %>" data-bs-parent="#usersTable">
@@ -50,7 +62,7 @@
                       <h6 class="fw-bold">Perfil</h6>
                       <% if user.perfil.present? %>
                         <p><strong>DNI:</strong> <%= user.dni %></p>
-                        <p><strong>Fecha de nacimiento:</strong> 
+                        <p><strong>Fecha de nacimiento:</strong>
                           <%= l(user.fecha_nacimiento, format: :long) if user.fecha_nacimiento %>
                         </p>
                         <p><strong>Dirección:</strong> <%= user.direccion %></p>
@@ -69,3 +81,46 @@
     </div>
   </div>
 </div>
+
+<!-- Modal de confirmación de eliminación -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title" id="confirmDeleteModalLabel">
+          <i class="bi bi-exclamation-triangle-fill me-2"></i> Confirmar eliminación
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        ¿Estás seguro de que deseas eliminar a <strong id="userToDelete"></strong>?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <form id="deleteUserForm" method="post">
+          <%= hidden_field_tag :_method, :delete %>
+          <%= csrf_meta_tags %>
+          <button type="submit" class="btn btn-danger">Eliminar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Script para configurar el modal dinámicamente -->
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const modal = document.getElementById("confirmDeleteModal");
+    const userLabel = document.getElementById("userToDelete");
+    const form = document.getElementById("deleteUserForm");
+
+    modal.addEventListener("show.bs.modal", (event) => {
+      const button = event.relatedTarget;
+      const userId = button.getAttribute("data-user-id");
+      const userName = button.getAttribute("data-user-name") || "este usuario";
+
+      userLabel.textContent = userName;
+      form.action = `/users/${userId}`;
+    });
+  });
+</script>

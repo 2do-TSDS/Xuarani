@@ -1,25 +1,11 @@
 // app/javascript/application.js
 
-// Activa Turbo (Hotwire) y Stimulus
-import "@hotwired/turbo-rails"
-import "controllers"
-
-document.addEventListener("turbo:load", () => {
-  // Tooltips
-  document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
-    if (!el._tooltip) el._tooltip = new bootstrap.Tooltip(el)
-  })
-
-  // Popovers
-  document.querySelectorAll('[data-bs-toggle="popover"]').forEach(el => {
-    if (!el._popover) el._popover = new bootstrap.Popover(el)
-  })
-})
-
 // Driver.js tour para el Panel Principal
-document.addEventListener("turbo:load", () => {
+document.addEventListener("DOMContentLoaded", () => {
+  // Solo ejecutar si existen las cards del panel
   if (document.querySelector('#card-usuarios')) {
     window.startMainGuide = () => {
+      // Usamos el objeto global driver
       const driver = window.driver.js.driver;
 
       const tour = driver({
@@ -62,9 +48,9 @@ document.addEventListener("turbo:load", () => {
       });
 
       tour.drive();
-    }
+    };
 
-    // ⚡ OPCIONAL: arrancar automáticamente la primera vez que entrás
+    // ⚡ OPCIONAL: arrancar automáticamente la primera vez
     // window.startMainGuide();
   }
 });

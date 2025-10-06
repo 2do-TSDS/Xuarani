@@ -1,26 +1,79 @@
 es:
   devise:
+    confirmations:
+      confirmed: "✅ Tu cuenta fue confirmada correctamente. Ya puedes iniciar sesión."
+      send_instructions: "📧 Recibirás un correo con instrucciones para confirmar tu cuenta."
+      send_paranoid_instructions: "Si tu correo existe en nuestra base de datos, recibirás un correo con las instrucciones para confirmar tu cuenta en unos minutos."
     failure:
-      unauthenticated: "⚠️ Debes iniciar sesión antes de continuar."
+      already_authenticated: "Ya has iniciado sesión."
+      inactive: "Tu cuenta aún no ha sido activada."
       invalid: "Correo o contraseña inválidos."
+      locked: "Tu cuenta está bloqueada."
+      last_attempt: "Tienes un intento más antes de que tu cuenta se bloquee."
       not_found_in_database: "Correo o contraseña inválidos."
       timeout: "Tu sesión ha expirado. Por favor inicia sesión nuevamente."
+      unauthenticated: "⚠️ Debes iniciar sesión antes de continuar."
       unconfirmed: "Debes confirmar tu correo electrónico antes de continuar."
-      locked: "Tu cuenta está bloqueada."
+    mailer:
+      confirmation_instructions:
+        subject: "Instrucciones de confirmación"
+      reset_password_instructions:
+        subject: "Instrucciones para restablecer la contraseña"
+      unlock_instructions:
+        subject: "Instrucciones para desbloquear la cuenta"
+      email_changed:
+        subject: "Correo electrónico modificado"
+      password_change:
+        subject: "Contraseña modificada"
+    omniauth_callbacks:
+      failure: "No pudimos autenticarte desde %{kind} porque \"%{reason}\"."
+      success: "Autenticación exitosa desde tu cuenta de %{kind}."
+    passwords:
+      no_token: "No puedes acceder a esta página sin venir desde un correo de restablecimiento de contraseña. Asegúrate de usar la URL completa del correo."
+      send_instructions: "📧 Recibirás un correo con instrucciones para restablecer tu contraseña en unos minutos."
+      send_paranoid_instructions: "Si tu correo electrónico existe en nuestra base de datos, recibirás un enlace de recuperación en unos minutos."
+      updated: "🔑 Tu contraseña se cambió correctamente. Ya puedes iniciar sesión."
+      updated_not_active: "Tu contraseña se cambió correctamente."
+    registrations:
+      destroyed: "👋 Tu cuenta fue eliminada. ¡Esperamos verte pronto!"
+      signed_up: "🎉 ¡Bienvenido! Te has registrado correctamente."
+      signed_up_but_inactive: "Te has registrado correctamente, pero tu cuenta aún no está activada."
+      signed_up_but_locked: "Te has registrado correctamente, pero tu cuenta está bloqueada."
+      signed_up_but_unconfirmed: "📩 Te enviamos un correo con el enlace de confirmación. Revísalo para activar tu cuenta."
+      update_needs_confirmation: "Has actualizado tu cuenta, pero necesitamos verificar tu nuevo correo electrónico. Revisa tu bandeja y sigue el enlace de confirmación."
+      updated: "✅ Tu cuenta se actualizó correctamente."
+      updated_but_not_signed_in: "Tu cuenta se actualizó correctamente, pero como cambiaste tu contraseña, necesitas iniciar sesión nuevamente."
     sessions:
       signed_in: "✅ Has iniciado sesión correctamente."
       signed_out: "👋 Has cerrado sesión correctamente."
       already_signed_out: "👋 Ya habías cerrado sesión."
-    registrations:
-      signed_up: "🎉 ¡Bienvenido! Te has registrado correctamente."
-      updated: "✅ Tu cuenta se actualizó correctamente."
-      destroyed: "👋 Tu cuenta fue eliminada. ¡Esperamos verte pronto!"
-    passwords:
-      send_instructions: "📧 Recibirás un correo con instrucciones para restablecer tu contraseña en unos minutos."
-      updated: "🔑 Tu contraseña se cambió correctamente. Ya puedes iniciar sesión."
-    confirmations:
-      send_instructions: "📧 Recibirás un correo con instrucciones para confirmar tu cuenta."
-      confirmed: "✅ Tu cuenta fue confirmada correctamente. Ya puedes iniciar sesión."
     unlocks:
       send_instructions: "📧 Recibirás un correo con instrucciones para desbloquear tu cuenta."
+      send_paranoid_instructions: "Si tu cuenta existe, recibirás un correo con las instrucciones para desbloquearla en unos minutos."
       unlocked: "✅ Tu cuenta fue desbloqueada. Inicia sesión para continuar."
+  errors:
+    messages:
+      already_confirmed: "ya fue confirmada, intenta iniciar sesión"
+      confirmation_period_expired: "debe confirmarse dentro de %{period}, solicita una nueva confirmación"
+      expired: "ha expirado, solicita una nueva"
+      not_found: "no encontrado"
+      not_locked: "no estaba bloqueado"
+      not_saved:
+        one: "1 error impidió guardar este %{resource}:"
+        other: "%{count} errores impidieron guardar este %{resource}:"
+
+es:
+  activerecord:
+    models:
+      user: "Usuario"
+    attributes:
+      user:
+        email: "Correo electrónico"
+        password: "Contraseña"
+        password_confirmation: "Confirmar contraseña"
+        nombres: "Nombres"
+        apellidos: "Apellidos"
+        dni: "DNI"
+        fecha_nacimiento: "Fecha de nacimiento"
+        direccion: "Dirección"
+        telefono: "Teléfono"

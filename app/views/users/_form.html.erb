@@ -1,8 +1,10 @@
-<%= form_with(model: user, local: true) do |f| %>
+<%= form_with(model: user, local: true, class: "needs-validation") do |f| %>
   <% if user.errors.any? %>
-    <div class="alert alert-danger">
-      <h5><i class="bi bi-exclamation-triangle me-2"></i>
-        <%= pluralize(user.errors.count, "error") %> impidieron guardar el usuario:</h5>
+    <div class="alert alert-danger shadow-sm">
+      <h5 class="fw-bold">
+        <i class="bi bi-exclamation-triangle me-2"></i>
+        <%= pluralize(user.errors.count, "error") %> impidieron guardar el usuario:
+      </h5>
       <ul class="mb-0">
         <% user.errors.full_messages.each do |msg| %>
           <li><%= msg %></li>
@@ -11,116 +13,152 @@
     </div>
   <% end %>
 
-  <!-- Datos básicos del usuario -->
-  <div class="card mb-4 shadow-sm">
-    <div class="card-header bg-primary text-white">
-      <i class="bi bi-person-fill me-2"></i>Datos de Usuario
-    </div>
-    <div class="card-body">
-      <div class="mb-3">
-        <%= f.label :email, class: "form-label" %>
-        <div class="input-group">
-          <span class="input-group-text"><i class="bi bi-envelope-fill"></i></span>
-          <%= f.email_field :email, class: "form-control", placeholder: "Correo electrónico" %>
+  <div class="row g-4">
+    <!-- DATOS DE USUARIO -->
+    <div class="col-lg-6">
+      <div class="card shadow-sm border-0 h-100">
+        <div class="card-header bg-primary text-white fw-bold">
+          <i class="bi bi-person-fill me-2"></i>Datos de Usuario
+        </div>
+        <div class="card-body">
+          <div class="mb-3">
+            <%= f.label :email, class: "form-label fw-semibold" %>
+            <div class="input-group">
+              <span class="input-group-text bg-light">
+                <i class="bi bi-envelope-fill"></i>
+              </span>
+              <%= f.email_field :email, class: "form-control", placeholder: "Correo electrónico" %>
+            </div>
+          </div>
+
+          <% if f.object.new_record? || local_assigns[:show_password_fields] %>
+            <hr>
+            <h6 class="fw-bold text-secondary mb-3">
+              <%= f.object.new_record? ? "" : "Actualizar contraseña" %>
+            </h6>
+
+            <div class="mb-3">
+              <%= f.label :password, class: "form-label fw-semibold" %>
+              <div class="input-group">
+                <span class="input-group-text bg-light">
+                  <i class="bi bi-lock-fill"></i>
+                </span>
+                <%= f.password_field :password, class: "form-control", placeholder: "Nueva contraseña" %>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <%= f.label :password_confirmation, class: "form-label fw-semibold" %>
+              <div class="input-group">
+                <span class="input-group-text bg-light">
+                  <i class="bi bi-lock-fill"></i>
+                </span>
+                <%= f.password_field :password_confirmation, class: "form-control", placeholder: "Confirmar nueva contraseña" %>
+              </div>
+            </div>
+
+            <% unless f.object.new_record? %>
+              <small class="text-muted">
+                Si dejas estos campos vacíos, la contraseña actual no se modificará.
+              </small>
+            <% end %>
+          <% end %>
         </div>
       </div>
+    </div>
 
-      <% if f.object.new_record? %>
-        <div class="mb-3">
-          <%= f.label :password, class: "form-label" %>
-          <div class="input-group">
-            <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
-            <%= f.password_field :password, class: "form-control", placeholder: "Contraseña" %>
-          </div>
+    <!-- PERFIL -->
+    <div class="col-lg-6">
+      <div class="card shadow-sm border-0 h-100">
+        <div class="card-header bg-success text-white fw-bold">
+          <i class="bi bi-card-list me-2"></i>Perfil del Usuario
         </div>
+        <div class="card-body">
+          <%= f.fields_for :perfil, user.perfil || user.build_perfil do |pf| %>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <%= pf.label :nombres, class: "form-label fw-semibold" %>
+                <div class="input-group">
+                  <span class="input-group-text bg-light">
+                    <i class="bi bi-person"></i>
+                  </span>
+                  <%= pf.text_field :nombres, class: "form-control", placeholder: "Nombres" %>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <%= pf.label :apellidos, class: "form-label fw-semibold" %>
+                <div class="input-group">
+                  <span class="input-group-text bg-light">
+                    <i class="bi bi-person-vcard"></i>
+                  </span>
+                  <%= pf.text_field :apellidos, class: "form-control", placeholder: "Apellidos" %>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <%= pf.label :dni, class: "form-label fw-semibold" %>
+                <div class="input-group">
+                  <span class="input-group-text bg-light">
+                    <i class="bi bi-credit-card-2-front"></i>
+                  </span>
+                  <%= pf.text_field :dni, class: "form-control", placeholder: "DNI" %>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <%= pf.label :fecha_nacimiento, class: "form-label fw-semibold" %>
+                <%= pf.date_field :fecha_nacimiento, class: "form-control" %>
+              </div>
+              <div class="col-md-6">
+                <%= pf.label :direccion, class: "form-label fw-semibold" %>
+                <div class="input-group">
+                  <span class="input-group-text bg-light">
+                    <i class="bi bi-geo-alt"></i>
+                  </span>
+                  <%= pf.text_field :direccion, class: "form-control", placeholder: "Dirección" %>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <%= pf.label :telefono, class: "form-label fw-semibold" %>
+                <div class="input-group">
+                  <span class="input-group-text bg-light">
+                    <i class="bi bi-telephone"></i>
+                  </span>
+                  <%= pf.text_field :telefono, class: "form-control", placeholder: "Teléfono" %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
 
-        <div class="mb-3">
-          <%= f.label :password_confirmation, class: "form-label" %>
-          <div class="input-group">
-            <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
-            <%= f.password_field :password_confirmation, class: "form-control", placeholder: "Repetir contraseña" %>
-          </div>
+    <!-- ROLES -->
+    <div class="col-12">
+      <div class="card shadow-sm border-0">
+        <div class="card-header bg-dark text-white fw-bold">
+          <i class="bi bi-shield-lock me-2"></i>Rol
         </div>
-      <% end %>
+        <div class="card-body">
+          <div class="d-flex flex-wrap gap-2">
+            <% Role.all.each do |role| %>
+              <div class="form-check form-check-inline">
+                <%= radio_button_tag "user[role_ids][]", role.id, user.roles.include?(role),
+                      id: "role_#{role.id}", class: "btn-check" %>
+                <%= label_tag "role_#{role.id}", role.nombre,
+                      class: "btn #{role_badge_class(role.nombre)}" %>
+              </div>
+            <% end %>
+          </div>
+          <small class="text-muted d-block mt-2">Selecciona solo un rol.</small>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- Perfil asociado -->
-  <div class="card mb-4 shadow-sm">
-    <div class="card-header bg-success text-white">
-      <i class="bi bi-card-list me-2"></i>Perfil del Usuario
-    </div>
-    <div class="card-body">
-      <%= f.fields_for :perfil, user.perfil || user.build_perfil do |pf| %>
-        <div class="row g-3">
-          <div class="col-md-6">
-            <%= pf.label :nombres, class: "form-label" %>
-            <div class="input-group">
-              <span class="input-group-text"><i class="bi bi-person"></i></span>
-              <%= pf.text_field :nombres, class: "form-control", placeholder: "Nombres" %>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <%= pf.label :apellidos, class: "form-label" %>
-            <div class="input-group">
-              <span class="input-group-text"><i class="bi bi-person-vcard"></i></span>
-              <%= pf.text_field :apellidos, class: "form-control", placeholder: "Apellidos" %>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <%= pf.label :dni, class: "form-label" %>
-            <div class="input-group">
-              <span class="input-group-text"><i class="bi bi-credit-card-2-front"></i></span>
-              <%= pf.text_field :dni, class: "form-control", placeholder: "DNI" %>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <%= pf.label :fecha_nacimiento, class: "form-label" %>
-            <%= pf.date_field :fecha_nacimiento, class: "form-control" %>
-          </div>
-          <div class="col-md-6">
-            <%= pf.label :direccion, class: "form-label" %>
-            <div class="input-group">
-              <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
-              <%= pf.text_field :direccion, class: "form-control", placeholder: "Dirección" %>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <%= pf.label :telefono, class: "form-label" %>
-            <div class="input-group">
-              <span class="input-group-text"><i class="bi bi-telephone"></i></span>
-              <%= pf.text_field :telefono, class: "form-control", placeholder: "Teléfono" %>
-            </div>
-          </div>
-        </div>
-      <% end %>
-    </div>
-  </div>
-
-<!-- Roles (solo uno permitido) -->
-<div class="card mb-4 shadow-sm">
-  <div class="card-header bg-dark text-white">
-    <i class="bi bi-shield-lock me-2"></i>Rol
-  </div>
-  <div class="card-body">
-    <div class="d-flex flex-wrap gap-2">
-      <% Role.all.each do |role| %>
-        <div class="form-check form-check-inline">
-          <%= radio_button_tag "user[role_ids][]", role.id, user.roles.include?(role),
-                id: "role_#{role.id}", class: "btn-check" %>
-          <%= label_tag "role_#{role.id}", role.nombre,
-                class: "btn #{role_badge_class(role.nombre)}" %>
-        </div>
-      <% end %>
-    </div>
-    <small class="text-muted d-block mt-2">Solo puedes seleccionar un rol.</small>
-  </div>
-</div>
-
-
-  <!-- Botones -->
-  <div class="d-flex justify-content-end">
-    <%= f.submit(user.new_record? ? "Crear Usuario" : "Actualizar Usuario", class: "btn btn-primary btn-lg") %>
-    <%= link_to "Cancelar", users_path, class: "btn btn-outline-secondary btn-lg ms-2" %>
+  <!-- BOTONES -->
+  <div class="mt-4 text-center">
+    <%= f.submit(user.new_record? ? "Crear Usuario" : "Actualizar Usuario",
+                 class: "btn btn-primary btn-lg px-5") %>
+    <%= link_to "Cancelar", users_path,
+                class: "btn btn-outline-secondary btn-lg ms-2 px-4" %>
   </div>
 <% end %>
