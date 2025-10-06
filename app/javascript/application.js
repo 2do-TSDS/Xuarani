@@ -1,26 +1,56 @@
 // app/javascript/application.js
 
-// Importa Rails Turbo y otras configuraciones
-import "@hotwired/turbo-rails"
-import "controllers"
+// Driver.js tour para el Panel Principal
+document.addEventListener("DOMContentLoaded", () => {
+  // Solo ejecutar si existen las cards del panel
+  if (document.querySelector('#card-usuarios')) {
+    window.startMainGuide = () => {
+      // Usamos el objeto global driver
+      const driver = window.driver.js.driver;
 
-// Importa Bootstrap desde CDN
-import * as bootstrap from "bootstrap"
+      const tour = driver({
+        showProgress: true,
+        steps: [
+          {
+            element: '#card-usuarios',
+            popover: {
+              title: 'Gestión de Usuarios',
+              description: 'Aquí podés administrar usuarios, roles y perfiles.',
+              side: "top",
+              align: "center"
+            }
+          },
+          {
+            element: '#card-organizacion',
+            popover: {
+              title: 'Organización Académica',
+              description: 'Gestioná cursos, divisiones y ciclos lectivos desde acá.',
+              side: "top",
+              align: "center"
+            }
+          },
+          {
+            element: '#card-materias',
+            popover: {
+              title: 'Materias',
+              description: 'Accedé al panel integral de materias, docentes y alumnos.',
+              side: "top",
+              align: "center"
+            }
+          },
+          {
+            popover: {
+              title: '¡Listo!',
+              description: 'Ya conocés las funciones principales del sistema.'
+            }
+          }
+        ]
+      });
 
-// Re-inicializar Bootstrap cada vez que Turbo cambia de página
-document.addEventListener("turbo:load", () => {
-  // Dropdowns
-  document.querySelectorAll('[data-bs-toggle="dropdown"]').forEach(el => {
-    new bootstrap.Dropdown(el)
-  })
+      tour.drive();
+    };
 
-  // Tooltips (si querés usarlos más adelante)
-  document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
-    new bootstrap.Tooltip(el)
-  })
-
-  // Popovers (si los necesitás)
-  document.querySelectorAll('[data-bs-toggle="popover"]').forEach(el => {
-    new bootstrap.Popover(el)
-  })
-})
+    // ⚡ OPCIONAL: arrancar automáticamente la primera vez
+    // window.startMainGuide();
+  }
+});

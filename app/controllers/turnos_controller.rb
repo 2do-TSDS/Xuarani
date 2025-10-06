@@ -1,71 +1,60 @@
 class TurnosController < ApplicationController
+  include RedirectToOrganizacion
+  before_action :set_turno, only: [:show, :edit, :update, :destroy]
   load_and_authorize_resource
-  before_action :set_turno, only: %i[ show edit update destroy ]
-
-  # GET /turnos or /turnos.json
   def index
     @turnos = Turno.all
   end
 
-  # GET /turnos/1 or /turnos/1.json
-  def show
-  end
+  def show; end
 
-  # GET /turnos/new
   def new
     @turno = Turno.new
   end
 
-  # GET /turnos/1/edit
-  def edit
-  end
+  def edit; end
 
-  # POST /turnos or /turnos.json
   def create
     @turno = Turno.new(turno_params)
-
-    respond_to do |format|
-      if @turno.save
-        format.html { redirect_to @turno, notice: "Turno was successfully created." }
-        format.json { render :show, status: :created, location: @turno }
+    if @turno.save
+      if from_organizacion?
+        redirect_back_to_organizacion("tab-turnos", "Turno creado correctamente.")
       else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @turno.errors, status: :unprocessable_entity }
+        redirect_to @turno, notice: "Turno creado correctamente."
       end
+    else
+      render :new, status: :unprocessable_entity
     end
   end
 
-  # PATCH/PUT /turnos/1 or /turnos/1.json
   def update
-    respond_to do |format|
-      if @turno.update(turno_params)
-        format.html { redirect_to @turno, notice: "Turno was successfully updated.", status: :see_other }
-        format.json { render :show, status: :ok, location: @turno }
+    if @turno.update(turno_params)
+      if from_organizacion?
+        redirect_back_to_organizacion("tab-turnos", "Turno actualizado.")
       else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @turno.errors, status: :unprocessable_entity }
+        redirect_to @turno, notice: "Turno actualizado."
       end
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 
-  # DELETE /turnos/1 or /turnos/1.json
   def destroy
-    @turno.destroy!
-
-    respond_to do |format|
-      format.html { redirect_to turnos_path, notice: "Turno was successfully destroyed.", status: :see_other }
-      format.json { head :no_content }
+    @turno.destroy
+    if from_organizacion?
+      redirect_back_to_organizacion("tab-turnos", "Turno eliminado.")
+    else
+      redirect_to turnos_url, notice: "Turno eliminado."
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_turno
-      @turno = Turno.find(params.expect(:id))
-    end
 
-    # Only allow a list of trusted parameters through.
-    def turno_params
-      params.expect(turno: [ :nombre ])
-    end
+  def set_turno
+    @turno = Turno.find(params[:id])
+  end
+
+  def turno_params
+    params.require(:turno).permit(:nombre)
+  end
 end

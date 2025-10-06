@@ -1,0 +1,33 @@
+<% flash.each do |type, message| %>
+  <% next if message.blank? %>
+
+  <% bootstrap_class =
+      case type.to_sym
+      when :notice, :success then "text-bg-success"
+      when :alert, :error    then "text-bg-danger"
+      else "text-bg-info"
+      end %>
+
+  <div class="toast align-items-center <%= bootstrap_class %> border-0 shadow-sm mb-2"
+       role="alert" aria-live="assertive" aria-atomic="true"
+       data-bs-delay="4000" data-bs-autohide="true">
+    <div class="d-flex">
+      <div class="toast-body">
+        <i class="bi <%= [:notice, :success].include?(type.to_sym) ? 'bi-check-circle-fill' : 'bi-exclamation-triangle-fill' %> me-2"></i>
+        <%= message %>
+      </div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto"
+              data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+  </div>
+<% end %>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const toastElList = [].slice.call(document.querySelectorAll('.toast'))
+    toastElList.forEach(toastEl => {
+      let toast = new bootstrap.Toast(toastEl)
+      toast.show()
+    })
+  })
+</script>

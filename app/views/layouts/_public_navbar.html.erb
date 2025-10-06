@@ -1,0 +1,21 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+  <div class="container">
+    <%= link_to root_path, class: "navbar-brand d-flex align-items-center fw-bold" do %>
+      <%= image_tag "escudo.png", alt: "Logo Xuarani", class: "me-2 logo-img" %>
+      Xuarani
+    <% end %>
+
+    <div class="ms-auto">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <%= link_to "Ingresar", new_user_session_path, class: "nav-link" %>
+        </li>
+        <% if devise_mapping.registerable? %>
+          <li class="nav-item">
+            <%= link_to "Registrarse", new_user_registration_path, class: "nav-link" %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</nav>

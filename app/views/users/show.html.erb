@@ -1,10 +1,35 @@
-<p style="color: green"><%= notice %></p>
+<div class="container">
+  <h1 class="mb-4">Detalle de Usuario</h1>
 
-<%= render @user %>
+  <div class="card shadow-sm mb-3">
+    <div class="card-body">
+      <h5 class="card-title">Usuario</h5>
+      <p><strong>Email:</strong> <%= @user.email %></p>
+      <p><strong>Roles:</strong>
+        <% @user.roles.each do |role| %>
+          <span class="badge bg-secondary"><%= role.nombre %></span>
+        <% end %>
+      </p>
+    </div>
+  </div>
 
-<div>
-  <%= link_to "Edit this user", edit_user_path(@user) %> |
-  <%= link_to "Back to users", users_path %>
+  <% if @user.perfil.present? %>
+    <div class="card shadow-sm mb-3">
+      <div class="card-body">
+        <h5 class="card-title">Perfil</h5>
+        <p><strong>Nombre completo:</strong> <%= @user.full_name %></p>
+        <p><strong>DNI:</strong> <%= @user.dni %></p>
+        <p><strong>Fecha de nacimiento:</strong> <%= l(@user.fecha_nacimiento, format: :long) if @user.fecha_nacimiento %></p>
+        <p><strong>Dirección:</strong> <%= @user.direccion %></p>
+        <p><strong>Teléfono:</strong> <%= @user.telefono %></p>
+      </div>
+    </div>
+  <% else %>
+    <div class="alert alert-warning">Este usuario no tiene perfil cargado.</div>
+  <% end %>
 
-  <%= button_to "Destroy this user", @user, method: :delete %>
+  <div class="mt-3">
+    <%= link_to "Editar", edit_user_path(@user), class: "btn btn-primary" %>
+    <%= link_to "Volver al listado", users_path, class: "btn btn-outline-secondary ms-2" %>
+  </div>
 </div>

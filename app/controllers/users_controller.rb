@@ -55,7 +55,8 @@ class UsersController < ApplicationController
     def user_params
       params.require(:user).permit(
         :email, :password, :password_confirmation,
-        role_ids: [] # many-to-many
+        role_ids: [],
+        perfil_attributes: [:id, :nombres, :apellidos, :dni, :fecha_nacimiento, :direccion, :telefono, :_destroy]
       )
     end
 end

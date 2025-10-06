@@ -1,71 +1,61 @@
 class CicloLectivosController < ApplicationController
+  include RedirectToOrganizacion
   load_and_authorize_resource
-  before_action :set_ciclo_lectivo, only: %i[ show edit update destroy ]
+  before_action :set_ciclo_lectivo, only: [:show, :edit, :update, :destroy]
 
-  # GET /ciclo_lectivos or /ciclo_lectivos.json
   def index
     @ciclo_lectivos = CicloLectivo.all
   end
 
-  # GET /ciclo_lectivos/1 or /ciclo_lectivos/1.json
-  def show
-  end
+  def show; end
 
-  # GET /ciclo_lectivos/new
   def new
     @ciclo_lectivo = CicloLectivo.new
   end
 
-  # GET /ciclo_lectivos/1/edit
-  def edit
-  end
+  def edit; end
 
-  # POST /ciclo_lectivos or /ciclo_lectivos.json
   def create
     @ciclo_lectivo = CicloLectivo.new(ciclo_lectivo_params)
-
-    respond_to do |format|
-      if @ciclo_lectivo.save
-        format.html { redirect_to @ciclo_lectivo, notice: "Ciclo lectivo was successfully created." }
-        format.json { render :show, status: :created, location: @ciclo_lectivo }
+    if @ciclo_lectivo.save
+      if from_organizacion?
+        redirect_back_to_organizacion("tab-ciclos", "Ciclo lectivo creado correctamente.")
       else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @ciclo_lectivo.errors, status: :unprocessable_entity }
+        redirect_to @ciclo_lectivo, notice: "Ciclo lectivo creado correctamente."
       end
+    else
+      render :new, status: :unprocessable_entity
     end
   end
 
-  # PATCH/PUT /ciclo_lectivos/1 or /ciclo_lectivos/1.json
   def update
-    respond_to do |format|
-      if @ciclo_lectivo.update(ciclo_lectivo_params)
-        format.html { redirect_to @ciclo_lectivo, notice: "Ciclo lectivo was successfully updated.", status: :see_other }
-        format.json { render :show, status: :ok, location: @ciclo_lectivo }
+    if @ciclo_lectivo.update(ciclo_lectivo_params)
+      if from_organizacion?
+        redirect_back_to_organizacion("tab-ciclos", "Ciclo lectivo actualizado.")
       else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @ciclo_lectivo.errors, status: :unprocessable_entity }
+        redirect_to @ciclo_lectivo, notice: "Ciclo lectivo actualizado."
       end
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 
-  # DELETE /ciclo_lectivos/1 or /ciclo_lectivos/1.json
   def destroy
-    @ciclo_lectivo.destroy!
-
-    respond_to do |format|
-      format.html { redirect_to ciclo_lectivos_path, notice: "Ciclo lectivo was successfully destroyed.", status: :see_other }
-      format.json { head :no_content }
+    @ciclo_lectivo.destroy
+    if from_organizacion?
+      redirect_back_to_organizacion("tab-ciclos", "Ciclo lectivo eliminado.")
+    else
+      redirect_to ciclo_lectivos_url, notice: "Ciclo lectivo eliminado."
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_ciclo_lectivo
-      @ciclo_lectivo = CicloLectivo.find(params.expect(:id))
-    end
 
-    # Only allow a list of trusted parameters through.
-    def ciclo_lectivo_params
-      params.expect(ciclo_lectivo: [ :año, :inicio, :final ])
-    end
+  def set_ciclo_lectivo
+    @ciclo_lectivo = CicloLectivo.find(params[:id])
+  end
+
+  def ciclo_lectivo_params
+    params.require(:ciclo_lectivo).permit(:año, :inicio, :final)
+  end
 end

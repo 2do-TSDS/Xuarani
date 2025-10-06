@@ -1,36 +1,53 @@
 class Ability
-    include CanCan::Ability
+  include CanCan::Ability
 
-    def initialize(user)
-        user ||= User.new
+  def initialize(user)
+    user ||= User.new
 
-        return administrador_rules if user.has_role?(:administrador)
-        preceptor_roles if user.has_role?(:preceptor)
-        docente_rules if user.has_role?(:docente)
-        alumno_rules if user.has_role?(:alumno)
+    return administrador_rules if user.has_role?(:administrador)
+    return preceptor_roles     if user.has_role?(:preceptor)
+    return docente_rules(user) if user.has_role?(:docente)
+    return alumno_rules        if user.has_role?(:alumno)
 
-        # Roles creados a futuro solo lectura de recursos públicos (sin Model)
-        guest_rules if user.roles.empty?
+    guest_rules
+  end
 
-    end
+  def administrador_rules
+    can :manage, :all
+  end
 
-    def administrador_rules
-        can :manage, :all
-    end
+  def preceptor_roles
+    can :read, :all
+  end
 
-    def preceptor_roles
-        can :read, :all
-    end
+  def docente_rules(user)
+    can :read, :docente_dashboard
 
-    def docente_rules
-        can :read, :all
-    end
+    # Puede ver solo las divisiones/materias que le correspondan
+    can :read, MateriaDivision, materia_docentes: { docente_id: user.id }
 
-    def alumno_rules
-        can :read, :all
-    end
+    # ❌ ANTES: usabas una asociación que no existe en Materia
+    # can :read, Materia, materia_divisiones: { materia_docentes: { docente_id: user.id } }
 
-    def guest_rules
-        can :read, :publico
-    end
+    # ✅ NUEVO: acceso a materias a través de MateriaDivision
+    can :read, Materia, id: MateriaDivision
+                           .joins(:materia_docentes)
+                           .where(materia_docentes: { docente_id: user.id })
+                           .select(:materia_id)
+
+    # Puede ver alumnos solo dentro de sus materias/divisiones
+    can :read, MateriaAlumno, materia_division: { materia_docentes: { docente_id: user.id } }
+
+    # Puede gestionar asistencias solo de sus propios alumnos
+    can :manage, AsistenciaMateria,
+        materia_alumno: { materia_division: { materia_docentes: { docente_id: user.id } } }
+  end
+
+  def alumno_rules
+    can :read, :all
+  end
+
+  def guest_rules
+    can :read, :publico
+  end
 end

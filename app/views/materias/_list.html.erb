@@ -1,0 +1,22 @@
+<table class="table table-hover align-middle">
+  <thead class="table-dark">
+    <tr>
+      <th>Nombre</th>
+      <th>Turno</th>
+      <th>Curso</th>
+      <th>Orientación</th>
+      <th>Ciclo Lectivo</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% materias.each do |materia| %>
+      <tr>
+        <td><%= materia.nombre %></td>
+        <td><%= materia.turno.nombre %></td>
+        <td><%= materia.curso.nombre %></td>
+        <td><%= materia.orientacion.nombre %></td>
+        <td><%= materia.ciclo_lectivo.año %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

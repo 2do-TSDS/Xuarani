@@ -1,0 +1,137 @@
+<div class="container">
+  <h1 class="mb-4 text-center">
+    <i class="bi bi-journal-text me-2 text-warning"></i>Panel de Materias
+  </h1>
+
+  <!-- Tabs -->
+  <ul class="nav nav-tabs justify-content-center" id="materiasTabs" role="tablist">
+    <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#tab-materias" role="tab"><i class="bi bi-book me-1"></i>Materias</a></li>
+    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-divisiones" role="tab"><i class="bi bi-diagram-3 me-1"></i>Asignar a Divisiones</a></li>
+    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-docentes" role="tab"><i class="bi bi-person-badge me-1"></i>Asignar Docentes</a></li>
+    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-alumnos" role="tab"><i class="bi bi-people me-1"></i>Asignar Alumnos</a></li>
+  </ul>
+
+  <div class="tab-content mt-4">
+    <!-- MATERIAS -->
+    <div class="tab-pane fade show active" id="tab-materias" role="tabpanel">
+      <div class="row g-4">
+        <div class="col-md-5">
+          <div class="card border-warning shadow-sm h-100">
+            <div class="card-header bg-warning text-dark fw-bold">
+              <i class="bi bi-plus-circle me-2"></i> Nueva Materia
+            </div>
+            <div class="card-body">
+              <%= render "materias/form", materia: @materia %>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-7">
+          <div class="card border-warning shadow-sm h-100">
+            <div class="card-header bg-light fw-bold">
+              <i class="bi bi-list-ul me-2"></i> Listado de Materias
+            </div>
+            <div class="card-body">
+              <%= render "materias/list", materias: @materias %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DIVISIONES -->
+    <div class="tab-pane fade" id="tab-divisiones" role="tabpanel">
+      <div class="row g-4">
+        <div class="col-md-5">
+          <div class="card border-info shadow-sm h-100">
+            <div class="card-header bg-info text-white fw-bold">
+              <i class="bi bi-plus-circle me-2"></i> Asignar Materia a División
+            </div>
+            <div class="card-body">
+              <%= render "materia_divisions/form", materia_division: @materia_division %>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-7">
+          <div class="card border-info shadow-sm h-100">
+            <div class="card-header bg-light fw-bold">
+              <i class="bi bi-list-ul me-2"></i> Listado de Asignaciones
+            </div>
+            <div class="card-body">
+              <%= render "materia_divisions/list", materia_divisions: @materia_divisions %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DOCENTES -->
+    <div class="tab-pane fade" id="tab-docentes" role="tabpanel">
+      <div class="row g-4">
+        <div class="col-md-5">
+          <div class="card border-success shadow-sm h-100">
+            <div class="card-header bg-success text-white fw-bold">
+              <i class="bi bi-plus-circle me-2"></i> Asignar Docente
+            </div>
+            <div class="card-body">
+              <%= render "materia_docentes/form", materia_docente: @materia_docente %>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-7">
+          <div class="card border-success shadow-sm h-100">
+            <div class="card-header bg-light fw-bold">
+              <i class="bi bi-list-ul me-2"></i> Listado de Docentes
+            </div>
+            <div class="card-body">
+              <%= render "materia_docentes/list", materia_docentes: @materia_docentes %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ALUMNOS -->
+    <div class="tab-pane fade" id="tab-alumnos" role="tabpanel">
+      <div class="row g-4">
+        <div class="col-md-5">
+          <div class="card border-primary shadow-sm h-100">
+            <div class="card-header bg-primary text-white fw-bold">
+              <i class="bi bi-plus-circle me-2"></i> Asignar Alumno
+            </div>
+            <div class="card-body">
+              <%= render "materia_alumnos/form", materia_alumno: @materia_alumno %>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-7">
+          <div class="card border-primary shadow-sm h-100">
+            <div class="card-header bg-light fw-bold">
+              <i class="bi bi-list-ul me-2"></i> Listado de Alumnos
+            </div>
+            <div class="card-body">
+              <%= render "materia_alumnos/list", materia_alumnos: @materia_alumnos %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    let triggerTabList = [].slice.call(document.querySelectorAll('#materiasTabs a'))
+    let lastTab = localStorage.getItem("activeMateriaTab")
+
+    if (lastTab) {
+      let tab = document.querySelector(`#materiasTabs a[href="${lastTab}"]`)
+      if (tab) new bootstrap.Tab(tab).show()
+    }
+
+    triggerTabList.forEach(tabEl => {
+      tabEl.addEventListener('shown.bs.tab', function (event) {
+        localStorage.setItem("activeMateriaTab", event.target.getAttribute("href"))
+      })
+    })
+  })
+</script>

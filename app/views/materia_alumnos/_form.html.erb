@@ -1,29 +1,30 @@
-<%= form_with(model: materia_alumno) do |form| %>
+<%= form_with(model: materia_alumno, local: true) do |form| %>
   <% if materia_alumno.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(materia_alumno.errors.count, "error") %> prohibited this materia_alumno from being saved:</h2>
-
-      <ul>
-        <% materia_alumno.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
+    <div class="alert alert-danger">
+      <strong><%= pluralize(materia_alumno.errors.count, "error") %></strong> impiden guardar:
+      <ul class="mb-0">
+        <% materia_alumno.errors.full_messages.each { |m| %><li><%= m %></li><% } %>
       </ul>
     </div>
   <% end %>
 
-  <div class="field">
-    <%= form.label :materia_division_id, 'Materia / División' %>
-    <%= form.collection_select :materia_division_id,
-          @materia_divisiones, :id, :display_name,
-          { prompt: 'Seleccione…' }, { required: true } %>
-  </div>
+  <div class="card">
+    <div class="card-body">
+      <div class="mb-3">
+        <%= form.label :materia_division_id, 'Materia / División', class: 'form-label' %>
+        <%= form.collection_select :materia_division_id, @materia_divisiones, :id, :display_name,
+              { prompt: 'Seleccione…' }, class: 'form-select', required: true %>
+      </div>
 
-  <div class="field">
-    <%= form.label :alumno_id, 'Alumno' %>
-    <%= form.collection_select :alumno_id,
-          @alumnos, :id, :display_name,
-          { prompt: 'Seleccione…' }, { required: true } %>
-  </div>
+      <div class="mb-3">
+        <%= form.label :alumno_id, 'Alumno', class: 'form-label' %>
+        <%= form.collection_select :alumno_id, @alumnos, :id, :display_name,
+              { prompt: 'Seleccione…' }, class: 'form-select', required: true %>
+      </div>
 
-  <div class="actions"><%= form.submit %></div>
+      <div>
+        <%= form.submit 'Guardar', class: 'btn btn-warning' %>
+      </div>
+    </div>
+  </div>
 <% end %>
