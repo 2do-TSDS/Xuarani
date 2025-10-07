@@ -34,13 +34,17 @@ gem "kamal", require: false
 
 # Add HTTP asset caching/compression and X-Sendfile acceleration to Puma [https://github.com/basecamp/thruster/]
 gem "thruster", require: false
+# Paginación — kaminari (más moderno y flexible)
+gem 'kaminari'
+# Busquedas y filtros avanzados
+gem 'ransack'
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 
 gem 'devise'
 gem 'cancancan'
-
+gem 'devise-i18n'
 group :production do
   gem 'mysql2', '~> 0.5'
 end

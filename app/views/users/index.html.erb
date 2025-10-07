@@ -98,8 +98,8 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
         <form id="deleteUserForm" method="post">
-          <%= hidden_field_tag :_method, :delete %>
-          <%= csrf_meta_tags %>
+          <input type="hidden" name="_method" value="delete">
+          <input type="hidden" name="authenticity_token" id="csrfToken">
           <button type="submit" class="btn btn-danger">Eliminar</button>
         </form>
       </div>
@@ -113,6 +113,8 @@
     const modal = document.getElementById("confirmDeleteModal");
     const userLabel = document.getElementById("userToDelete");
     const form = document.getElementById("deleteUserForm");
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+    document.getElementById("csrfToken").value = csrfToken;
 
     modal.addEventListener("show.bs.modal", (event) => {
       const button = event.relatedTarget;

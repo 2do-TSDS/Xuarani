@@ -1,52 +1,74 @@
-<div class="d-flex justify-content-end mb-3">
-  <button onclick="startMainGuide()" class="btn btn-outline-secondary">
-    Ver Guía Interactiva
-  </button>
-</div>
+<div class="container py-4">
 
-<div class="container">
-  <h1 class="mb-4 text-center">Panel Principal del Sistema</h1>
+  <!-- Botón de guía -->
+  <div class="d-flex justify-content-end mb-3">
+    <button onclick="startMainGuide()" class="btn btn-outline-info btn-sm shadow-sm">
+      <i class="bi bi-compass me-1"></i> Guía Interactiva
+    </button>
+  </div>
 
+  <!-- Título -->
+  <h1 class="text-center fw-bold mb-5 text-dark">
+    Panel Principal del Sistema
+  </h1>
+
+  <!-- Tarjetas -->
   <div class="row g-4">
 
     <!-- Gestión de usuarios -->
     <div class="col-md-4">
-      <div class="card shadow-sm h-100" id="card-usuarios">
-        <div class="card-body text-center">
-          <h5 class="card-title"><i class="bi bi-people-fill me-2"></i>Gestión de Usuarios</h5>
-          <p class="card-text text-muted">Administración integral de usuarios, perfiles y roles.</p>
-          <div class="d-grid gap-2">
-            <%= link_to "Ir al Panel de Usuarios", users_path, class: "btn btn-primary btn-lg" %>
+      <div class="card border-0 shadow-lg h-100 text-center card-hover" id="card-usuarios">
+        <div class="card-body d-flex flex-column justify-content-between p-4">
+          <div>
+            <div class="text-primary mb-3">
+              <i class="bi bi-people-fill" style="font-size: 2rem;"></i>
+            </div>
+            <h5 class="card-title fw-bold mb-3">Gestión de Usuarios</h5>
+            <p class="card-text text-muted">
+              Administración integral de usuarios, perfiles y roles.
+            </p>
           </div>
+          <%= link_to "Ir al Panel de Usuarios", users_path, class: "btn btn-primary mt-3 fw-semibold" %>
         </div>
       </div>
     </div>
 
     <!-- Organización académica -->
     <div class="col-md-4">
-      <div class="card shadow-sm h-100" id="card-organizacion">
-        <div class="card-body text-center">
-          <h5 class="card-title"><i class="bi bi-building me-2"></i>Organización Académica</h5>
-          <p class="card-text text-muted">Panel integral de turnos, cursos, divisiones y ciclos lectivos.</p>
-          <div class="d-grid gap-2">
-            <%= link_to "Ir al Panel Integral", organizacion_path, class: "btn btn-success btn-lg" %>
+      <div class="card border-0 shadow-lg h-100 text-center card-hover" id="card-organizacion">
+        <div class="card-body d-flex flex-column justify-content-between p-4">
+          <div>
+            <div class="text-success mb-3">
+              <i class="bi bi-building" style="font-size: 2rem;"></i>
+            </div>
+            <h5 class="card-title fw-bold mb-3">Organización Académica</h5>
+            <p class="card-text text-muted">
+              Turnos, cursos, divisiones y ciclos lectivos en un solo lugar.
+            </p>
           </div>
+          <%= link_to "Ir al Panel Integral", organizacion_path, class: "btn btn-success mt-3 fw-semibold" %>
         </div>
       </div>
     </div>
 
     <!-- Materias -->
     <div class="col-md-4">
-      <div class="card shadow-sm h-100" id="card-materias">
-        <div class="card-body text-center">
-          <h5 class="card-title"><i class="bi bi-journal-text me-2"></i>Materias</h5>
-          <p class="card-text text-muted">Panel integral de materias, divisiones, docentes y alumnos.</p>
-          <div class="d-grid gap-2">
-            <%= link_to "Ir al Panel de Materias", materias_panel_path, class: "btn btn-warning btn-lg text-dark" %>
+      <div class="card border-0 shadow-lg h-100 text-center card-hover" id="card-materias">
+        <div class="card-body d-flex flex-column justify-content-between p-4">
+          <div>
+            <div class="text-warning mb-3">
+              <i class="bi bi-journal-text" style="font-size: 2rem;"></i>
+            </div>
+            <h5 class="card-title fw-bold mb-3">Materias</h5>
+            <p class="card-text text-muted">
+              Gestión de materias, divisiones, docentes y alumnos.
+            </p>
           </div>
+          <%= link_to "Ir al Panel de Materias", materias_panel_path, class: "btn btn-warning text-dark mt-3 fw-semibold" %>
         </div>
       </div>
     </div>
 
   </div>
 </div>
+
