@@ -1,6 +1,6 @@
 class MateriaAlumno < ApplicationRecord
   belongs_to :materia_division
-  belongs_to :alumno, class_name: "User"
+  belongs_to :alumno, class_name: "User", inverse_of: :materia_alumnos
 
   has_one :materia, through: :materia_division
   has_one :division, through: :materia_division

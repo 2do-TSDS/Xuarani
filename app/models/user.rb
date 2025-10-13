@@ -34,6 +34,9 @@ class User < ApplicationRecord
   has_many :materia_divisiones,  through: :materia_docentes, source: :materia_division
   has_many :materias,            through: :materia_divisiones
 
+  has_many :materia_alumnos, foreign_key: :alumno_id, dependent: :destroy, inverse_of: :alumno
+  has_many :materia_divisiones_como_alumno, through: :materia_alumnos, source: :materia_division
+
   scope :docentes,        -> { with_role(:docente) }
   scope :alumnos,         -> { with_role(:alumno) }
   scope :preceptores,     -> { with_role(:preceptor) }
