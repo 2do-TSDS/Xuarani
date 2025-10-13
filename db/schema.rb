@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_20_010117) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_13_182033) do
   create_table "asistencia_generals", force: :cascade do |t|
     t.integer "alumno_id", null: false
     t.integer "parametro_id", null: false
@@ -125,7 +125,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_20_010117) do
   create_table "parametros", force: :cascade do |t|
     t.string "abreviacion", null: false
     t.string "nombre", null: false
-    t.integer "valor", null: false
+    t.decimal "valor", precision: 4, scale: 2, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["abreviacion"], name: "index_parametros_on_abreviacion", unique: true
