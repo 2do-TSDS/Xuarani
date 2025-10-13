@@ -1,3 +1,7 @@
+<div class="top-pagination">
+  <%= page_entries_info @materia_alumnos %>
+  <%= paginate @materia_alumnos %>
+</div>
 <table class="table table-hover align-middle">
   <thead class="table-dark">
     <tr>
@@ -14,3 +18,6 @@
     <% end %>
   </tbody>
 </table>
+<div class="bottom-pagination">
+  <%= paginate @materia_alumnos%>
+</div>

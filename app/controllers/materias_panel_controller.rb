@@ -73,6 +73,7 @@ class MateriasPanelController < ApplicationController
       )
       .distinct
       .load_async
+      .page(params[:page]).per(10)
 
     # Colecciones
     @turnos = Turno.order(:nombre)
