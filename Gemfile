@@ -45,6 +45,9 @@ gem 'ransack'
 gem 'devise'
 gem 'cancancan'
 gem 'devise-i18n'
+
+gem 'whenever', require: false
+
 group :production do
   gem 'mysql2', '~> 0.5'
 end
