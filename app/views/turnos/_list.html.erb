@@ -12,15 +12,68 @@
         <td><%= t.id %></td>
         <td><%= t.try(:nombre) || t.try(:name) || t.try(:titulo) %></td>
         <td class="text-end">
-          <%= link_to "Ver", t, class: "btn btn-sm btn-outline-secondary" %>
+          <!-- <%= link_to "Ver", t, class: "btn btn-sm btn-outline-secondary" %> -->
           <% if can?(:update, t) %>
             <%= link_to "Editar", edit_turno_path(t), class: "btn btn-sm btn-outline-primary" %>
           <% end %>
           <% if can?(:destroy, t) %>
-            <%= link_to "Eliminar", t, method: :delete, data: { confirm: "¿Seguro?" }, class: "btn btn-sm btn-outline-danger" %>
+            <button type="button"
+              class="btn btn-sm btn-outline-danger"
+              data-bs-toggle="modal"
+              data-bs-target="#confirmDeleteTurnoModal"
+              data-action-url="<%= turno_path(t, from: 'organizacion') %>"
+              data-turno-name="<%= t.try(:nombre) || t.try(:name) || t.try(:titulo) || "este turno" %>">
+              Eliminar
+            </button>
           <% end %>
+
         </td>
       </tr>
     <% end %>
   </tbody>
 </table>
+
+<div class="modal fade" id="confirmDeleteTurnoModal" tabindex="-1" aria-labelledby="confirmDeleteTurnoModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title" id="confirmDeleteTurnoModalLabel">
+          <i class="bi bi-exclamation-triangle-fill me-2"></i> Confirmar eliminación
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        ¿Estás seguro de que deseas eliminar <strong id="turnoToDelete"></strong>?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+
+        <form id="deleteTurnoForm" method="post">
+          <input type="hidden" name="_method" value="delete">
+          <input type="hidden" name="authenticity_token" id="csrfTurnoToken">
+          <button type="submit" class="btn btn-danger">Eliminar</button>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const modal = document.getElementById("confirmDeleteTurnoModal");
+    const label = document.getElementById("turnoToDelete");
+    const form  = document.getElementById("deleteTurnoForm");
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+    document.getElementById("csrfTurnoToken").value = csrfToken;
+
+    modal.addEventListener("show.bs.modal", (event) => {
+      const btn = event.relatedTarget;
+      const actionUrl = btn.getAttribute("data-action-url");
+      const nombre    = btn.getAttribute("data-turno-name") || "este turno";
+
+      label.textContent = nombre;
+      form.action = actionUrl; // ej: /turnos/12?from=organizacion
+    });
+  });
+</script>

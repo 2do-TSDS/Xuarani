@@ -12,15 +12,66 @@
         <td><%= o.id %></td>
         <td><%= o.try(:nombre) || o.try(:name) || o.try(:titulo) %></td>
         <td class="text-end">
-          <%= link_to "Ver", o, class: "btn btn-sm btn-outline-secondary" %>
+          <!-- <%= link_to "Ver", o, class: "btn btn-sm btn-outline-secondary" %> -->
           <% if can?(:update, o) %>
             <%= link_to "Editar", edit_orientacion_path(o), class: "btn btn-sm btn-outline-primary" %>
           <% end %>
           <% if can?(:destroy, o) %>
-            <%= link_to "Eliminar", o, method: :delete, data: { confirm: "¿Seguro?" }, class: "btn btn-sm btn-outline-danger" %>
+            <button type="button"
+                    class="btn btn-sm btn-outline-danger"
+                    data-bs-toggle="modal"
+                    data-bs-target="#confirmDeleteOrientacionModal"
+                    data-action-url="<%= orientacion_path(o, from: 'organizacion') %>"
+                    data-orientacion-name="<%= o.try(:nombre) || o.try(:name) || o.try(:titulo) || 'esta orientación' %>">
+              Eliminar
+            </button>
           <% end %>
         </td>
       </tr>
     <% end %>
   </tbody>
 </table>
+
+<div class="modal fade" id="confirmDeleteOrientacionModal" tabindex="-1" aria-labelledby="confirmDeleteOrientacionModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title" id="confirmDeleteOrientacionModalLabel">
+          <i class="bi bi-exclamation-triangle-fill me-2"></i> Confirmar eliminación
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        ¿Estás seguro de que deseas eliminar <strong id="orientacionToDelete"></strong>?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+
+        <form id="deleteOrientacionForm" method="post">
+          <input type="hidden" name="_method" value="delete">
+          <input type="hidden" name="authenticity_token" id="csrfOrientacionToken">
+          <button type="submit" class="btn btn-danger">Eliminar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const modal = document.getElementById("confirmDeleteOrientacionModal");
+    const label = document.getElementById("orientacionToDelete");
+    const form  = document.getElementById("deleteOrientacionForm");
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+    document.getElementById("csrfOrientacionToken").value = csrfToken;
+
+    modal.addEventListener("show.bs.modal", (event) => {
+      const btn = event.relatedTarget;
+      const actionUrl = btn.getAttribute("data-action-url");
+      const name      = btn.getAttribute("data-orientacion-name") || "esta orientación";
+
+      label.textContent = name;
+      form.action = actionUrl; // ej: /orientacions/7?from=organizacion
+    });
+  });
+</script>

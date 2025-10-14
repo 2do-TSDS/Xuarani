@@ -51,10 +51,13 @@ class MateriasController < ApplicationController
 
     respond_to do |format|
       if @materia.save
-        format.html { redirect_to @materia, notice: "Materia was successfully created." }
-        format.json { render :show, status: :created, location: @materia }
+        format.html { redirect_to materias_panel_path, notice: "Materia was successfully created." }
+        format.json { render :index, status: :created, location: @materias }
       else
-        format.html { render :new, status: :unprocessable_entity }
+        format.html { 
+          @materias = Materia.all
+          render :index, status: :unprocessable_entity
+        }
         format.json { render json: @materia.errors, status: :unprocessable_entity }
       end
     end

@@ -32,10 +32,13 @@ class MateriaAlumnosController < ApplicationController
 
     respond_to do |format|
       if @materia_alumno.save
-        format.html { redirect_to @materia_alumno, notice: "Materia alumno was successfully created." }
+        format.html { redirect_to materias_panel_path, notice: "Materia alumno was successfully created." }
         format.json { render :show, status: :created, location: @materia_alumno }
       else
-        format.html { render :new, status: :unprocessable_entity }
+        format.html {
+          @alumnos = Alumnos.all
+          render :new, status: :unprocessable_entity
+        }
         format.json { render json: @materia_alumno.errors, status: :unprocessable_entity }
       end
     end
