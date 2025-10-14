@@ -22,7 +22,10 @@ every :weekday, at: '6:00 am' do
   rake "asistencia_gral:crear_diaria"
 end
 
+every :weekday, at: '6:00 am' do
+  rake "asistencia_mat:crear_diaria"
+end
 
 every 3.minutes do
-    rake "asistencia_gral:crear_diaria"
+    rake "asistencia_mat:crear_diaria"
 end

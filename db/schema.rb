@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_13_182033) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_13_232541) do
   create_table "asistencia_generals", force: :cascade do |t|
     t.integer "alumno_id", null: false
     t.integer "parametro_id", null: false
@@ -112,6 +112,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_13_182033) do
     t.integer "cantidad", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["materia_division_id", "dia"], name: "idx_modulos_md_dia_uniq", unique: true
     t.index ["materia_division_id"], name: "index_modulos_on_materia_division_id"
   end
 
