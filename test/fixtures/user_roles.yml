@@ -1,9 +1,17 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  user: one
-  role: one
+admin_tiene_admin:
+  user: admin
+  role: admin
 
-two:
-  user: two
-  role: two
+preceptor_tiene_preceptor:
+  user: preceptor
+  role: preceptor
+
+docente_tiene_docente:
+  user: docente
+  role: docente
+
+alumno_tiene_alumno:
+  user: alumno
+  role: alumno
