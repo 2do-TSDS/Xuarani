@@ -156,3 +156,29 @@ body {
 h1.text-dark {
   color: #212529 !important;
 }
+
+/* ====== Estilos del panel del docente ====== */
+
+.materia-card {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+.materia-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 0.75rem 1.25rem rgba(0, 0, 0, 0.15);
+}
+
+/* Imagen dentro de la card con efecto de zoom */
+.card-img-wrapper {
+  overflow: hidden;
+}
+
+.materia-card img {
+  transition: transform 0.4s ease;
+}
+
+.materia-card:hover img {
+  transform: scale(1.08);
+}
