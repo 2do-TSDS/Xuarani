@@ -33,8 +33,8 @@ class MateriaDocente < ApplicationRecord
   private
 
   def docente_debe_tener_rol_docente
-    unless docente&.has_role?("docente")
-      errors.add(:docente, "El usuario debe tener el rol Docente")
+    unless docente&.has_role?("docente") || docente&.has_role?("preceptor")
+      errors.add(:docente, "El usuario debe tener el rol Docente o Preceptor")
     end
   end
 end

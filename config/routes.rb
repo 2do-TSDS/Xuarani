@@ -1,7 +1,15 @@
 Rails.application.routes.draw do
   get "organizacion/index"
   resources :users
-  resources :asistencia_materias
+  resources :asistencia_materias 
+  # do
+  #   collection do
+  #     get :planilla, as: :planilla_division
+  #   end
+  # end
+  get 'planilla_asistencia/:materia_division_id', 
+    to: 'asistencia_materias#planilla', 
+    as: 'planilla_asistencia_materia'
   resources :asistencia_generals
   resources :modulos
   resources :materia_alumnos

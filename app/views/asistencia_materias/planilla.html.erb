@@ -1,0 +1,62 @@
+<%# Archivo: app/views/asistencia_materias/planilla.html.erb %>
+
+<h1>
+  Planilla de Asistencia
+</h1>
+
+<div class="mb-3">
+  <h4 class="mb-0"><%= @materia_division.materia.nombre %></h4>
+  <div class="text-muted">
+    División: <%= @materia_division.division.nombre %> | Fecha: <%= l(Date.today, format: :long) %>
+  </div>
+</div>
+
+<% if @cantidad_modulos == 0 %>
+  
+  <div class="alert alert-info" role="alert">
+    No hay módulos definidos para el día de hoy en esta materia.
+  </div>
+
+<% else %>
+  
+  <%# Si @cantidad_modulos > 0, dibujamos la tabla %>
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped">
+      
+      <thead class="thead-dark">
+        <tr>
+          <th style="width: 30%;">Alumno</th>
+          
+          <% (1..@cantidad_modulos).each do |numero_modulo| %>
+            <th class="text-center">Módulo <%= numero_modulo %></th>
+          <% end %>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @materia_alumnos.each do |materia_alumno| %>
+          <tr>
+            <td>
+              <%= materia_alumno.alumno.perfil&.apellidos %>, <%= materia_alumno.alumno.perfil&.nombres %>
+            </td>
+            
+            <% (1..@cantidad_modulos).each do |numero_modulo| %>
+              <td class="text-center">
+                
+                <% asistencia = materia_alumno.asistencias_de_hoy.find { |a| a.modulo == numero_modulo } %>
+                
+                <% if asistencia %>
+                  <span class="badge bg-secondary">
+                    <%= asistencia.parametro.nombre %>
+                  </span>
+                <% else %>
+                  <span class="text-muted">-</span>
+                <% end %>
+              </td>
+            <% end %>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% end %>

@@ -5,6 +5,10 @@ class MateriaAlumno < ApplicationRecord
   has_one :materia, through: :materia_division
   has_one :division, through: :materia_division
 
+  has_many :asistencias_de_hoy, 
+           -> { where(fecha: Date.today) }, 
+           class_name: "AsistenciaMateria"
+  
   validates :materia_division, :alumno, presence: true
   validates :alumno_id, uniqueness: {
     scope: :materia_division_id,
