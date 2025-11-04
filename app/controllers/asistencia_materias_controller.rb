@@ -1,11 +1,30 @@
 class AsistenciaMateriasController < ApplicationController
   load_and_authorize_resource
+  # skip_load_and_authorize_resource only: [:planilla]
   before_action :set_asistencia_materia, only: %i[ show edit update destroy ]
 
   # GET /asistencia_materias or /asistencia_materias.json
   def index
     @asistencia_materias = AsistenciaMateria.all
   end
+
+def planilla
+  @materia_division = MateriaDivision.find(params[:materia_division_id])
+  
+  authorize! :read, @materia_division
+
+  dia_de_hoy = Date.today.cwday
+  modulo_config = Modulo.find_by(materia_division: @materia_division, dia: dia_de_hoy)
+  
+  @cantidad_modulos = modulo_config&.cantidad || 0
+  @materia_alumnos = @materia_division.materia_alumnos.includes(
+    { alumno: :perfil },
+    :asistencias_de_hoy
+  )
+
+  @parametros = Parametro.all
+  
+end
 
   # GET /asistencia_materias/1 or /asistencia_materias/1.json
   def show
