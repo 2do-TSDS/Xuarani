@@ -12,15 +12,66 @@
         <td><%= c.id %></td>
         <td><%= c.try(:nombre) || c.try(:name) || c.try(:titulo) %></td>
         <td class="text-end">
-          <%= link_to "Ver", c, class: "btn btn-sm btn-outline-secondary" %>
+          <!-- <%= link_to "Ver", c, class: "btn btn-sm btn-outline-secondary" %> -->
           <% if can?(:update, c) %>
             <%= link_to "Editar", edit_curso_path(c), class: "btn btn-sm btn-outline-primary" %>
           <% end %>
           <% if can?(:destroy, c) %>
-            <%= link_to "Eliminar", c, method: :delete, data: { confirm: "¿Seguro?" }, class: "btn btn-sm btn-outline-danger" %>
+            <button type="button"
+                    class="btn btn-sm btn-outline-danger"
+                    data-bs-toggle="modal"
+                    data-bs-target="#confirmDeleteCursoModal"
+                    data-action-url="<%= curso_path(c, from: 'organizacion') %>"
+                    data-curso-name="<%= c.try(:nombre) || c.try(:name) || c.try(:titulo) || 'este curso' %>">
+              Eliminar
+            </button>
           <% end %>
         </td>
       </tr>
     <% end %>
   </tbody>
 </table>
+
+<div class="modal fade" id="confirmDeleteCursoModal" tabindex="-1" aria-labelledby="confirmDeleteCursoModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title" id="confirmDeleteCursoModalLabel">
+          <i class="bi bi-exclamation-triangle-fill me-2"></i> Confirmar eliminación
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        ¿Estás seguro de que deseas eliminar <strong id="cursoToDelete"></strong>?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+
+        <form id="deleteCursoForm" method="post">
+          <input type="hidden" name="_method" value="delete">
+          <input type="hidden" name="authenticity_token" id="csrfCursoToken">
+          <button type="submit" class="btn btn-danger">Eliminar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const modal = document.getElementById("confirmDeleteCursoModal");
+    const label = document.getElementById("cursoToDelete");
+    const form  = document.getElementById("deleteCursoForm");
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+    document.getElementById("csrfCursoToken").value = csrfToken;
+
+    modal.addEventListener("show.bs.modal", (event) => {
+      const btn = event.relatedTarget;
+      const actionUrl = btn.getAttribute("data-action-url");
+      const cursoName = btn.getAttribute("data-curso-name") || "este curso";
+
+      label.textContent = cursoName;
+      form.action = actionUrl; // ejemplo: /cursos/4?from=organizacion
+    });
+  });
+</script>

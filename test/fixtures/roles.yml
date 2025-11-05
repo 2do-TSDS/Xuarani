@@ -1,7 +1,17 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  name: MyString
+admin:
+  id: 1
+  nombre: Administrador
 
-two:
-  name: MyString
+preceptor:
+  id: 2
+  nombre: Preceptor
+
+docente:
+  id: 3
+  nombre: Docente
+
+alumno:
+  id: 4
+  nombre: Alumno

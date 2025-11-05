@@ -16,6 +16,6 @@ two:
   dni: MyString
   fecha_nacimiento: 2025-09-19
   direccion: MyString
-  telefono: MyString
+  telefono: MyString  
   email: MyString
   user: two

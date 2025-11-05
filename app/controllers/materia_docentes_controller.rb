@@ -51,10 +51,13 @@ class MateriaDocentesController < ApplicationController
 
     respond_to do |format|
       if @materia_docente.save
-        format.html { redirect_to @materia_docente, notice: "Materia docente was successfully created." }
+        format.html { redirect_to materias_panel_path, notice: "Materia docente was successfully created." }
         format.json { render :show, status: :created, location: @materia_docente }
       else
-        format.html { render :new, status: :unprocessable_entity }
+        format.html { 
+          @docentes.all  
+          render :new, status: :unprocessable_entity
+        }
         format.json { render json: @materia_docente.errors, status: :unprocessable_entity }
       end
     end

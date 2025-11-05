@@ -1,32 +1,46 @@
-<h1 class="mb-3">Mis materias</h1>
+<h1 class="mb-4 text-center fw-bold">Mis Materias</h1>
 
 <% if @materias_de_docente.blank? %>
-  <div class="alert alert-warning">No tenés materias asignadas.</div>
+  <div class="alert alert-warning text-center shadow-sm">
+    No tenés materias asignadas.
+  </div>
 <% else %>
-  <div class="list-group">
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
     <% @materias_de_docente.each do |md| %>
       <% m  = md.materia
          d  = md.division
          c  = m&.curso
          cl = m&.ciclo_lectivo %>
 
-      <div class="list-group-item d-flex justify-content-between align-items-center">
-        <div>
-          <strong><%= m&.nombre %></strong>
-          <small class="text-muted">
-            — <%= [c&.nombre, d&.nombre].compact.join(" ") %>
-            <% if cl&.año.present? %> · Ciclo <%= cl.año %><% end %>
-          </small>
-        </div>
+      <div class="col">
+        <div class="card h-100 shadow-sm border-0 materia-card">
+          <!-- Imagen superior genérica -->
+          <div class="card-img-wrapper">
+            <%= image_tag(
+                  "https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?auto=format&fit=crop&w=800&q=60",
+                  class: "card-img-top",
+                  alt: "Imagen de materia"
+                ) %>
+          </div>
 
-        <div class="btn-group">
-          <%= link_to "Ver curso/división",
-              materia_division_path(md),
-              class: "btn btn-outline-secondary btn-sm" %>
+          <div class="card-body d-flex flex-column">
+            <!-- Nombre de la materia -->
+            <h5 class="card-title text-center fw-bold text-dark">
+              <%= m&.nombre || "Materia sin nombre" %>
+            </h5>
 
-          <%= link_to "Tomar asistencia",
-              new_asistencia_materia_path(materia_division_id: md.id),
-              class: "btn btn-primary btn-sm" %>
+            <!-- Información contextual -->
+            <p class="card-text text-muted text-center small mb-3">
+              <%= [c&.nombre, d&.nombre].compact.join(" ") %>
+              <% if cl&.año.present? %> · Ciclo <%= cl.año %><% end %>
+            </p>
+
+            <div class="mt-auto text-center">
+              <%= link_to "Ir a asistencia",
+                  new_asistencia_materia_path(materia_division_id: md.id),
+                  class: "btn btn-primary btn-sm px-4" %>
+            </div>
+          </div>
         </div>
       </div>
     <% end %>

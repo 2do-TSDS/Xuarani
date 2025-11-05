@@ -54,6 +54,10 @@ es:
   errors:
     messages:
       already_confirmed: "ya fue confirmada, intenta iniciar sesión"
+      blank: "no  puede estar en blanco"
+      invalid: "no es válido"
+      Taken: "ya está en uso"
+      too_short: "es demasiado corto ({{{count}} caracteres minimo)"
       confirmation_period_expired: "debe confirmarse dentro de %{period}, solicita una nueva confirmación"
       expired: "ha expirado, solicita una nueva"
       not_found: "no encontrado"

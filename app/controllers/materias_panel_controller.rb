@@ -62,7 +62,8 @@ class MateriasPanelController < ApplicationController
 
     # Form MateriaAlumno + listado
     @materia_alumno = MateriaAlumno.new
-    @materia_alumnos = MateriaAlumno
+    @q = MateriaAlumno.ransack(params[:q])
+    @materia_alumnos = @q.result(distinct: true)
       .eager_load(materia_division: [:materia, :division], alumno: :perfil)
       .order(
         tabla_materias[:nombre].asc,

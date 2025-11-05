@@ -39,10 +39,13 @@ class MateriaDivisionsController < ApplicationController
 
     respond_to do |format|
       if @materia_division.save
-        format.html { redirect_to materia_divisions_path, notice: "Asignación creada exitosamente." }
+        format.html { redirect_to materias_panel_path, notice: "Asignación creada exitosamente." }
         format.json { render :index, status: :created, location: @materia_division }
       else
-        format.html { render :new, status: :unprocessable_entity }
+        format.html { 
+          @materia_divisions = MateriaDivision.all
+          render :new, status: :unprocessable_entity
+        }
         format.json { render json: @materia_division.errors, status: :unprocessable_entity }
       end
     end

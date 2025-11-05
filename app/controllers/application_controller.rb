@@ -26,7 +26,7 @@ class ApplicationController < ActionController::Base
 
     # Redirecciones según rol
     if user.has_role?(:administrador)
-      admin_dashboard_path   # NUEVO: ruta clara para admin
+      materias_panel_path   # crear y cambiar de nombre a "admin_dashboard_path"!!!
     elsif user.has_role?(:docente)
       docente_dashboard_path # YA EXISTÍA
     elsif user.has_role?(:preceptor)
