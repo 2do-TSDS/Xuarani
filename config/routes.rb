@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   get 'planilla_asistencia/:materia_division_id', 
     to: 'asistencia_materias#planilla', 
     as: 'planilla_asistencia_materia'
+    
   resources :asistencia_generals
   resources :modulos
   resources :materia_alumnos

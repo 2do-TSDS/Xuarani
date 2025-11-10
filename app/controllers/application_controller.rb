@@ -21,22 +21,25 @@ class ApplicationController < ActionController::Base
 
   # Define a dónde va el usuario después de iniciar sesión
   def after_sign_in_path_for(user)
+    # Si es docente, siempre redirigir a su panel
+    return docente_dashboard_path if user.has_role?(:docente)
+
+    # Para los demás roles, respetar stored_location si existe
     stored = stored_location_for(user)
     return stored if stored.present?
 
     # Redirecciones según rol
     if user.has_role?(:administrador)
-      materias_panel_path   # crear y cambiar de nombre a "admin_dashboard_path"!!!
-    elsif user.has_role?(:docente)
-      docente_dashboard_path # YA EXISTÍA
+      materias_panel_path
     elsif user.has_role?(:preceptor)
-      organizacion_path      # YA EXISTÍA
+      organizacion_path
     elsif user.has_role?(:alumno)
-      public_home_path       # NUEVO: ruta genérica para alumnos/público
+      public_home_path
     else
-      root_path              # Fallback
+      root_path
     end
   end
+
 
   # Define a dónde va después de cerrar sesión
   def after_sign_out_path_for(_scope)
