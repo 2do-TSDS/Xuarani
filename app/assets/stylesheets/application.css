@@ -182,3 +182,37 @@ h1.text-dark {
 .materia-card:hover img {
   transform: scale(1.08);
 }
+
+.hover-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border-radius: 1rem;
+}
+
+.hover-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.card-body h6 {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.card-title {
+  font-size: 1.05rem;
+}
+
+.badge {
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+  border-radius: 0.7rem;
+}
+
+.bg-light-subtle {
+  background-color: #f8f9fa;
+}
+
+.d-flex.gap-2 {
+  flex-wrap: wrap;
+  justify-content: center;
+}

@@ -1,62 +1,222 @@
-<%# Archivo: app/views/asistencia_materias/planilla.html.erb %>
+<!-- ==============================
+     🧾 PLANILLA DE ASISTENCIA
+     ============================== -->
 
-<h1>
-  Planilla de Asistencia
-</h1>
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <h1 class="h3 fw-bold text-primary mb-1">Planilla de Asistencia</h1>
+    <h4 class="mb-0"><%= @materia_division.materia.nombre %></h4>
+    <p class="text-muted mb-0">
+      División: <%= @materia_division.division.nombre %> ·
+      Fecha: <%= l(Date.today, format: :long) %>
+    </p>
+  </div>
 
-<div class="mb-3">
-  <h4 class="mb-0"><%= @materia_division.materia.nombre %></h4>
-  <div class="text-muted">
-    División: <%= @materia_division.division.nombre %> | Fecha: <%= l(Date.today, format: :long) %>
+  <%= link_to docente_dashboard_path, class: "btn btn-outline-secondary" do %>
+    <i class="bi bi-arrow-left-circle me-1"></i> Volver al panel
+  <% end %>
+</div>
+
+<hr class="mb-4">
+
+<% if Rails.env.development? && @debug_info.present? %>
+  <pre class="small text-muted border rounded p-2 bg-light">
+    <%= JSON.pretty_generate(@debug_info) %>
+  </pre>
+<% end %>
+
+<% if @cantidad_modulos.zero? %>
+  <div class="alert alert-info text-center shadow-sm">
+    No hay módulos definidos para el día de hoy en esta materia.
+  </div>
+<% else %>
+  <div class="row g-4">
+    <% @materia_alumnos.each do |materia_alumno| %>
+      <% asistencias = materia_alumno.asistencias_de_hoy %>
+
+      <div class="col-lg-4 col-md-6">
+        <div class="card shadow-sm border-0 h-100 hover-card">
+          <div class="card-body text-center p-4">
+
+            <!-- Identidad del alumno (avatar simple con iniciales si no hay foto) -->
+            <div class="d-flex align-items-center justify-content-center mb-3">
+              <% if materia_alumno.alumno.respond_to?(:perfil) && materia_alumno.alumno.perfil&.respond_to?(:foto) && materia_alumno.alumno.perfil&.foto&.attached? %>
+                <%= image_tag materia_alumno.alumno.perfil.foto,
+                  class: "rounded-circle me-3 shadow-sm",
+                  style: "width: 60px; height: 60px; object-fit: cover;" %>
+              <% else %>
+                <% iniciales = "#{materia_alumno.alumno.perfil&.nombres.to_s.first}#{materia_alumno.alumno.perfil&.apellidos.to_s.first}".upcase %>
+                <div class="avatar-circle bg-primary text-white fw-bold me-3 shadow-sm"><%= iniciales.presence || "AL" %></div>
+              <% end %>
+
+              <div class="text-start">
+                <h5 class="card-title fw-bold mb-0 text-dark">
+                  <%= materia_alumno.alumno.perfil&.apellidos %>, <%= materia_alumno.alumno.perfil&.nombres %>
+                </h5>
+                <p class="text-muted small mb-0">Módulos del día: <%= @cantidad_modulos %></p>
+              </div>
+            </div>
+
+            <!-- Botones por módulo -->
+            <% (1..@cantidad_modulos).each do |numero_modulo| %>
+              <% asistencia = asistencias.find { |a| a.modulo == numero_modulo } %>
+
+              <div class="mb-3 border rounded-3 p-2 bg-light-subtle">
+                <h6 class="text-secondary mb-2">Módulo <%= numero_modulo %></h6>
+
+                <% if asistencia %>
+                  <!-- CONTENEDOR ÚNICO QUE JS ACTUALIZA (ID OBLIGATORIO) -->
+                  <% estado_actual = asistencia.parametro.nombre.downcase %>
+                  <div class="d-flex justify-content-center gap-2 flex-wrap mt-2"
+                       id="asistencia-<%= asistencia.id %>">
+                    <% ["Presente", "Ausente", "Tarde"].each do |estado| %>
+                      <% parametro = Parametro.find_by(nombre: estado) %>
+                      <% activo = (estado_actual == estado.downcase) %>
+                      <button
+                        type="button"
+                        class="btn btn-sm fw-semibold px-3
+                          <%= case estado
+                              when "Presente" then activo ? "btn-success" : "btn-outline-success"
+                              when "Ausente"  then activo ? "btn-danger"  : "btn-outline-danger"
+                              when "Tarde"    then activo ? "btn-warning text-dark" : "btn-outline-warning text-dark"
+                              end %>"
+                        data-role="asistencia-boton"
+                        data-asistencia-id="<%= asistencia.id %>"
+                        data-parametro-id="<%= parametro&.id %>">
+                        <%= estado %>
+                      </button>
+                    <% end %>
+                  </div>
+                <% else %>
+                  <span class="badge bg-light text-muted">Sin registro</span>
+                <% end %>
+              </div>
+            <% end %>
+
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+
+<!-- ===========================
+     ✅ TOAST (arriba a la derecha)
+     =========================== -->
+<div id="toastAsistencia"
+     class="toast align-items-center text-bg-success border-0 position-fixed top-0 end-0 m-4"
+     role="alert" aria-live="assertive" aria-atomic="true"
+     data-bs-delay="1600">
+  <div class="d-flex">
+    <div class="toast-body fw-semibold">✅ Asistencia actualizada correctamente</div>
+    <button type="button" class="btn-close btn-close-white me-2 m-auto"
+            data-bs-dismiss="toast" aria-label="Cerrar"></button>
   </div>
 </div>
 
-<% if @cantidad_modulos == 0 %>
-  
-  <div class="alert alert-info" role="alert">
-    No hay módulos definidos para el día de hoy en esta materia.
-  </div>
+<!-- ===========================
+     🧠 JS: Delegación de eventos + fetch
+     =========================== -->
+<script>
+  // Delegación de eventos: no usamos onclick en HTML
+  document.addEventListener('click', async (ev) => {
+    const btn = ev.target.closest('[data-role="asistencia-boton"]');
+    if (!btn) return;
 
-<% else %>
-  
-  <%# Si @cantidad_modulos > 0, dibujamos la tabla %>
-  <div class="table-responsive">
-    <table class="table table-bordered table-striped">
-      
-      <thead class="thead-dark">
-        <tr>
-          <th style="width: 30%;">Alumno</th>
-          
-          <% (1..@cantidad_modulos).each do |numero_modulo| %>
-            <th class="text-center">Módulo <%= numero_modulo %></th>
-          <% end %>
-        </tr>
-      </thead>
+    const asistenciaId = btn.dataset.asistenciaId;
+    const parametroId  = btn.dataset.parametroId;
+    const contenedor   = document.getElementById(`asistencia-${asistenciaId}`);
 
-      <tbody>
-        <% @materia_alumnos.each do |materia_alumno| %>
-          <tr>
-            <td>
-              <%= materia_alumno.alumno.perfil&.apellidos %>, <%= materia_alumno.alumno.perfil&.nombres %>
-            </td>
-            
-            <% (1..@cantidad_modulos).each do |numero_modulo| %>
-              <td class="text-center">
-                
-                <% asistencia = materia_alumno.asistencias_de_hoy.find { |a| a.modulo == numero_modulo } %>
-                
-                <% if asistencia %>
-                  <span class="badge bg-secondary">
-                    <%= asistencia.parametro.nombre %>
-                  </span>
-                <% else %>
-                  <span class="text-muted">-</span>
-                <% end %>
-              </td>
-            <% end %>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-  </div>
-<% end %>
+    if (!asistenciaId || !parametroId || !contenedor) {
+      console.error("Faltan datos o no existe el contenedor", { asistenciaId, parametroId, contenedor });
+      return;
+    }
+
+    // Desactivar botones mientras actualiza
+    const botones = contenedor.querySelectorAll('[data-role="asistencia-boton"]');
+    botones.forEach(b => b.disabled = true);
+
+    try {
+      const resp = await fetch(`/asistencia_materias/${asistenciaId}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",               // <- ayuda a Rails a no redirigir
+          "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').content
+        },
+        body: JSON.stringify({ asistencia_materia: { parametro_id: parametroId } })
+      });
+
+      if (!resp.ok) {
+        // Mostrar algo de error rápido
+        alert("⚠️ No se pudo actualizar la asistencia.");
+        return;
+      }
+
+      // Estado normalizado del botón presionado
+      const estadoSeleccionado = btn.textContent.trim().toLowerCase();
+
+      // Recolorear todos los botones según el seleccionado
+      botones.forEach(b => {
+        const texto = b.textContent.trim().toLowerCase();
+        const activo = (texto === estadoSeleccionado);
+
+        // Reset base
+        b.className = "btn btn-sm fw-semibold px-3";
+        if (texto === "presente") {
+          b.classList.add(activo ? "btn-success" : "btn-outline-success");
+        } else if (texto === "ausente") {
+          b.classList.add(activo ? "btn-danger" : "btn-outline-danger");
+        } else if (texto === "tarde") {
+          if (activo) {
+            b.classList.add("btn-warning", "text-dark");
+          } else {
+            b.classList.add("btn-outline-warning", "text-dark");
+          }
+        }
+      });
+
+      // Animación leve
+      contenedor.style.animation = "blink-ok 0.5s ease-in-out";
+
+      // Toast de confirmación
+      if (window.bootstrap && bootstrap.Toast) {
+        const toastEl = document.getElementById('toastAsistencia');
+        const toast = new bootstrap.Toast(toastEl);
+        toast.show();
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Error de conexión con el servidor.");
+    } finally {
+      // Rehabilitar botones
+      botones.forEach(b => b.disabled = false);
+    }
+  });
+</script>
+
+<!-- ===========================
+     💅 ESTILOS
+     =========================== -->
+<style>
+.hover-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border-radius: 1rem;
+}
+.hover-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.avatar-circle {
+  display:flex; align-items:center; justify-content:center;
+  width:60px; height:60px; border-radius:50%; font-size:1.2rem;
+}
+
+.bg-light-subtle { background-color:#f8f9fa; }
+
+@keyframes blink-ok {
+  0% { background-color: rgba(0, 200, 100, 0.25); }
+  100% { background-color: transparent; }
+}
+</style>

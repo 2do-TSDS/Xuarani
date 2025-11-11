@@ -1,0 +1,43 @@
+<% estado_actual = asistencia.parametro.nombre.downcase %>
+
+<div class="mb-3 border rounded-3 p-2 bg-light-subtle">
+  <h6 class="text-secondary mb-2">Módulo <%= asistencia.modulo %></h6>
+
+  <!-- 🔘 Botones de estado -->
+  <div class="d-flex justify-content-center gap-2 flex-wrap mt-2"
+       id="asistencia-<%= asistencia.id %>">
+    <% ["Presente", "Ausente", "Tarde"].each do |estado| %>
+      <% parametro = Parametro.find_by(nombre: estado) %>
+      <% activo = (estado_actual == estado.downcase) %>
+      <button
+        type="button"
+        class="btn btn-sm fw-semibold px-3
+          <%= case estado
+              when "Presente" then activo ? "btn-success" : "btn-outline-success"
+              when "Ausente"  then activo ? "btn-danger"  : "btn-outline-danger"
+              when "Tarde"    then activo ? "btn-warning text-dark" : "btn-outline-warning text-dark"
+              end %>"
+        data-role="asistencia-boton"
+        data-asistencia-id="<%= asistencia.id %>"
+        data-parametro-id="<%= parametro.id %>">
+        <%= estado %>
+      </button>
+    <% end %>
+  </div>
+
+  <!-- 📝 Observaciones -->
+  <div class="mt-3">
+    <textarea
+      class="form-control form-control-sm mb-2"
+      rows="2"
+      placeholder="Escribe una observación..."
+      id="observacion-<%= asistencia.id %>"><%= asistencia.observacion %></textarea>
+    <button
+      type="button"
+      class="btn btn-sm btn-outline-primary w-100 fw-semibold"
+      data-role="observacion-guardar"
+      data-asistencia-id="<%= asistencia.id %>">
+      💾 Guardar observación
+    </button>
+  </div>
+</div>
